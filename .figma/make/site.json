@@ -1,0 +1,10 @@
+{
+  "description": "Connects Ayurveda researchers, doctors, and scientists with intellectual property and patent resources, enhancing innovation and collaboration in the field.",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}
