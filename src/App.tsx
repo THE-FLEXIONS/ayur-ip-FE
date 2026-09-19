@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { AboutPage, FeaturesPage, HerbalLibraryPage, LoginPage, UseCasesPage } from "./pages";
+import { BrandMark } from "./sections";
 
 const HERB_IMG =
   "https://images.unsplash.com/photo-1492552181161-62217fc3076d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=800&q=80";
@@ -9,18 +10,6 @@ const MOUNTAIN_IMG =
   "https://images.unsplash.com/photo-1542708993627-b6e5bbae43c4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1200&q=80";
 
 // ─── Icons ─────────────────────────────────────────────────────────────────
-
-function LeafLogo() {
-  return (
-    <svg width="40" height="36" viewBox="0 0 40 36" fill="none">
-      <ellipse cx="20" cy="18" rx="18" ry="16" fill="#d8f3dc" />
-      <path d="M12 28 C12 16 20 8 28 10 C22 14 18 22 20 30" stroke="#1a4028" strokeWidth="2" fill="#40916c" fillOpacity="0.5" />
-      <path d="M20 10 C20 10 14 18 16 28" stroke="#1a4028" strokeWidth="1.5" fill="none" />
-      <path d="M10 20 C10 20 6 12 14 8 C14 16 10 22 18 28" stroke="#2d6a4f" strokeWidth="1.5" fill="#40916c" fillOpacity="0.4" />
-      <path d="M22 8 C22 8 30 12 28 22 C22 20 20 14 22 8" stroke="#1a4028" strokeWidth="1.5" fill="#40916c" fillOpacity="0.6" />
-    </svg>
-  );
-}
 
 function IconPriorArt() {
   return (
@@ -235,7 +224,7 @@ function Navbar({ activePage, onNav }: { activePage: string; onNav: (p: string) 
       <div className="max-w-7xl mx-auto px-6 h-16 flex items-center gap-8">
         {/* Logo */}
         <div className="flex items-center gap-2.5 mr-4">
-          <LeafLogo />
+          <BrandMark />
           <div>
             <div className="text-lg font-800 leading-none" style={{ color: "#0d2717", fontWeight: 800 }}>
               Ayur IP
@@ -989,7 +978,7 @@ function Footer() {
           {/* Brand */}
           <div className="col-span-1">
             <div className="flex items-center gap-2 mb-4">
-              <LeafLogo />
+              <BrandMark />
               <div>
                 <div className="text-lg font-black" style={{ color: "#0d2717", fontWeight: 800 }}>IP-SAKTI</div>
                 <div className="text-xs" style={{ color: "#40916c" }}>Fast & Secure Ai for Ayurveda</div>
