@@ -1,9 +1,5 @@
 import { useState } from "react";
-import FeaturesPage from "./FeaturesPage";
-import HerbalLibraryPage from "./HerbalLibraryPage";
-import UseCasesPage from "./UseCasesPage";
-import AboutPage from "./AboutPage";
-import LoginPage from "./LoginPage";
+import { AboutPage, FeaturesPage, HerbalLibraryPage, LoginPage, UseCasesPage } from "./pages";
 
 const HERB_IMG =
   "https://images.unsplash.com/photo-1492552181161-62217fc3076d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=800&q=80";
