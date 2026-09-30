@@ -4,7 +4,7 @@ Every page is built from sections. Each page has its own folder here, and each s
 
 ```
 sections/
-  home/            HeroIntro, AskBox, FeatureGrid, HeritageBanner, TryAsking,
+  home/            HeroIntro, AskBox, AnswerPanel, FeatureGrid, HeritageBanner, TryAsking,
                    HeroBackdrop, FeaturesSection, HowItWorksSection
   features/        FeaturesHero, CoreFeatures, HowItWorks, HowItWorksV2, SecurityBanner, CTASection, FooterSimple
   use-cases/       UseCasesHero, ExplorePanel, KnowledgeInAction, UseCasesFooter

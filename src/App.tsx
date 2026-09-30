@@ -102,6 +102,7 @@ export default function App() {
         onNavigate={navigate}
         onOpenMenu={openSidebar}
         onAsk={handleAsk}
+        language={workspace.preferences.language}
         intent={homeIntent}
         defaultMode={workspace.preferences.mode}
         defaultJurisdiction={workspace.preferences.jurisdiction}

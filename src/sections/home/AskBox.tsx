@@ -8,6 +8,7 @@ import {
   type Jurisdiction,
   type ResearchMode,
 } from "../../config/research";
+import { MAX_QUESTION_CHARS } from "../../services/chat";
 
 export type { AskRequest, Jurisdiction, ResearchMode };
 
@@ -59,6 +60,7 @@ export default function AskBox({
           onChange={(e) => onValueChange(e.target.value)}
           placeholder="Ask your Ayurvedic IP question..."
           autoComplete="off"
+          maxLength={MAX_QUESTION_CHARS}
           enterKeyHint="search"
           className="h-11 min-w-0 flex-1 bg-transparent text-[16px] placeholder:text-[14px] min-[400px]:placeholder:text-[15px] sm:placeholder:text-[18px] lg:placeholder:text-[19px] text-ayur-ink outline-none placeholder:text-[#7c827b] sm:h-12 sm:text-[18px] lg:text-[19px]"
         />

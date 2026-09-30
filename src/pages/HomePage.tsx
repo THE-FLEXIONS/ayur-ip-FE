@@ -1,8 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import AppHeader from "../components/layout/AppHeader";
 import Footer from "../components/layout/Footer";
-import { JURISDICTION_LABELS, MODE_LABELS, type AskRequest, type Jurisdiction, type ResearchMode } from "../config/research";
+import type { LanguageCode } from "../config/app";
+import type { AskRequest, Jurisdiction, ResearchMode } from "../config/research";
 import {
+  AnswerPanel,
   AskBox,
   FeatureGrid,
   FeaturesSection,
@@ -11,7 +13,9 @@ import {
   HeroIntro,
   HowItWorksSection,
   TryAsking,
+  type AnswerState,
 } from "../sections/home";
+import { askAssistant, ChatError } from "../services/chat";
 
 /** Something the sidebar asks the home page to do once it is shown. `id` makes repeats distinct. */
 export type HomeIntent = { id: number } & (
@@ -23,17 +27,31 @@ export type HomeIntent = { id: number } & (
 type HomePageProps = {
   onNavigate: (page: string) => void;
   onOpenMenu: () => void;
-  /** Receives submitted questions. Wire this to the answer service. */
+  /** Called for every submitted question, e.g. to record it in history. */
   onAsk?: (request: AskRequest) => void;
+  /** Language the answer is requested in. */
+  language?: LanguageCode;
   intent?: HomeIntent | null;
   defaultMode?: ResearchMode;
   defaultJurisdiction?: Jurisdiction;
 };
 
-export default function HomePage({ onNavigate, onOpenMenu, onAsk, intent, defaultMode, defaultJurisdiction }: HomePageProps) {
+export default function HomePage({
+  onNavigate,
+  onOpenMenu,
+  onAsk,
+  language = "en",
+  intent,
+  defaultMode,
+  defaultJurisdiction,
+}: HomePageProps) {
   const [question, setQuestion] = useState("");
-  const [lastAsk, setLastAsk] = useState<AskRequest | null>(null);
+  const [answer, setAnswer] = useState<AnswerState | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const pending = useRef<AbortController | null>(null);
+
+  // Cancel an in-flight question when the page unmounts.
+  useEffect(() => () => pending.current?.abort(), []);
 
   function focusInput(text: string) {
     setQuestion(text);
@@ -57,9 +75,27 @@ export default function HomePage({ onNavigate, onOpenMenu, onAsk, intent, defaul
     // Run once per intent; `id` changes whenever a new one is issued.
   }, [intent?.id]);
 
+  async function fetchAnswer(request: AskRequest) {
+    // A new question replaces the one still loading.
+    pending.current?.abort();
+    const controller = new AbortController();
+    pending.current = controller;
+    setAnswer({ status: "loading", request });
+    try {
+      const response = await askAssistant(request, language, controller.signal);
+      if (!controller.signal.aborted) setAnswer({ status: "success", request, response });
+    } catch (err) {
+      if (controller.signal.aborted) return;
+      const message = err instanceof ChatError ? err.message : "Something went wrong. Please try again.";
+      setAnswer({ status: "error", request, message });
+    } finally {
+      if (pending.current === controller) pending.current = null;
+    }
+  }
+
   function handleAsk(request: AskRequest) {
-    setLastAsk(request);
     onAsk?.(request);
+    void fetchAnswer(request);
   }
 
   return (
@@ -80,13 +116,7 @@ export default function HomePage({ onNavigate, onOpenMenu, onAsk, intent, defaul
               defaultMode={defaultMode}
               defaultJurisdiction={defaultJurisdiction}
             />
-            <p aria-live="polite" className="min-h-0 px-4 text-[13px] text-ayur-muted empty:hidden sm:px-6">
-              {lastAsk && (
-                <span className="mt-3 block">
-                  Question sent: &ldquo;{lastAsk.question}&rdquo; · {MODE_LABELS[lastAsk.mode]} · {JURISDICTION_LABELS[lastAsk.jurisdiction]}
-                </span>
-              )}
-            </p>
+            {answer && <AnswerPanel state={answer} onRetry={() => void fetchAnswer(answer.request)} />}
           </div>
 
           <div className="mt-6 sm:mt-10 lg:mt-12">
