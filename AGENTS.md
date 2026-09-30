@@ -21,7 +21,7 @@ This is the canonical project structure. Start with task-relevant files below. O
 - `src/config/` - App version (read from package.json), languages, research options
 - `src/hooks/useWorkspace.ts` - History, saved questions and preferences
 - `src/services/chat.ts` - Client for `POST /api/chat` (the AYUR-IP assistant); the browser never holds provider keys
-- `server/geminiChat.ts` - Vite dev/preview middleware that serves `/api/chat` from Gemini using `GEMINI_API_KEY` in `.env` (see `.env.example`); set `API_PROXY_TARGET` to use the real backend instead
+- `backend/` - AYUR-IP API (Express + TypeScript) that holds provider keys and serves `/api/*`; see `backend/README.md`. The Vite dev server proxies `/api` to it (`API_PROXY_TARGET`, default `http://localhost:5000`)
 - `src/index.css` - Global CSS entrypoint and Tailwind CSS v4 import
 - `index.html` - Vite HTML shell containing the `#root` element and loading `src/main.tsx`
 - `package.json` - Project dependencies and the Vite build, development, preview, and formatting scripts

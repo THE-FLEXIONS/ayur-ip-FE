@@ -1,24 +1,21 @@
-import { defineConfig, loadEnv, type HtmlTagDescriptor, type Plugin } from 'vite'
+import { defineConfig, loadEnv, type HtmlTagDescriptor, type Plugin, type ProxyOptions } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 import path from 'node:path'
 
 import siteConfiguration from './.figma/make/site.json' with { type: 'json' }
-import geminiChat from './server/geminiChat.ts'
 
 // Vite config — https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
   // .figma/make/deploy-preview passes `--mode development` for cached-preview builds.
   const emitSourcemaps = mode === 'development'
-  // Server-only settings: no VITE_ prefix, so they never reach the browser bundle.
-  const env = loadEnv(mode, process.cwd(), '')
-  // When the AYUR-IP backend runs, proxy /api to it; otherwise serve /api/chat from Gemini here.
-  const apiProxyTarget = env.API_PROXY_TARGET
+  // Where the AYUR-IP backend (backend/) listens. Only the dev and preview servers use this.
+  const apiProxy = { '/api': ayurIpApiProxy(loadEnv(mode, process.cwd(), '').API_PROXY_TARGET || 'http://localhost:5000') }
 
   return {
     base: process.env.FIGMA_PUBLIC_URL ? `${process.env.FIGMA_PUBLIC_URL}/` : '/',
-    server: apiProxyTarget ? { proxy: { '/api': { target: apiProxyTarget, changeOrigin: true } } } : undefined,
-    preview: apiProxyTarget ? { proxy: { '/api': { target: apiProxyTarget, changeOrigin: true } } } : undefined,
+    server: { proxy: apiProxy },
+    preview: { proxy: apiProxy },
     build: {
       sourcemap: emitSourcemaps ? 'inline' : false,
       minify: !emitSourcemaps,
@@ -30,12 +27,6 @@ export default defineConfig(({ mode }) => {
       figmaErrorOverlayReplay(),
       figmaReactRefreshBoundaryFallback(),
       figmaMakeKitPlugin({ storiesGlob: '/src/**/*.stories.{ts,tsx,js,jsx}' }),
-      !apiProxyTarget &&
-        geminiChat({
-          apiKey: env.GEMINI_API_KEY ?? '',
-          model: env.GEMINI_MODEL || 'gemini-3.8-flash',
-          timeoutMs: Number(env.GEMINI_TIMEOUT_MS) || 30_000,
-        }),
     ],
     resolve: {
       alias: {
@@ -44,6 +35,25 @@ export default defineConfig(({ mode }) => {
     },
   }
 })
+
+/**
+ * Proxies /api to the AYUR-IP backend. If the backend is not running, answers
+ * with a JSON 503 the app can show, instead of an opaque proxy error.
+ */
+function ayurIpApiProxy(target: string): ProxyOptions {
+  return {
+    target,
+    changeOrigin: true,
+    configure(proxy) {
+      proxy.on('error', (err, _req, res) => {
+        console.warn(`[api-proxy] ${target} unreachable: ${err.message}`)
+        if (!('writeHead' in res) || res.headersSent) return
+        res.writeHead(503, { 'Content-Type': 'application/json' })
+        res.end(JSON.stringify({ error: 'The research service is not running. Start it with npm run dev in the backend folder.' }))
+      })
+    },
+  }
+}
 
 type FigmaSiteConfiguration = {
   title?: string
