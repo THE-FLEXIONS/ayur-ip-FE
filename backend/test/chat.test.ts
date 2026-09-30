@@ -139,6 +139,25 @@ describe("provider error mapping", () => {
   });
 });
 
+describe("rate limiting behind a proxy", () => {
+  const limitedApp = (trustProxy: number) =>
+    createApp({
+      chat: createChatService({ generate: reply({ answer: "ok", insufficient_evidence: false }) }),
+      herbs: createHerbalService({ store: createMemoryHerbStore() }),
+      corsOrigins: [],
+      trustProxy,
+    });
+  const ask = (app: ReturnType<typeof limitedApp>, ip: string) =>
+    request(app).post("/api/chat").set("X-Forwarded-For", ip).send({ message: "q" });
+
+  it("counts each client IP separately when TRUST_PROXY is set", async () => {
+    const app = limitedApp(1);
+    for (let i = 0; i < 20; i++) assert.equal((await ask(app, "203.0.113.1")).status, 200);
+    assert.equal((await ask(app, "203.0.113.1")).status, 429);
+    assert.equal((await ask(app, "203.0.113.2")).status, 200, "a different client is not limited");
+  });
+});
+
 describe("routing", () => {
   it("returns JSON 404 for unknown routes", async () => {
     const res = await request(appWith(reply({}))).get("/api/nope");

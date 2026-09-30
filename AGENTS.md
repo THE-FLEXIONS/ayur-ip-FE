@@ -20,8 +20,9 @@ This is the canonical project structure. Start with task-relevant files below. O
 - `src/components/` - Pieces shared across pages: `layout/` (AppHeader, Navbar, Footer, `sidebar/`), `ui/` (LineIcons, Botanicals, SelectChip, BrandMark), `icons.tsx`
 - `src/config/` - App version (read from package.json), languages, research options
 - `src/hooks/useWorkspace.ts` - History, saved questions and preferences
-- `src/services/chat.ts` - Client for `POST /api/chat` (the AYUR-IP assistant); the browser never holds provider keys
-- `backend/` - AYUR-IP API (Express + TypeScript) that holds provider keys and serves `/api/*`; see `backend/README.md`. The Vite dev server proxies `/api` to it (`API_PROXY_TARGET`, default `http://localhost:5000`)
+- `src/services/` - API clients: `api.ts` (shared request helper), `chat.ts` (`POST /api/chat`), `herbs.ts` (`GET /api/herbs/search`); the browser never holds provider keys
+- `src/config/api.ts` - `DEPLOYED_API_URL`, the Render address of the API used by production builds and the dev proxy
+- `backend/` - AYUR-IP API (Express + TypeScript) that holds provider keys and serves `/api/*`; see `backend/README.md`. The Vite dev server proxies `/api` to `API_PROXY_TARGET`, else `DEPLOYED_API_URL`, else `http://localhost:5000`. Deployed on Render via `render.yaml`; see `backend/DEPLOY.md`
 - `src/index.css` - Global CSS entrypoint and Tailwind CSS v4 import
 - `index.html` - Vite HTML shell containing the `#root` element and loading `src/main.tsx`
 - `package.json` - Project dependencies and the Vite build, development, preview, and formatting scripts

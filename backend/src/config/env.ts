@@ -12,6 +12,9 @@ const MISSING_KEY = "GEMINI_API_KEY is required. Copy .env.example to .env and a
 const schema = z.object({
   PORT: z.coerce.number().int().positive().default(5000),
   NODE_ENV: z.enum(["development", "production", "test"]).default("development"),
+  // Number of proxies in front of the app (1 on Render). Lets rate limits see
+  // each client's real IP instead of the proxy's. Keep 0 when not behind one.
+  TRUST_PROXY: z.coerce.number().int().min(0).default(0),
   CORS_ORIGINS: z
     .string()
     .default("")

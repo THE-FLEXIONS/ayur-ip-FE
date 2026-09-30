@@ -3,6 +3,7 @@ import Navbar from "./components/layout/Navbar";
 import { Sidebar, type SidebarKey } from "./components/layout/sidebar";
 import type { AskRequest } from "./config/research";
 import { useWorkspace, type HistoryEntry } from "./hooks/useWorkspace";
+import { wakeApi } from "./services/api";
 import {
   AboutPage,
   FeaturesPage,
@@ -47,6 +48,9 @@ export default function App() {
 
   const openSidebar = useCallback(() => setSidebarOpen(true), []);
   const closeSidebar = useCallback(() => setSidebarOpen(false), []);
+
+  // Start the API waking up so the first question or search is not slowed by a cold start.
+  useEffect(() => wakeApi(), []);
 
   useEffect(() => {
     document.documentElement.lang = workspace.preferences.language;

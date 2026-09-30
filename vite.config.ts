@@ -4,13 +4,16 @@ import tailwindcss from '@tailwindcss/vite'
 import path from 'node:path'
 
 import siteConfiguration from './.figma/make/site.json' with { type: 'json' }
+import { DEPLOYED_API_URL } from './src/config/api.ts'
 
 // Vite config — https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
   // .figma/make/deploy-preview passes `--mode development` for cached-preview builds.
   const emitSourcemaps = mode === 'development'
-  // Where the AYUR-IP backend (backend/) listens. Only the dev and preview servers use this.
-  const apiProxy = { '/api': ayurIpApiProxy(loadEnv(mode, process.cwd(), '').API_PROXY_TARGET || 'http://localhost:5000') }
+  // Where the dev and preview servers send /api: API_PROXY_TARGET, else the deployed
+  // API (src/config/api.ts), else a backend running locally.
+  const apiProxyTarget = loadEnv(mode, process.cwd(), '').API_PROXY_TARGET || DEPLOYED_API_URL || 'http://localhost:5000'
+  const apiProxy = { '/api': ayurIpApiProxy(apiProxyTarget) }
 
   return {
     base: process.env.FIGMA_PUBLIC_URL ? `${process.env.FIGMA_PUBLIC_URL}/` : '/',
@@ -49,7 +52,7 @@ function ayurIpApiProxy(target: string): ProxyOptions {
         console.warn(`[api-proxy] ${target} unreachable: ${err.message}`)
         if (!('writeHead' in res) || res.headersSent) return
         res.writeHead(503, { 'Content-Type': 'application/json' })
-        res.end(JSON.stringify({ error: 'The research service is not running. Start it with npm run dev in the backend folder.' }))
+        res.end(JSON.stringify({ error: 'Can\'t reach the research service. Please try again shortly.' }))
       })
     },
   }

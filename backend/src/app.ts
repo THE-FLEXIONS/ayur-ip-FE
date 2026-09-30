@@ -7,6 +7,8 @@ import { createRoutes, type RouteDeps } from "./routes/index.js";
 export type AppOptions = RouteDeps & {
   /** Browser origins allowed to call the API directly. Empty allows none. */
   corsOrigins: string[];
+  /** Proxy hops to trust for the client IP (Express "trust proxy"). */
+  trustProxy?: number;
 };
 
 const errorHandler: ErrorRequestHandler = (err, _req, res, _next) => {
@@ -26,9 +28,10 @@ const errorHandler: ErrorRequestHandler = (err, _req, res, _next) => {
   }
 };
 
-export function createApp({ corsOrigins, ...deps }: AppOptions) {
+export function createApp({ corsOrigins, trustProxy = 0, ...deps }: AppOptions) {
   const app = express();
   app.disable("x-powered-by");
+  app.set("trust proxy", trustProxy);
   app.use(helmet());
   app.use(cors({ origin: corsOrigins, methods: ["GET", "POST"] }));
   app.use(express.json({ limit: "16kb" }));

@@ -49,6 +49,8 @@ export async function askAssistant(request: AskRequest, language: LanguageCode, 
     method: "POST",
     body: { message, language, mode: request.mode, jurisdiction: request.jurisdiction },
     signal,
+    // Allows for a cold start on the free hosting plan plus the answer itself.
+    timeoutMs: 100_000,
   });
   return normalize(data);
 }

@@ -1,0 +1,35 @@
+# Render Blueprint for the AYUR-IP API (backend/). In the Render dashboard:
+# New > Blueprint, pick this repository, then fill in the secret values.
+# Guide: backend/DEPLOY.md
+services:
+  - type: web
+    name: ayur-ip-api
+    runtime: node
+    plan: free
+    region: singapore
+    rootDir: backend
+    # --include=dev: TypeScript is a dev dependency and is needed to build.
+    buildCommand: npm ci --include=dev && npm run build
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      - key: NODE_ENV
+        value: production
+      # Render puts one proxy in front of the app.
+      - key: TRUST_PROXY
+        value: "1"
+      - key: GEMINI_MODEL
+        value: gemini-3.8-flash
+      - key: GEMINI_STORE_INTERACTIONS
+        value: "false"
+      # Secrets and deployment-specific values: set these in the dashboard.
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: CORS_ORIGINS
+        sync: false
+      - key: DATABASE_URL
+        sync: false
+      - key: HERBAL_API_KEY
+        sync: false

@@ -1,7 +1,10 @@
+import { DEPLOYED_API_URL } from "../config/api";
+
 // Shared request helper for the AYUR-IP API. Provider keys live on the server;
 // the browser only ever talks to our own API.
 
-const API_BASE = (import.meta.env.VITE_API_BASE_URL ?? "").replace(/\/+$/, "");
+// In development the Vite server proxies /api, so requests stay same-origin.
+const API_BASE = (import.meta.env.VITE_API_BASE_URL || (import.meta.env.PROD ? DEPLOYED_API_URL : "")).replace(/\/+$/, "");
 const DEFAULT_TIMEOUT_MS = 45_000;
 
 /** An API failure with a message that is safe to show to the user. */
@@ -34,6 +37,19 @@ async function errorFromResponse(res: Response): Promise<ApiError> {
   // Server messages are already user-safe; 5xx without one gets a generic line.
   const message = serverMessage || STATUS_MESSAGES[res.status] || (res.status >= 500 ? STATUS_MESSAGES[503] : FALLBACK_MESSAGE);
   return new ApiError(message, res.status);
+}
+
+let wakeRequested = false;
+
+/**
+ * Starts the API waking up. The free Render plan stops the server after 15 idle
+ * minutes and takes about a minute to start again, so this is called once on
+ * page load to begin that before the user asks anything. Failures are ignored.
+ */
+export function wakeApi() {
+  if (wakeRequested) return;
+  wakeRequested = true;
+  fetch(`${API_BASE}/api/health`, { signal: AbortSignal.timeout(90_000) }).catch(() => {});
 }
 
 type RequestOptions = {

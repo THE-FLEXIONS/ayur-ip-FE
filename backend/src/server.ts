@@ -47,7 +47,7 @@ const herbs = createHerbalService({
     : undefined,
 });
 
-const app = createApp({ chat, herbs, corsOrigins: env.CORS_ORIGINS });
+const app = createApp({ chat, herbs, corsOrigins: env.CORS_ORIGINS, trustProxy: env.TRUST_PROXY });
 
 app.listen(env.PORT, () => {
   console.log(`AYUR-IP API listening on http://localhost:${env.PORT} (model ${env.GEMINI_MODEL})`);

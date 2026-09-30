@@ -40,5 +40,5 @@ export async function searchHerbs(query: string, signal?: AbortSignal): Promise<
   const q = query.trim();
   if (q.length < MIN_HERB_QUERY_CHARS) throw new ApiError(`Enter at least ${MIN_HERB_QUERY_CHARS} characters.`, 400);
   if (q.length > MAX_HERB_QUERY_CHARS) throw new ApiError(`Search terms can be up to ${MAX_HERB_QUERY_CHARS} characters.`, 400);
-  return normalize(await apiRequest(`/api/herbs/search?q=${encodeURIComponent(q)}`, { signal, timeoutMs: 20_000 }));
+  return normalize(await apiRequest(`/api/herbs/search?q=${encodeURIComponent(q)}`, { signal, timeoutMs: 80_000 }));
 }

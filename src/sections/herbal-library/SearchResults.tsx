@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useSlowNotice } from "../../hooks/useSlowNotice";
 import { LeafIcon } from "../../components/ui/LineIcons";
 import { safeHttpUrl } from "../../services/api";
 import type { Herb } from "../../services/herbs";
@@ -21,6 +22,7 @@ const SOURCE_LABELS: Record<string, string> = { trefle: "Trefle", seed: "AYUR-IP
 // ─── Herb search results (shown under the hero once a search runs) ───────────
 export default function SearchResults({ state, onRetry, onAskAssistant }: SearchResultsProps) {
   const { query } = state;
+  const slow = useSlowNotice(state.status === "loading");
   const hasTrefle = state.status === "success" && state.results.some((h) => h.source === "trefle");
 
   return (
@@ -39,7 +41,10 @@ export default function SearchResults({ state, onRetry, onAskAssistant }: Search
         <div aria-live="polite">
           {state.status === "loading" && (
             <>
-              <p style={{ fontSize: 13, color: "#9ca3af" }}>Searching the Herbal Library…</p>
+              <p style={{ fontSize: 13, color: "#9ca3af" }}>
+                Searching the Herbal Library…
+                {slow && " Taking longer than usual: the service may be waking up, which can take up to a minute."}
+              </p>
               <div aria-hidden="true" className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
                 {[0, 1, 2, 3].map((i) => (
                   <div key={i} className="animate-pulse overflow-hidden" style={{ borderRadius: 16, border: "1px solid #f0f0f0" }}>

@@ -22,6 +22,10 @@ The server refuses to start if `GEMINI_API_KEY` is missing or still the placehol
 | `npm run typecheck` | Type-check |
 | `npm run build` / `npm start` | Compile to `dist/` and run it |
 
+## Deploy
+
+See [DEPLOY.md](DEPLOY.md) for Render (free web service) with Neon PostgreSQL. `render.yaml` at the repo root defines the service.
+
 ## Endpoints
 
 | Endpoint | Status |

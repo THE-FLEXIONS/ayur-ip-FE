@@ -1,4 +1,5 @@
 import { DocumentIcon, ShieldCheckIcon } from "../../components/ui/LineIcons";
+import { useSlowNotice } from "../../hooks/useSlowNotice";
 import { JURISDICTION_LABELS, MODE_LABELS, type AskRequest } from "../../config/research";
 import { safeHttpUrl } from "../../services/api";
 import type { ChatResponse } from "../../services/chat";
@@ -15,6 +16,7 @@ type AnswerPanelProps = {
 
 export default function AnswerPanel({ state, onRetry }: AnswerPanelProps) {
   const { request } = state;
+  const slow = useSlowNotice(state.status === "loading");
 
   return (
     <section
@@ -33,6 +35,11 @@ export default function AnswerPanel({ state, onRetry }: AnswerPanelProps) {
         {state.status === "loading" && (
           <div>
             <p className="text-[14px] text-ayur-muted sm:text-[15px]">Researching your question…</p>
+            {slow && (
+              <p className="mt-1 text-[13px] text-ayur-muted sm:text-[14px]">
+                Taking longer than usual: the research service may be waking up, which can take up to a minute.
+              </p>
+            )}
             <div aria-hidden="true" className="mt-3 space-y-2.5">
               <div className="h-3 w-full animate-pulse rounded-full bg-ayur-mint" />
               <div className="h-3 w-[92%] animate-pulse rounded-full bg-ayur-mint" />
