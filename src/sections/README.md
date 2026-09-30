@@ -8,7 +8,7 @@ sections/
                    HeroBackdrop, FeaturesSection, HowItWorksSection
   features/        FeaturesHero, CoreFeatures, HowItWorks, HowItWorksV2, SecurityBanner, CTASection, FooterSimple
   use-cases/       UseCasesHero, ExplorePanel, KnowledgeInAction, UseCasesFooter
-  herbal-library/  Hero, BrowseByCategory, FeaturedHerbs, CollectionAndTexts, KnowledgeBanner, SuggestBar, FooterBar
+  herbal-library/  Hero, SearchResults, BrowseByCategory, FeaturedHerbs, CollectionAndTexts, KnowledgeBanner, SuggestBar, FooterBar
   about/           AboutHero, WhatDrivesUs, ImpactSection, OurPurpose, OurJourney, MeetTheTeam, JoinCTA
   auth/            LoginShowcase (left panel), SignUpForm (right panel)
   workspace/       QuestionList (History and Saved pages)

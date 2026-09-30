@@ -131,7 +131,7 @@ export default function App() {
         ) : page === "Use Cases" ? (
           <UseCasesPage />
         ) : page === "Herbal Library" ? (
-          <HerbalLibraryPage />
+          <HerbalLibraryPage onAskAssistant={(question) => goHome("new-query", { id: ++intentCounter, kind: "prefill", text: question })} />
         ) : (
           <AboutPage />
         )}

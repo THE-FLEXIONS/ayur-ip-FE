@@ -1,5 +1,6 @@
 import { DocumentIcon, ShieldCheckIcon } from "../../components/ui/LineIcons";
 import { JURISDICTION_LABELS, MODE_LABELS, type AskRequest } from "../../config/research";
+import { safeHttpUrl } from "../../services/api";
 import type { ChatResponse } from "../../services/chat";
 
 export type AnswerState =
@@ -11,16 +12,6 @@ type AnswerPanelProps = {
   state: AnswerState;
   onRetry: () => void;
 };
-
-/** Only link to web URLs; source URLs come from the API and are never trusted as script targets. */
-function safeHref(url: string) {
-  try {
-    const parsed = new URL(url);
-    return parsed.protocol === "https:" || parsed.protocol === "http:" ? parsed.href : null;
-  } catch {
-    return null;
-  }
-}
 
 export default function AnswerPanel({ state, onRetry }: AnswerPanelProps) {
   const { request } = state;
@@ -91,7 +82,7 @@ function AnswerBody({ response }: { response: ChatResponse }) {
           <h3 className="text-[14px] font-semibold text-ayur-ink sm:text-[15px]">Sources</h3>
           <ol className="mt-2.5 space-y-2">
             {sources.map((source, i) => {
-              const href = safeHref(source.url);
+              const href = safeHttpUrl(source.url);
               return (
                 <li key={source.id} className="flex items-start gap-2.5 text-[14px] text-ayur-ink sm:text-[15px]">
                   <span className="mt-0.5 flex size-6 shrink-0 items-center justify-center rounded-full bg-ayur-mint text-[12px] font-semibold text-ayur-green">

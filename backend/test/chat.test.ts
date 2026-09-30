@@ -3,11 +3,14 @@ import { describe, it } from "node:test";
 import request from "supertest";
 import { createApp } from "../src/app.js";
 import { providerError } from "../src/lib/errors.js";
+import { createHerbalService } from "../src/services/herbal/herbal.service.js";
+import { createMemoryHerbStore } from "../src/services/herbal/memoryStore.js";
 import type { GenerateJson, JsonRequest } from "../src/rag/providers/gemini.js";
 import { ABSTAIN_ANSWER, createChatService, type Evidence, type Retriever } from "../src/services/chat.service.js";
 
 function appWith(generate: GenerateJson, retriever?: Retriever) {
-  return createApp({ chat: createChatService({ generate, retriever }), corsOrigins: [] });
+  const herbs = createHerbalService({ store: createMemoryHerbStore() });
+  return createApp({ chat: createChatService({ generate, retriever }), herbs, corsOrigins: [] });
 }
 
 const reply = (body: unknown): GenerateJson => async () => JSON.stringify(body);

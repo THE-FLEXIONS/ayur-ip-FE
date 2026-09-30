@@ -29,7 +29,7 @@ The server refuses to start if `GEMINI_API_KEY` is missing or still the placehol
 | `GET /api/health` | Done |
 | `POST /api/chat` | Done (Gemini). Answers are ungrounded until the document store exists; see below |
 | `POST /api/translate` | Not yet (needs BHASHINI credentials) |
-| `GET /api/herbs/search` | Not yet (needs a Trefle token and PostgreSQL) |
+| `GET /api/herbs/search` | Done (Trefle, with a PostgreSQL or in-memory cache) |
 
 ### `POST /api/chat`
 
@@ -44,6 +44,23 @@ The server refuses to start if `GEMINI_API_KEY` is missing or still the placehol
 ```
 
 When there is not enough evidence the answer is a fixed abstention, `sources` is empty and `insufficientEvidence` is `true`. Errors are `{ "error": "<user-safe message>" }` with status 400 (invalid request), 429 (rate or quota limit), 502 (unreadable model reply), 503 (Gemini unavailable or timed out) or 500.
+
+### `GET /api/herbs/search?q=ashwagandha`
+
+`q` is 2 to 100 characters and matches common or botanical names.
+
+```json
+{ "results": [{ "commonName": "Ashwagandha", "botanicalName": "Withania somnifera", "family": "Solanaceae", "imageUrl": null, "source": "seed" }] }
+```
+
+The flow follows the guide: search the cache first, and only on a miss call Trefle, then cache and return the normalized results. Unknown fields are `null`, never "Unknown", and an unknown herb returns an empty list.
+
+- **Cache:** PostgreSQL when `DATABASE_URL` is set (the `herbs` table from `db/schema.sql` is created at startup), otherwise in memory, which is lost on restart.
+- **Seed herbs:** 12 common Ayurvedic herbs (names and families only) are loaded at startup, so search works in a demo even without a Trefle token, and Ayurvedic names like "Tulsi" match. Trefle mostly uses English and botanical names.
+- **Trefle:** used only when `HERBAL_API_KEY` is set. Calls are capped at Trefle's 60 per minute, and each client can search 30 times per minute. The token is sent in the query string, as Trefle requires, so request URLs are never logged.
+- **Scope:** Trefle is general botanical data (names, families, images), not an Ayurvedic or medicinal source. Keep Ayurvedic properties in the curated, cited corpus.
+
+To run the PostgreSQL tests, point `TEST_DATABASE_URL` at an empty database and run `npm test`.
 
 ## Grounded answers (RAG)
 

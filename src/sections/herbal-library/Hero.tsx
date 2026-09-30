@@ -1,26 +1,40 @@
+import { useId, type FormEvent } from "react";
+import { MAX_HERB_QUERY_CHARS } from "../../services/herbs";
 import { IMG_HERO_BG } from "./shared/assets";
 import { Arr } from "./shared/icons";
 
+type HeroProps = {
+  query: string;
+  onQueryChange: (value: string) => void;
+  /** Runs a herb search for `query`. */
+  onSearch: (query: string) => void;
+};
+
+// Herb names only: search matches common and botanical names, not conditions.
+const POPULAR_SEARCHES = ["Ashwagandha", "Turmeric", "Tulsi", "Brahmi", "Neem", "Shatavari"];
+
 // ─── SECTION 1 · Hero ─────────────────────────────────────────────────────────
-export default function Hero() {
-  const chips = ["Ashwagandha","Turmeric","Tulsi","Immunity","Diabetes","Skin health"];
+export default function Hero({ query, onQueryChange, onSearch }: HeroProps) {
+  const inputId = useId();
+
+  function handleSubmit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    onSearch(query);
+  }
 
   return (
     <section className="relative pt-16 overflow-hidden" style={{ background: "#fff" }}>
       <div className="flex" style={{ minHeight: 400 }}>
 
         {/* ── Left content panel ── */}
-        <div
-          className="flex flex-col justify-center px-16 py-12 relative z-10"
-          style={{ width: "52%", background: "linear-gradient(to right, #fff 85%, rgba(255,255,255,0) 100%)" }}
-        >
+        <div className="relative z-10 flex w-full flex-col justify-center px-5 py-10 sm:px-10 lg:w-[52%] lg:bg-[linear-gradient(to_right,#fff_85%,rgba(255,255,255,0)_100%)] lg:px-16 lg:py-12">
           {/* Label */}
           <p className="text-xs font-semibold tracking-[0.2em] mb-5" style={{ color: "#2d6a4f" }}>
             HERBAL LIBRARY
           </p>
 
           {/* Headline */}
-          <h1 className="font-black leading-[1.08] mb-4" style={{ fontSize: 52, color: "#0d2717", fontWeight: 900 }}>
+          <h1 className="font-black leading-[1.08] mb-4 text-[38px] sm:text-[52px]" style={{ color: "#0d2717", fontWeight: 900 }}>
             Explore India's<br />
             <span style={{ color: "#2d6a4f" }}>Living Heritage</span>
           </h1>
@@ -31,8 +45,10 @@ export default function Hero() {
           </p>
 
           {/* Search bar */}
-          <div
-            className="flex items-center gap-3 rounded-2xl mb-4"
+          <form
+            role="search"
+            onSubmit={handleSubmit}
+            className="flex items-center gap-3 rounded-2xl mb-4 focus-within:border-[#2d6a4f]!"
             style={{
               background: "white",
               border: "1.5px solid #e5e7eb",
@@ -42,32 +58,49 @@ export default function Hero() {
             }}
           >
             {/* Search icon */}
-            <svg width="17" height="17" viewBox="0 0 17 17" fill="none" className="flex-shrink-0">
+            <svg width="17" height="17" viewBox="0 0 17 17" fill="none" className="flex-shrink-0" aria-hidden="true">
               <circle cx="7.5" cy="7.5" r="5" stroke="#9ca3af" strokeWidth="1.5"/>
               <path d="M12 12l3 3" stroke="#9ca3af" strokeWidth="1.5" strokeLinecap="round"/>
             </svg>
 
+            <label htmlFor={inputId} className="sr-only">
+              Search herbs
+            </label>
             <input
-              className="flex-1 text-sm outline-none bg-transparent"
-              placeholder="Search herbs, formulations, conditions, or keywords..."
+              id={inputId}
+              type="search"
+              value={query}
+              onChange={(e) => onQueryChange(e.target.value)}
+              maxLength={MAX_HERB_QUERY_CHARS}
+              autoComplete="off"
+              enterKeyHint="search"
+              className="flex-1 min-w-0 text-sm outline-none bg-transparent"
+              placeholder="Search herbs by common or botanical name..."
               style={{ color: "#374151" }}
             />
 
             {/* Arrow button */}
             <button
-              className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 hover:opacity-90 transition-opacity"
+              type="submit"
+              aria-label="Search herbs"
+              className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 hover:opacity-90 transition-opacity focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#2d6a4f]"
               style={{ background: "#0d2717" }}
             >
               <Arr size={15} color="white" />
             </button>
-          </div>
+          </form>
 
           {/* Popular searches */}
           <div className="flex items-center flex-wrap gap-2">
             <span className="text-xs font-medium" style={{ color: "#9ca3af" }}>Popular searches:</span>
-            {chips.map(c => (
+            {POPULAR_SEARCHES.map(c => (
               <button
                 key={c}
+                type="button"
+                onClick={() => {
+                  onQueryChange(c);
+                  onSearch(c);
+                }}
                 className="px-3 py-1 rounded-full text-xs border hover:bg-gray-50 transition-colors"
                 style={{ borderColor: "#e5e7eb", color: "#374151", background: "white" }}
               >
@@ -77,8 +110,8 @@ export default function Hero() {
           </div>
         </div>
 
-        {/* ── Right: full-bleed background image ── */}
-        <div className="absolute inset-y-0 right-0 z-0" style={{ left: "44%" }}>
+        {/* ── Right: full-bleed background image (large screens only) ── */}
+        <div className="absolute inset-y-0 right-0 z-0 hidden lg:block" style={{ left: "44%" }}>
           <img src={IMG_HERO_BG} alt="Ayurvedic herbs" className="w-full h-full object-cover" />
           {/* subtle left fade so it blends */}
           <div className="absolute inset-0" style={{ background: "linear-gradient(to right, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0) 25%)" }} />
