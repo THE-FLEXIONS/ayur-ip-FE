@@ -1,5 +1,9 @@
 export { default as AboutPage } from "./AboutPage";
 export { default as FeaturesPage } from "./FeaturesPage";
 export { default as HerbalLibraryPage } from "./HerbalLibraryPage";
-export { default as LoginPage } from "./LoginPage";
+export { default as HomePage } from "./HomePage";
 export { default as UseCasesPage } from "./UseCasesPage";
+export { default as LoginPage } from "./auth/LoginPage";
+export { default as HistoryPage } from "./HistoryPage";
+export { default as SavedPage } from "./SavedPage";
+export { default as SettingsPage } from "./SettingsPage";

@@ -1,0 +1,128 @@
+import { Arr } from "./shared/icons";
+
+// ─── SECTION 4 · Collection + Classical Texts ─────────────────────────────────
+export default function CollectionAndTexts() {
+  const collections = [
+    {
+      label: "Immunity Boosters", count: "12 herbs",
+      icon: (
+        <svg width="26" height="26" viewBox="0 0 26 26" fill="none">
+          <path d="M5 21C5 11 11 4 21 7C14 11 11 18 13 23" stroke="#2d6a4f" strokeWidth="1.7" fill="none"/>
+          <path d="M5 21C5 16 10 12 13 12" stroke="#2d6a4f" strokeWidth="1.7" strokeLinecap="round" fill="none"/>
+        </svg>
+      ),
+    },
+    {
+      label: "Skin & Beauty", count: "8 herbs",
+      icon: (
+        <svg width="26" height="26" viewBox="0 0 26 26" fill="none">
+          <path d="M4 22C4 12 10 5 20 8C14 12 10 18 12 24" stroke="#2d6a4f" strokeWidth="1.7" fill="none"/>
+          <path d="M4 22C4 17 9 13 12 13" stroke="#2d6a4f" strokeWidth="1.7" strokeLinecap="round" fill="none"/>
+          <path d="M18 4C18 4 22 8 20 14" stroke="#2d6a4f" strokeWidth="1.5" fill="none" strokeLinecap="round"/>
+        </svg>
+      ),
+    },
+    {
+      label: "Respiratory Health", count: "10 herbs",
+      icon: (
+        <svg width="26" height="26" viewBox="0 0 26 26" fill="none">
+          <path d="M13 5v7" stroke="#2d6a4f" strokeWidth="1.6" strokeLinecap="round"/>
+          <path d="M13 12C10 12 5 14 5 18s5 5 8 3" stroke="#2d6a4f" strokeWidth="1.5" strokeLinecap="round" fill="none"/>
+          <path d="M13 12C16 12 21 14 21 18s-5 5-8 3" stroke="#2d6a4f" strokeWidth="1.5" strokeLinecap="round" fill="none"/>
+        </svg>
+      ),
+    },
+  ];
+
+  const books = [
+    { title: "Charaka Samhita",   desc: "Foundational text on Ayurvedic medicine",           bg: "#e8e3d8", spine: "#7a6c50" },
+    { title: "Sushruta Samhita",  desc: "Surgical procedures and medicinal plants",           bg: "#dce4dc", spine: "#4a6550" },
+    { title: "Ashtanga Hridaya",  desc: "Comprehensive guide to Ayurvedic practice",         bg: "#e6dcd2", spine: "#7a5e48" },
+  ];
+
+  return (
+    <section style={{ background: "#fff", paddingTop: 8, paddingBottom: 32 }}>
+      <div className="max-w-7xl mx-auto px-8">
+        <div className="grid grid-cols-2 gap-5">
+
+          {/* ── Featured Collection ── */}
+          <div style={{ borderRadius: 20, border: "1px solid #eef0ee", background: "#fafafa", padding: 24 }}>
+            <div className="flex items-start justify-between mb-1">
+              <p className="font-bold" style={{ fontSize: 16, color: "#0d2717" }}>Featured Collection</p>
+              <button className="flex items-center gap-1 font-semibold" style={{ fontSize: 12, color: "#0d2717" }}>
+                View all collections <Arr size={11}/>
+              </button>
+            </div>
+            <p className="mb-6" style={{ fontSize: 12, color: "#9ca3af" }}>Curated knowledge for your wellness journey.</p>
+
+            <div className="grid grid-cols-3 gap-4">
+              {collections.map(({ label, count, icon }) => (
+                <button
+                  key={label}
+                  className="flex flex-col items-center gap-3 transition-all hover:shadow-md"
+                  style={{ background: "white", borderRadius: 16, border: "1px solid #eef0ee", padding: "20px 12px" }}
+                >
+                  <div
+                    className="flex items-center justify-center rounded-full"
+                    style={{ width: 52, height: 52, background: "#f0f7f2" }}
+                  >
+                    {icon}
+                  </div>
+                  <div className="text-center">
+                    <p className="font-semibold leading-tight mb-1" style={{ fontSize: 12, color: "#0d2717" }}>{label}</p>
+                    <p style={{ fontSize: 11, color: "#9ca3af" }}>{count}</p>
+                  </div>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* ── Classical Texts ── */}
+          <div style={{ borderRadius: 20, border: "1px solid #eef0ee", background: "#fafafa", padding: 24 }}>
+            <div className="flex items-start justify-between mb-1">
+              <p className="font-bold" style={{ fontSize: 16, color: "#0d2717" }}>Explore by Classical Texts</p>
+              <button className="flex items-center gap-1 font-semibold" style={{ fontSize: 12, color: "#0d2717" }}>
+                View all texts <Arr size={11}/>
+              </button>
+            </div>
+            <p className="mb-6" style={{ fontSize: 12, color: "#9ca3af" }}>Dive into timeless Ayurvedic wisdom.</p>
+
+            <div className="grid grid-cols-3 gap-4">
+              {books.map(({ title, desc, bg, spine }) => (
+                <button
+                  key={title}
+                  className="flex flex-col items-start transition-all hover:shadow-md"
+                  style={{ background: "white", borderRadius: 14, border: "1px solid #eef0ee", padding: 12 }}
+                >
+                  {/* Book cover */}
+                  <div
+                    className="w-full rounded-xl mb-3 flex items-end justify-center relative overflow-hidden"
+                    style={{ height: 84, background: bg }}
+                  >
+                    {/* Spine crease */}
+                    <div className="absolute left-3 inset-y-0 w-1 opacity-40 rounded-sm" style={{ background: spine }} />
+                    {/* Decorative lines */}
+                    <div className="absolute inset-x-3 top-4 flex flex-col gap-1 opacity-30">
+                      {[...Array(5)].map((_, i) => (
+                        <div key={i} className="rounded-full" style={{ height: 1.5, background: spine }} />
+                      ))}
+                    </div>
+                    <p
+                      className="relative z-10 text-center font-bold px-2 pb-2 leading-tight"
+                      style={{ fontSize: 8, color: spine, letterSpacing: "0.06em" }}
+                    >
+                      {title.toUpperCase()}
+                    </p>
+                  </div>
+                  <p className="font-bold mb-0.5 text-left" style={{ fontSize: 12, color: "#0d2717" }}>{title}</p>
+                  <p className="text-left" style={{ fontSize: 10, color: "#9ca3af", lineHeight: 1.4 }}>{desc}</p>
+                </button>
+              ))}
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+  );
+}

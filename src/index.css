@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Dancing+Script:wght@600;700&family=Playfair+Display:wght@700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&family=Caveat:wght@500;600&family=Tiro+Devanagari+Sanskrit&display=swap');
 @import 'tailwindcss';
 
 @theme {
@@ -12,6 +13,44 @@
   --font-sans: 'Inter', sans-serif;
   --font-display: 'Playfair Display', serif;
   --font-script: 'Dancing Script', cursive;
+
+  /* Ayur IP home — editorial palette */
+  --color-ayur-ink: #12201f;
+  --color-ayur-green: #1d6a3f;
+  --color-ayur-green-deep: #155231;
+  --color-ayur-leaf: #2c7148;
+  --color-ayur-mint: #e3efe3;
+  --color-ayur-ivory: #f7f6ef;
+  --color-ayur-card: #fbfbf7;
+  --color-ayur-line: #e6e5da;
+  --color-ayur-muted: #5e665f;
+  --color-ayur-parchment: #eadbb8;
+  --font-editorial: 'Source Serif 4', Georgia, serif;
+  --font-hand: 'Caveat', cursive;
+  --font-deva: 'Tiro Devanagari Sanskrit', serif;
+
+  --animate-rise: ayur-rise 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  --animate-fade: ayur-fade 1.1s ease-out both;
+
+  @keyframes ayur-rise {
+    from {
+      opacity: 0;
+      transform: translateY(14px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  @keyframes ayur-fade {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
 }
 
 *, *::before, *::after {
