@@ -1,6 +1,6 @@
 import WorkspaceShell from "../components/layout/WorkspaceShell";
 import type { HistoryEntry, Workspace } from "../hooks/useWorkspace";
-import { QuestionList } from "../sections/workspace";
+import { QuestionList, WorkspaceGate } from "../sections/workspace";
 
 type HistoryPageProps = {
   workspace: Workspace;
@@ -15,23 +15,25 @@ export default function HistoryPage({ workspace, onNavigate, onOpenMenu, onAskAg
     <WorkspaceShell
       eyebrow="Your workspace"
       title="History"
-      description="Questions you have asked, newest first. Save the ones you want to keep."
+      description="Questions you have asked and their answers, newest first. Save the ones you want to keep."
       onNavigate={onNavigate}
       onOpenMenu={onOpenMenu}
     >
-      <QuestionList
-        label="Question history"
-        entries={workspace.history}
-        onAskAgain={onAskAgain}
-        onToggleSaved={workspace.toggleSaved}
-        onRemove={workspace.removeEntry}
-        empty={{
-          title: "No questions yet",
-          body: "Questions you ask on the home page will appear here.",
-          actionLabel: "Ask a question",
-          onAction: onNewQuery,
-        }}
-      />
+      <WorkspaceGate workspace={workspace} onSignIn={() => onNavigate("Login")}>
+        <QuestionList
+          label="Question history"
+          entries={workspace.history}
+          onAskAgain={onAskAgain}
+          onToggleSaved={workspace.toggleSaved}
+          onRemove={workspace.removeEntry}
+          empty={{
+            title: "No questions yet",
+            body: "Questions you ask on the home page will appear here.",
+            actionLabel: "Ask a question",
+            onAction: onNewQuery,
+          }}
+        />
+      </WorkspaceGate>
     </WorkspaceShell>
   );
 }

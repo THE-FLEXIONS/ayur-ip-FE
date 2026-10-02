@@ -1,4 +1,4 @@
-import { useId, useState, type FormEvent, type Ref } from "react";
+import { useEffect, useId, useState, type FormEvent, type Ref } from "react";
 import { ArrowRightIcon, SearchIcon } from "../../components/ui/LineIcons";
 import SelectChip from "../../components/ui/SelectChip";
 import {
@@ -32,6 +32,10 @@ export default function AskBox({
   const [mode, setMode] = useState<ResearchMode>(defaultMode);
   const [jurisdiction, setJurisdiction] = useState<Jurisdiction>(defaultJurisdiction);
   const inputId = useId();
+
+  // Saved settings load after sign-in; pick them up when they arrive.
+  useEffect(() => setMode(defaultMode), [defaultMode]);
+  useEffect(() => setJurisdiction(defaultJurisdiction), [defaultJurisdiction]);
   const canSubmit = value.trim().length > 0;
 
   function handleSubmit(e: FormEvent<HTMLFormElement>) {

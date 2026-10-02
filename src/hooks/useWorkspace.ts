@@ -1,96 +1,140 @@
 import { useCallback, useEffect, useState } from "react";
-import type { LanguageCode } from "../config/app";
-import type { AskRequest, Jurisdiction, ResearchMode } from "../config/research";
+import { historyApi, preferencesApi, toApiError, type HistoryEntry, type Preferences } from "../lib/api";
+import { useAuth } from "./useAuth";
 
-export type HistoryEntry = AskRequest & {
-  id: string;
-  askedAt: number;
-  saved: boolean;
-};
+export type { HistoryEntry, Preferences };
 
-export type Preferences = {
-  mode: ResearchMode;
-  jurisdiction: Jurisdiction;
-  language: LanguageCode;
-};
+const GUEST_PREFS_KEY = "ayurip.preferences.v1";
+const DEFAULT_PREFERENCES: Preferences = { mode: "deep", jurisdiction: "IN", language: "en" };
 
-type WorkspaceState = {
-  history: HistoryEntry[];
-  preferences: Preferences;
-};
-
-const STORAGE_KEY = "ayurip.workspace.v1";
-const MAX_HISTORY = 100;
-
-const DEFAULT_STATE: WorkspaceState = {
-  history: [],
-  preferences: { mode: "deep", jurisdiction: "IN", language: "en" },
-};
-
-function load(): WorkspaceState {
+function loadGuestPreferences(): Preferences {
   try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return DEFAULT_STATE;
-    const parsed = JSON.parse(raw) as Partial<WorkspaceState>;
-    return {
-      history: Array.isArray(parsed.history) ? parsed.history : [],
-      preferences: { ...DEFAULT_STATE.preferences, ...parsed.preferences },
-    };
+    const raw = localStorage.getItem(GUEST_PREFS_KEY);
+    return raw ? { ...DEFAULT_PREFERENCES, ...(JSON.parse(raw) as Partial<Preferences>) } : DEFAULT_PREFERENCES;
   } catch {
-    return DEFAULT_STATE;
+    return DEFAULT_PREFERENCES;
   }
 }
 
+function saveGuestPreferences(prefs: Preferences) {
+  try {
+    localStorage.setItem(GUEST_PREFS_KEY, JSON.stringify(prefs));
+  } catch {
+    // Storage unavailable; the preference still applies for this visit.
+  }
+}
+
+export type WorkspaceStatus = "guest" | "loading" | "ready" | "error";
+
 /**
  * Questions the user has asked, which of them they saved, and their research
- * defaults. Kept in this browser's localStorage until an account backend exists.
+ * defaults. Signed in: kept in the user's account on the backend. Guest: no
+ * history (asking needs an account), preferences kept in this browser.
  */
 export function useWorkspace() {
-  const [state, setState] = useState<WorkspaceState>(load);
+  const auth = useAuth();
+  const userId = auth.user?.id ?? null;
 
-  useEffect(() => {
+  const [history, setHistory] = useState<HistoryEntry[]>([]);
+  const [preferences, setPreferences] = useState<Preferences>(loadGuestPreferences);
+  const [status, setStatus] = useState<WorkspaceStatus>("guest");
+  const [error, setError] = useState<string | null>(null);
+
+  const load = useCallback(async () => {
+    setStatus("loading");
+    setError(null);
     try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-    } catch {
-      // Storage can be unavailable (private mode, quota); the session still works in memory.
+      const [entries, prefs] = await Promise.all([historyApi.list(), preferencesApi.get()]);
+      setHistory(entries);
+      setPreferences(prefs);
+      setStatus("ready");
+    } catch (err) {
+      setError(toApiError(err).message);
+      setStatus("error");
     }
-  }, [state]);
-
-  const addQuestion = useCallback((request: AskRequest) => {
-    const entry: HistoryEntry = {
-      ...request,
-      id: `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 7)}`,
-      askedAt: Date.now(),
-      saved: false,
-    };
-    setState((s) => ({ ...s, history: [entry, ...s.history].slice(0, MAX_HISTORY) }));
-    return entry.id;
   }, []);
 
-  const toggleSaved = useCallback((id: string) => {
-    setState((s) => ({
-      ...s,
-      history: s.history.map((e) => (e.id === id ? { ...e, saved: !e.saved } : e)),
-    }));
+  // Load the account's workspace on sign-in; reset to guest on sign-out.
+  useEffect(() => {
+    if (userId) {
+      void load();
+    } else if (auth.status === "guest") {
+      setHistory([]);
+      setPreferences(loadGuestPreferences());
+      setStatus("guest");
+    }
+  }, [userId, auth.status, load]);
+
+  /** Adds a new entry or replaces one with the same id (used while an answer streams in). */
+  const upsertEntry = useCallback((entry: HistoryEntry) => {
+    setHistory((list) =>
+      list.some((e) => e.id === entry.id) ? list.map((e) => (e.id === entry.id ? entry : e)) : [entry, ...list],
+    );
   }, []);
 
-  const removeEntry = useCallback((id: string) => {
-    setState((s) => ({ ...s, history: s.history.filter((e) => e.id !== id) }));
-  }, []);
+  // Changes apply immediately and are rolled back if the server refuses them.
+  const toggleSaved = useCallback(
+    (id: string) => {
+      const current = history.find((e) => e.id === id);
+      if (!current) return;
+      const saved = !current.saved;
+      setHistory((list) => list.map((e) => (e.id === id ? { ...e, saved } : e)));
+      historyApi.setSaved(id, saved).catch((err) => {
+        setHistory((list) => list.map((e) => (e.id === id ? { ...e, saved: !saved } : e)));
+        setError(toApiError(err).message);
+      });
+    },
+    [history],
+  );
+
+  const removeEntry = useCallback(
+    (id: string) => {
+      const previous = history;
+      setHistory((list) => list.filter((e) => e.id !== id));
+      historyApi.remove(id).catch((err) => {
+        setHistory(previous);
+        setError(toApiError(err).message);
+      });
+    },
+    [history],
+  );
 
   const clearHistory = useCallback(() => {
+    const previous = history;
     // Saved questions are kept; only the unsaved history is cleared.
-    setState((s) => ({ ...s, history: s.history.filter((e) => e.saved) }));
-  }, []);
+    setHistory((list) => list.filter((e) => e.saved));
+    historyApi.clear().catch((err) => {
+      setHistory(previous);
+      setError(toApiError(err).message);
+    });
+  }, [history]);
 
-  const updatePreferences = useCallback((patch: Partial<Preferences>) => {
-    setState((s) => ({ ...s, preferences: { ...s.preferences, ...patch } }));
-  }, []);
+  const updatePreferences = useCallback(
+    (patch: Partial<Preferences>) => {
+      const previous = preferences;
+      const next = { ...preferences, ...patch };
+      setPreferences(next);
+      if (!userId) {
+        saveGuestPreferences(next);
+        return;
+      }
+      preferencesApi.update(patch).catch((err) => {
+        setPreferences(previous);
+        setError(toApiError(err).message);
+      });
+    },
+    [preferences, userId],
+  );
 
   return {
-    history: state.history,
-    preferences: state.preferences,
-    addQuestion,
+    status,
+    /** Last failed action's message, shown by the workspace pages. */
+    error,
+    dismissError: () => setError(null),
+    reload: load,
+    history,
+    preferences,
+    upsertEntry,
     toggleSaved,
     removeEntry,
     clearHistory,

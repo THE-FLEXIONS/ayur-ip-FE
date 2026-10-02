@@ -1,8 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import AppHeader from "../components/layout/AppHeader";
 import Footer from "../components/layout/Footer";
-import { JURISDICTION_LABELS, MODE_LABELS, type AskRequest, type Jurisdiction, type ResearchMode } from "../config/research";
+import type { AskRequest, Jurisdiction, ResearchMode, ResearchTool } from "../config/research";
+import type { AskController } from "../hooks/useAsk";
 import {
+  AnswerPanel,
   AskBox,
   FeatureGrid,
   FeaturesSection,
@@ -16,27 +18,43 @@ import {
 /** Something the sidebar asks the home page to do once it is shown. `id` makes repeats distinct. */
 export type HomeIntent = { id: number } & (
   | { kind: "focus" }
-  | { kind: "prefill"; text: string }
+  | { kind: "prefill"; text: string; tool?: ResearchTool | null }
   | { kind: "scroll"; targetId: string }
 );
 
 type HomePageProps = {
   onNavigate: (page: string) => void;
   onOpenMenu: () => void;
-  /** Receives submitted questions. Wire this to the answer service. */
-  onAsk?: (request: AskRequest) => void;
+  /** Receives submitted questions (the app sends guests to sign in first). */
+  onAsk: (request: AskRequest) => void;
+  /** The current streamed answer, if any. */
+  answer: AskController;
+  answerSaved: boolean;
+  onToggleAnswerSaved: () => void;
   intent?: HomeIntent | null;
   defaultMode?: ResearchMode;
   defaultJurisdiction?: Jurisdiction;
 };
 
-export default function HomePage({ onNavigate, onOpenMenu, onAsk, intent, defaultMode, defaultJurisdiction }: HomePageProps) {
+export default function HomePage({
+  onNavigate,
+  onOpenMenu,
+  onAsk,
+  answer,
+  answerSaved,
+  onToggleAnswerSaved,
+  intent,
+  defaultMode,
+  defaultJurisdiction,
+}: HomePageProps) {
   const [question, setQuestion] = useState("");
-  const [lastAsk, setLastAsk] = useState<AskRequest | null>(null);
+  // Tool the current question came from (feature card or sidebar), sent along with it.
+  const [tool, setTool] = useState<ResearchTool | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  function focusInput(text: string) {
+  function focusInput(text: string, nextTool: ResearchTool | null = null) {
     setQuestion(text);
+    setTool(nextTool);
     const input = inputRef.current;
     if (!input) return;
     input.scrollIntoView({ behavior: "smooth", block: "center" });
@@ -48,7 +66,7 @@ export default function HomePage({ onNavigate, onOpenMenu, onAsk, intent, defaul
   useEffect(() => {
     if (!intent) return;
     if (intent.kind === "focus") focusInput("");
-    else if (intent.kind === "prefill") focusInput(intent.text);
+    else if (intent.kind === "prefill") focusInput(intent.text, intent.tool ?? null);
     else {
       const target = document.getElementById(intent.targetId);
       target?.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -57,9 +75,9 @@ export default function HomePage({ onNavigate, onOpenMenu, onAsk, intent, defaul
     // Run once per intent; `id` changes whenever a new one is issued.
   }, [intent?.id]);
 
-  function handleAsk(request: AskRequest) {
-    setLastAsk(request);
-    onAsk?.(request);
+  function handleValueChange(value: string) {
+    setQuestion(value);
+    if (!value.trim()) setTool(null);
   }
 
   return (
@@ -74,24 +92,25 @@ export default function HomePage({ onNavigate, onOpenMenu, onAsk, intent, defaul
           <div className="relative z-20 mt-7 animate-rise [animation-delay:340ms] sm:mt-10 lg:mx-auto lg:mt-4 lg:max-w-[1040px]">
             <AskBox
               value={question}
-              onValueChange={setQuestion}
-              onAsk={handleAsk}
+              onValueChange={handleValueChange}
+              onAsk={(request) => onAsk({ ...request, tool })}
               inputRef={inputRef}
               defaultMode={defaultMode}
               defaultJurisdiction={defaultJurisdiction}
             />
-            <p aria-live="polite" className="min-h-0 px-4 text-[13px] text-ayur-muted empty:hidden sm:px-6">
-              {lastAsk && (
-                <span className="mt-3 block">
-                  Question sent: &ldquo;{lastAsk.question}&rdquo; · {MODE_LABELS[lastAsk.mode]} · {JURISDICTION_LABELS[lastAsk.jurisdiction]}
-                </span>
-              )}
-            </p>
+            <AnswerPanel
+              answer={answer}
+              saved={answerSaved}
+              onToggleSaved={onToggleAnswerSaved}
+              onStop={answer.stop}
+              onDismiss={answer.reset}
+              onRetry={() => answer.request && onAsk(answer.request)}
+            />
           </div>
 
           <div className="mt-6 sm:mt-10 lg:mt-12">
             <h2 className="sr-only">Tools</h2>
-            <FeatureGrid onSelect={(f) => focusInput(f.prompt)} />
+            <FeatureGrid onSelect={(f) => focusInput(f.prompt, f.tool)} />
           </div>
 
           <div className="mt-6 sm:mt-8 lg:mt-10">
@@ -99,13 +118,13 @@ export default function HomePage({ onNavigate, onOpenMenu, onAsk, intent, defaul
           </div>
 
           <div className="mt-6 sm:mt-8 lg:mt-10">
-            <TryAsking onPick={focusInput} />
+            <TryAsking onPick={(text) => focusInput(text)} />
           </div>
         </div>
       </main>
       <FeaturesSection />
       <HowItWorksSection />
-      <Footer />
+      <Footer onNavigate={onNavigate} />
     </div>
   );
 }

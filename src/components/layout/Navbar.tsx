@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, type FormEvent } from "react";
+import { initials, useAuth } from "../../hooks/useAuth";
 import BrandMark from "../ui/BrandMark";
 import { IconSearch } from "../icons";
 import { MenuIcon } from "../ui/LineIcons";
@@ -9,12 +10,22 @@ export default function Navbar({
   activePage,
   onNav,
   onOpenMenu,
+  onSearch,
 }: {
   activePage: string;
   onNav: (p: string) => void;
   onOpenMenu: () => void;
+  /** Searches the Herbal Library. */
+  onSearch: (query: string) => void;
 }) {
   const [active, setActive] = useState(activePage);
+  const [query, setQuery] = useState("");
+  const auth = useAuth();
+
+  function handleSearch(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    if (query.trim()) onSearch(query.trim());
+  }
   const links = ["Home", "Features", "Use Cases", "Herbal Library", "About"];
 
   function handleNav(link: string) {
@@ -75,26 +86,55 @@ export default function Navbar({
         </div>
 
         {/* Search */}
-        <div className="flex items-center bg-gray-50 border border-gray-200 rounded-full px-3 py-2 gap-2 w-44">
+        <form
+          role="search"
+          onSubmit={handleSearch}
+          className="flex items-center bg-gray-50 border border-gray-200 rounded-full px-3 py-2 gap-2 w-44"
+        >
           <IconSearch />
           <input
-            placeholder="Search"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="Search herbs"
+            aria-label="Search the Herbal Library"
             className="bg-transparent text-sm outline-none text-gray-600 w-full placeholder-gray-400"
           />
-        </div>
+        </form>
 
-        {/* Sign In */}
-        <button
-          onClick={() => handleNav("Login")}
-          className="flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold text-white transition-opacity hover:opacity-90"
-          style={{ background: "#0d2717" }}
-        >
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-            <circle cx="8" cy="5" r="3" stroke="white" strokeWidth="1.3" fill="none" />
-            <path d="M2 14c0-3.3 2.7-6 6-6s6 2.7 6 6" stroke="white" strokeWidth="1.3" strokeLinecap="round" fill="none" />
-          </svg>
-          Sign In
-        </button>
+        {/* Account */}
+        {auth.user ? (
+          <div className="flex items-center gap-2">
+            <span
+              className="flex size-10 items-center justify-center rounded-full text-sm font-semibold text-white"
+              style={{ background: "#1a4028" }}
+              title={auth.user.email}
+            >
+              {initials(auth.user)}
+            </span>
+            <button
+              onClick={() => {
+                auth.logout();
+                handleNav("Home");
+              }}
+              className="px-4 py-2.5 rounded-full text-sm font-semibold border border-gray-200 transition-colors hover:bg-gray-50"
+              style={{ color: "#0d2717" }}
+            >
+              Sign Out
+            </button>
+          </div>
+        ) : (
+          <button
+            onClick={() => handleNav("Login")}
+            className="flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold text-white transition-opacity hover:opacity-90"
+            style={{ background: "#0d2717" }}
+          >
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <circle cx="8" cy="5" r="3" stroke="white" strokeWidth="1.3" fill="none" />
+              <path d="M2 14c0-3.3 2.7-6 6-6s6 2.7 6 6" stroke="white" strokeWidth="1.3" strokeLinecap="round" fill="none" />
+            </svg>
+            Sign In
+          </button>
+        )}
       </div>
     </nav>
   );

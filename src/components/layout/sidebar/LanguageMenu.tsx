@@ -8,7 +8,7 @@ type LanguageMenuProps = {
   onChange: (code: LanguageCode) => void;
 };
 
-/** "Language" row that expands an inline radio list of interface languages. */
+/** "Language" row that expands an inline radio list of answer languages. */
 export default function LanguageMenu({ value, onChange }: LanguageMenuProps) {
   const [open, setOpen] = useState(false);
   const panelId = useId();
@@ -45,7 +45,7 @@ export default function LanguageMenu({ value, onChange }: LanguageMenuProps) {
       />
 
       {open && (
-        <div id={panelId} role="radiogroup" aria-label="Interface language" className="animate-rise pb-1 pl-[62px] pr-3 [animation-duration:200ms]">
+        <div id={panelId} role="radiogroup" aria-label="Answer language" className="animate-rise pb-1 pl-[62px] pr-3 [animation-duration:200ms]">
           {LANGUAGES.map((lang) => {
             const checked = lang.code === value;
             return (

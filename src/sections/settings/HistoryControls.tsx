@@ -16,7 +16,7 @@ export default function HistoryControls({ historyCount, savedCount, onClearHisto
   return (
     <SettingsCard
       title="Your questions"
-      description="History and saved questions are stored in this browser only."
+      description="Your history and saved answers are stored in your account."
     >
       <p className="text-[14.5px] text-[#2d3733]">
         {historyCount} in history · {savedCount} saved

@@ -1,7 +1,21 @@
-import { LoginShowcase, SignUpForm } from "../../sections/auth";
+import { useState } from "react";
+import { LoginShowcase, SignInForm, SignUpForm } from "../../sections/auth";
 import { PAGE_BG_IMG } from "../../sections/auth/shared/assets";
 
-export default function LoginPage({ onBack }: { onBack: () => void }) {
+export type AuthMode = "signin" | "signup";
+
+type LoginPageProps = {
+  onBack: () => void;
+  /** Called after a successful sign-in or sign-up. */
+  onSuccess: () => void;
+  initialMode?: AuthMode;
+  /** Why the user was sent here, shown above the sign-in form. */
+  notice?: string | null;
+};
+
+export default function LoginPage({ onBack, onSuccess, initialMode = "signin", notice }: LoginPageProps) {
+  const [mode, setMode] = useState<AuthMode>(initialMode);
+
   return (
     <div
       className="min-h-screen w-full flex items-start justify-center p-3 sm:p-6 lg:items-center lg:p-8 relative overflow-hidden"
@@ -32,9 +46,12 @@ export default function LoginPage({ onBack }: { onBack: () => void }) {
       >
         <LoginShowcase onBack={onBack} />
 
-        <SignUpForm onBack={onBack} />
+        {mode === "signin" ? (
+          <SignInForm onSwitchToSignUp={() => setMode("signup")} onSuccess={onSuccess} notice={notice} />
+        ) : (
+          <SignUpForm onSwitchToSignIn={() => setMode("signin")} onSuccess={onSuccess} />
+        )}
       </div>
     </div>
   );
 }
-

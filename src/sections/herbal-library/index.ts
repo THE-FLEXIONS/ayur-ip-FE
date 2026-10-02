@@ -4,4 +4,8 @@ export { default as FeaturedHerbs } from "./FeaturedHerbs";
 export { default as FooterBar } from "./FooterBar";
 export { default as Hero } from "./Hero";
 export { default as KnowledgeBanner } from "./KnowledgeBanner";
+export { default as LibraryItemDialog } from "./LibraryItemDialog";
+export { default as LibraryResults } from "./LibraryResults";
 export { default as SuggestBar } from "./SuggestBar";
+export { default as SuggestDialog } from "./SuggestDialog";
+export { TAB_FACET, TAB_KIND, type BrowseTab } from "./shared/library";

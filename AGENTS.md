@@ -18,8 +18,16 @@ This is the canonical project structure. Start with task-relevant files below. O
 - `src/pages/` - One file per page that composes its sections (`pages/auth/LoginPage.tsx` for login)
 - `src/sections/<page>/` - One file per page section, plus `shared/` (icons, image URLs, helpers) and an `index.ts` barrel; see `src/sections/README.md`
 - `src/components/` - Pieces shared across pages: `layout/` (AppHeader, Navbar, Footer, `sidebar/`), `ui/` (LineIcons, Botanicals, SelectChip, BrandMark), `icons.tsx`
-- `src/config/` - App version (read from package.json), languages, research options
-- `src/hooks/useWorkspace.ts` - History, saved questions and preferences
+- `src/config/` - App version (read from package.json), answer languages, research options
+- `src/lib/api/` - Backend client: `client.ts` (base URL from `VITE_API_URL`, token, `ApiError`), one file per area (`auth`, `ai` streaming, `workspace`, `library`, `forms`) and shared `types.ts`
+- `src/hooks/useAuth.tsx` - Sign-in state (`AuthProvider` wraps the app in `main.tsx`)
+- `src/hooks/useWorkspace.ts` - History, saved questions and preferences (backend when signed in; guests keep preferences in the browser)
+- `src/hooks/useAsk.ts` - Streams an AI answer and keeps History in sync
+- `src/hooks/useLibrary.ts` - Herbal Library search, facets, featured items and item detail
+
+## Backend
+
+The API lives in a separate repo (Node + Express + Supabase). Set `VITE_API_URL` (see `.env.example`); it defaults to `http://localhost:4000`. Asking the AI requires sign-in; the sign-in page shows the demo account from `GET /api/auth/demo`.
 - `src/index.css` - Global CSS entrypoint and Tailwind CSS v4 import
 - `index.html` - Vite HTML shell containing the `#root` element and loading `src/main.tsx`
 - `package.json` - Project dependencies and the Vite build, development, preview, and formatting scripts

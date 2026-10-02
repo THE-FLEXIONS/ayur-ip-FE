@@ -1,7 +1,7 @@
 import { Arr } from "./shared/icons";
 
 // ─── SECTION 6 · Suggest CTA Bar ─────────────────────────────────────────────
-export default function SuggestBar() {
+export default function SuggestBar({ onSuggest }: { onSuggest: () => void }) {
   return (
     <section style={{ background: "#fff", paddingBottom: 56 }}>
       <div className="max-w-7xl mx-auto px-8">
@@ -34,6 +34,8 @@ export default function SuggestBar() {
           </div>
 
           <button
+            type="button"
+            onClick={onSuggest}
             className="flex items-center gap-2 rounded-full font-semibold text-white flex-shrink-0 ml-10 hover:opacity-90 transition-opacity"
             style={{ background: "#0d2717", fontSize: 13, padding: "12px 22px" }}
           >

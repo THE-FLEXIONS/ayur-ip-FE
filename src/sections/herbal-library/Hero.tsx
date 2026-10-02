@@ -1,9 +1,22 @@
+import type { FormEvent } from "react";
 import { IMG_HERO_BG } from "./shared/assets";
 import { Arr } from "./shared/icons";
 
+type HeroProps = {
+  query: string;
+  onQueryChange: (value: string) => void;
+  /** Runs a search; called on submit and when a popular search is picked. */
+  onSearch: (query: string) => void;
+};
+
 // ─── SECTION 1 · Hero ─────────────────────────────────────────────────────────
-export default function Hero() {
+export default function Hero({ query, onQueryChange, onSearch }: HeroProps) {
   const chips = ["Ashwagandha","Turmeric","Tulsi","Immunity","Diabetes","Skin health"];
+
+  function handleSubmit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    onSearch(query.trim());
+  }
 
   return (
     <section className="relative pt-16 overflow-hidden" style={{ background: "#fff" }}>
@@ -31,7 +44,9 @@ export default function Hero() {
           </p>
 
           {/* Search bar */}
-          <div
+          <form
+            role="search"
+            onSubmit={handleSubmit}
             className="flex items-center gap-3 rounded-2xl mb-4"
             style={{
               background: "white",
@@ -48,6 +63,9 @@ export default function Hero() {
             </svg>
 
             <input
+              value={query}
+              onChange={(e) => onQueryChange(e.target.value)}
+              aria-label="Search the Herbal Library"
               className="flex-1 text-sm outline-none bg-transparent"
               placeholder="Search herbs, formulations, conditions, or keywords..."
               style={{ color: "#374151" }}
@@ -55,12 +73,14 @@ export default function Hero() {
 
             {/* Arrow button */}
             <button
+              type="submit"
+              aria-label="Search"
               className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 hover:opacity-90 transition-opacity"
               style={{ background: "#0d2717" }}
             >
               <Arr size={15} color="white" />
             </button>
-          </div>
+          </form>
 
           {/* Popular searches */}
           <div className="flex items-center flex-wrap gap-2">
@@ -68,6 +88,11 @@ export default function Hero() {
             {chips.map(c => (
               <button
                 key={c}
+                type="button"
+                onClick={() => {
+                  onQueryChange(c);
+                  onSearch(c);
+                }}
                 className="px-3 py-1 rounded-full text-xs border hover:bg-gray-50 transition-colors"
                 style={{ borderColor: "#e5e7eb", color: "#374151", background: "white" }}
               >

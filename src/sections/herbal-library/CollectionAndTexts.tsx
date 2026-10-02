@@ -1,10 +1,32 @@
+import type { LibraryFacets } from "../../lib/api";
 import { Arr } from "./shared/icons";
 
+type CollectionAndTextsProps = {
+  facets: LibraryFacets | null;
+  /** Filters the library by a therapeutic area. */
+  onOpenCollection: (area: string) => void;
+  onViewAllCollections: () => void;
+  onOpenText: (slug: string) => void;
+  onViewAllTexts: () => void;
+};
+
 // ─── SECTION 4 · Collection + Classical Texts ─────────────────────────────────
-export default function CollectionAndTexts() {
+export default function CollectionAndTexts({
+  facets,
+  onOpenCollection,
+  onViewAllCollections,
+  onOpenText,
+  onViewAllTexts,
+}: CollectionAndTextsProps) {
+  // Live counts from the library, falling back to the design's numbers while loading.
+  const countFor = (area: string, fallback: string) => {
+    const found = facets?.therapeuticAreas.find((a) => a.value === area);
+    return found ? `${found.count} entries` : fallback;
+  };
+
   const collections = [
     {
-      label: "Immunity Boosters", count: "12 herbs",
+      label: "Immunity Boosters", area: "Immunity", count: countFor("Immunity", "12 herbs"),
       icon: (
         <svg width="26" height="26" viewBox="0 0 26 26" fill="none">
           <path d="M5 21C5 11 11 4 21 7C14 11 11 18 13 23" stroke="#2d6a4f" strokeWidth="1.7" fill="none"/>
@@ -13,7 +35,7 @@ export default function CollectionAndTexts() {
       ),
     },
     {
-      label: "Skin & Beauty", count: "8 herbs",
+      label: "Skin & Beauty", area: "Skin & Beauty", count: countFor("Skin & Beauty", "8 herbs"),
       icon: (
         <svg width="26" height="26" viewBox="0 0 26 26" fill="none">
           <path d="M4 22C4 12 10 5 20 8C14 12 10 18 12 24" stroke="#2d6a4f" strokeWidth="1.7" fill="none"/>
@@ -23,7 +45,7 @@ export default function CollectionAndTexts() {
       ),
     },
     {
-      label: "Respiratory Health", count: "10 herbs",
+      label: "Respiratory Health", area: "Respiratory Health", count: countFor("Respiratory Health", "10 herbs"),
       icon: (
         <svg width="26" height="26" viewBox="0 0 26 26" fill="none">
           <path d="M13 5v7" stroke="#2d6a4f" strokeWidth="1.6" strokeLinecap="round"/>
@@ -35,9 +57,9 @@ export default function CollectionAndTexts() {
   ];
 
   const books = [
-    { title: "Charaka Samhita",   desc: "Foundational text on Ayurvedic medicine",           bg: "#e8e3d8", spine: "#7a6c50" },
-    { title: "Sushruta Samhita",  desc: "Surgical procedures and medicinal plants",           bg: "#dce4dc", spine: "#4a6550" },
-    { title: "Ashtanga Hridaya",  desc: "Comprehensive guide to Ayurvedic practice",         bg: "#e6dcd2", spine: "#7a5e48" },
+    { slug: "charaka-samhita", title: "Charaka Samhita",   desc: "Foundational text on Ayurvedic medicine",           bg: "#e8e3d8", spine: "#7a6c50" },
+    { slug: "sushruta-samhita", title: "Sushruta Samhita",  desc: "Surgical procedures and medicinal plants",           bg: "#dce4dc", spine: "#4a6550" },
+    { slug: "ashtanga-hridaya", title: "Ashtanga Hridaya",  desc: "Comprehensive guide to Ayurvedic practice",         bg: "#e6dcd2", spine: "#7a5e48" },
   ];
 
   return (
@@ -49,16 +71,18 @@ export default function CollectionAndTexts() {
           <div style={{ borderRadius: 20, border: "1px solid #eef0ee", background: "#fafafa", padding: 24 }}>
             <div className="flex items-start justify-between mb-1">
               <p className="font-bold" style={{ fontSize: 16, color: "#0d2717" }}>Featured Collection</p>
-              <button className="flex items-center gap-1 font-semibold" style={{ fontSize: 12, color: "#0d2717" }}>
+              <button type="button" onClick={onViewAllCollections} className="flex items-center gap-1 font-semibold" style={{ fontSize: 12, color: "#0d2717" }}>
                 View all collections <Arr size={11}/>
               </button>
             </div>
             <p className="mb-6" style={{ fontSize: 12, color: "#9ca3af" }}>Curated knowledge for your wellness journey.</p>
 
             <div className="grid grid-cols-3 gap-4">
-              {collections.map(({ label, count, icon }) => (
+              {collections.map(({ label, area, count, icon }) => (
                 <button
                   key={label}
+                  type="button"
+                  onClick={() => onOpenCollection(area)}
                   className="flex flex-col items-center gap-3 transition-all hover:shadow-md"
                   style={{ background: "white", borderRadius: 16, border: "1px solid #eef0ee", padding: "20px 12px" }}
                 >
@@ -81,16 +105,18 @@ export default function CollectionAndTexts() {
           <div style={{ borderRadius: 20, border: "1px solid #eef0ee", background: "#fafafa", padding: 24 }}>
             <div className="flex items-start justify-between mb-1">
               <p className="font-bold" style={{ fontSize: 16, color: "#0d2717" }}>Explore by Classical Texts</p>
-              <button className="flex items-center gap-1 font-semibold" style={{ fontSize: 12, color: "#0d2717" }}>
+              <button type="button" onClick={onViewAllTexts} className="flex items-center gap-1 font-semibold" style={{ fontSize: 12, color: "#0d2717" }}>
                 View all texts <Arr size={11}/>
               </button>
             </div>
             <p className="mb-6" style={{ fontSize: 12, color: "#9ca3af" }}>Dive into timeless Ayurvedic wisdom.</p>
 
             <div className="grid grid-cols-3 gap-4">
-              {books.map(({ title, desc, bg, spine }) => (
+              {books.map(({ slug, title, desc, bg, spine }) => (
                 <button
                   key={title}
+                  type="button"
+                  onClick={() => onOpenText(slug)}
                   className="flex flex-col items-start transition-all hover:shadow-md"
                   style={{ background: "white", borderRadius: 14, border: "1px solid #eef0ee", padding: 12 }}
                 >

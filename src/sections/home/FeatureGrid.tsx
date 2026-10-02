@@ -1,5 +1,6 @@
 import type { ComponentType, SVGProps } from "react";
 import { BulbIcon, ChevronRightIcon, DatabaseIcon, DocumentIcon, GlobeIcon, LeafIcon, UsersIcon } from "../../components/ui/LineIcons";
+import type { ResearchTool } from "../../config/research";
 
 type IconComponent = ComponentType<SVGProps<SVGSVGElement> & { size?: number }>;
 
@@ -9,41 +10,49 @@ export type Feature = {
   icon: IconComponent;
   /** Starter question placed in the ask box when the card is chosen. */
   prompt: string;
+  /** Sent with the question so the AI focuses on this tool's topic. */
+  tool: ResearchTool;
 };
 
 export const FEATURES: Feature[] = [
   {
     title: "Formulation Classifier",
+    tool: "formulation",
     description: "Understand your product category",
     icon: DocumentIcon,
     prompt: "Is my herbal formulation a classical Ayurvedic medicine or a proprietary one?",
   },
   {
     title: "IP Guidance",
+    tool: "ip-guidance",
     description: "Patents, Trademarks, GI, Copyright & more",
     icon: BulbIcon,
     prompt: "Which forms of IP protection apply to my Ayurvedic product?",
   },
   {
     title: "ABS Compliance",
+    tool: "abs",
     description: "Know when permissions are needed",
     icon: LeafIcon,
     prompt: "Do I need Access and Benefit Sharing approval to use this medicinal plant?",
   },
   {
     title: "Databases & Resources",
+    tool: "resources",
     description: "Search TKDL, IPO, GI and more",
     icon: DatabaseIcon,
     prompt: "Search TKDL and IPO records for prior art on ",
   },
   {
     title: "International Guidance",
+    tool: "international",
     description: "Explore global IP and market access",
     icon: GlobeIcon,
     prompt: "What do I need to protect and sell my Ayurvedic product abroad?",
   },
   {
     title: "Save & Collaborate",
+    tool: "collaborate",
     description: "Save answers, export reports",
     icon: UsersIcon,
     prompt: "How can I save this research and share a report with my team?",

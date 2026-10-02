@@ -6,12 +6,12 @@ type LanguagePreferenceProps = {
   onChange: (code: LanguageCode) => void;
 };
 
-/** Interface language, mirroring the Language picker in the sidebar. */
+/** Answer language, mirroring the Language picker in the sidebar. */
 export default function LanguagePreference({ value, onChange }: LanguagePreferenceProps) {
   return (
-    <SettingsCard title="Language" description="The language used for menus and labels.">
+    <SettingsCard title="Answer language" description="The AI writes its answers in this language. Menus and labels stay in English.">
       <fieldset className="grid gap-2.5 sm:grid-cols-2">
-        <legend className="sr-only">Interface language</legend>
+        <legend className="sr-only">Answer language</legend>
         {LANGUAGES.map((lang) => (
           <label
             key={lang.code}

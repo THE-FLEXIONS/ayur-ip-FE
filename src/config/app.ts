@@ -5,8 +5,11 @@ export const APP_VERSION = version;
 
 export type LanguageCode = "en" | "hi";
 
+/**
+ * Language the AI answers in. The interface itself is English-only for now,
+ * so this doesn't change menus or labels.
+ */
 export const LANGUAGES: { code: LanguageCode; label: string; native: string; available: boolean }[] = [
   { code: "en", label: "English", native: "English", available: true },
-  // Listed so the picker is ready; enable once the interface is translated.
-  { code: "hi", label: "Hindi", native: "हिन्दी", available: false },
+  { code: "hi", label: "Hindi", native: "हिन्दी", available: true },
 ];

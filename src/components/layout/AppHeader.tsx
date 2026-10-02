@@ -1,4 +1,5 @@
 import { useEffect, useId, useRef, useState } from "react";
+import { initials, useAuth } from "../../hooks/useAuth";
 import { AyurLeafMark } from "../ui/Botanicals";
 import { BellIcon, MenuIcon } from "../ui/LineIcons";
 
@@ -19,6 +20,8 @@ export default function AppHeader({ onNavigate, onOpenMenu, activePage = "Home" 
   const menuRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
   const menuId = useId();
+  const auth = useAuth();
+  const user = auth.user;
 
   useEffect(() => {
     if (!menuOpen) return;
@@ -117,11 +120,11 @@ export default function AppHeader({ onNavigate, onOpenMenu, activePage = "Home" 
             aria-haspopup="menu"
             aria-expanded={menuOpen}
             aria-controls={menuId}
-            aria-label="Account and navigation menu"
+            aria-label={user ? `Account menu for ${user.firstName}` : "Account and navigation menu"}
             onClick={() => setMenuOpen((o) => !o)}
             className="flex size-12 items-center justify-center rounded-full bg-ayur-green-deep text-[20px] font-medium text-white shadow-[0_6px_16px_-8px_rgba(21,82,49,0.8)] transition-transform hover:scale-[1.03] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ayur-green sm:size-14 sm:text-[22px] lg:size-[60px]"
           >
-            U
+            {user ? initials(user) : "U"}
           </button>
 
           {menuOpen && (
@@ -145,14 +148,53 @@ export default function AppHeader({ onNavigate, onOpenMenu, activePage = "Home" 
                 ))}
                 <div className="my-1 h-px bg-ayur-line" role="separator" />
               </div>
-              <button
-                type="button"
-                role="menuitem"
-                onClick={() => go("Login")}
-                className="block w-full rounded-xl px-3 py-2.5 text-left text-[14px] font-medium text-ayur-green hover:bg-ayur-mint/70 focus-visible:bg-ayur-mint/70 focus-visible:outline-none"
-              >
-                Sign in / Create account
-              </button>
+              {user ? (
+                <>
+                  <div className="px-3 pb-2 pt-1.5">
+                    <p className="truncate text-[14px] font-semibold text-ayur-ink">
+                      {user.firstName} {user.lastName}
+                    </p>
+                    <p className="truncate text-[12.5px] text-ayur-muted">{user.email}</p>
+                    {user.isDemo && (
+                      <span className="mt-1.5 inline-block rounded-full bg-ayur-mint px-2 py-0.5 text-[11px] font-medium text-ayur-green">
+                        Demo account
+                      </span>
+                    )}
+                  </div>
+                  <div className="my-1 h-px bg-ayur-line" role="separator" />
+                  {["Saved", "History", "Settings"].map((page) => (
+                    <button
+                      key={page}
+                      type="button"
+                      role="menuitem"
+                      onClick={() => go(page)}
+                      className="block w-full rounded-xl px-3 py-2.5 text-left text-[14px] text-ayur-ink hover:bg-ayur-mint/70 focus-visible:bg-ayur-mint/70 focus-visible:outline-none"
+                    >
+                      {page}
+                    </button>
+                  ))}
+                  <button
+                    type="button"
+                    role="menuitem"
+                    onClick={() => {
+                      auth.logout();
+                      go("Home");
+                    }}
+                    className="block w-full rounded-xl px-3 py-2.5 text-left text-[14px] font-medium text-[#a2402f] hover:bg-[#f3e9e7] focus-visible:bg-[#f3e9e7] focus-visible:outline-none"
+                  >
+                    Sign out
+                  </button>
+                </>
+              ) : (
+                <button
+                  type="button"
+                  role="menuitem"
+                  onClick={() => go("Login")}
+                  className="block w-full rounded-xl px-3 py-2.5 text-left text-[14px] font-medium text-ayur-green hover:bg-ayur-mint/70 focus-visible:bg-ayur-mint/70 focus-visible:outline-none"
+                >
+                  Sign in / Create account
+                </button>
+              )}
             </div>
           )}
         </div>

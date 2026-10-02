@@ -1,12 +1,29 @@
-import { useState } from "react";
 import type React from "react";
+import type { FacetCount, LibraryFacets } from "../../lib/api";
 import { Arr } from "./shared/icons";
+import { TAB_FACET, type BrowseTab } from "./shared/library";
+
+type BrowseByCategoryProps = {
+  active: BrowseTab;
+  onSelectTab: (tab: BrowseTab) => void;
+  facets: LibraryFacets | null;
+  /** Value picked under Therapeutic Areas / Parts Used / Regions. */
+  selectedValue: string | null;
+  onSelectValue: (value: string) => void;
+};
+
+const FACET_LISTS = {
+  therapeuticArea: "therapeuticAreas",
+  partUsed: "partsUsed",
+  region: "regions",
+} as const;
 
 // ─── SECTION 2 · Browse by Category ──────────────────────────────────────────
-export default function BrowseByCategory() {
-  const [active, setActive] = useState("All");
+export default function BrowseByCategory({ active, onSelectTab, facets, selectedValue, onSelectValue }: BrowseByCategoryProps) {
+  const facet = TAB_FACET[active];
+  const values: FacetCount[] = facet && facets ? facets[FACET_LISTS[facet]] : [];
 
-  const cats: { label: string; icon: React.ReactElement }[] = [
+  const cats: { label: BrowseTab; icon: React.ReactElement }[] = [
     {
       label: "All",
       icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M5 19C5 10 10 4 18 6C12 10 9 15 11 20" stroke="currentColor" strokeWidth="1.6" fill="none"/><path d="M5 19C5 15 9 11 12 11" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" fill="none"/></svg>,
@@ -46,7 +63,12 @@ export default function BrowseByCategory() {
             <h2 className="font-bold mb-1" style={{ fontSize: 20, color: "#0d2717" }}>Browse by Category</h2>
             <p style={{ fontSize: 13, color: "#9ca3af" }}>Find knowledge by what interests you.</p>
           </div>
-          <button className="flex items-center gap-1.5 font-semibold mt-0.5" style={{ fontSize: 13, color: "#0d2717" }}>
+          <button
+            type="button"
+            onClick={() => onSelectTab("Therapeutic Areas")}
+            className="flex items-center gap-1.5 font-semibold mt-0.5"
+            style={{ fontSize: 13, color: "#0d2717" }}
+          >
             View all categories <Arr size={13}/>
           </button>
         </div>
@@ -58,7 +80,9 @@ export default function BrowseByCategory() {
             return (
               <button
                 key={label}
-                onClick={() => setActive(label)}
+                type="button"
+                aria-pressed={on}
+                onClick={() => onSelectTab(label)}
                 className="flex flex-col items-center gap-2 transition-all"
                 style={{
                   padding: "14px 20px",
@@ -76,6 +100,35 @@ export default function BrowseByCategory() {
             );
           })}
         </div>
+
+        {/* Values for Therapeutic Areas / Parts Used / Regions */}
+        {facet && (
+          <div className="mt-4 flex flex-wrap gap-2" aria-label={`${active} filters`}>
+            {values.length === 0 && (
+              <p style={{ fontSize: 12, color: "#9ca3af" }}>{facets ? "Nothing listed yet." : "Loading…"}</p>
+            )}
+            {values.map(({ value, count }) => {
+              const on = value === selectedValue;
+              return (
+                <button
+                  key={value}
+                  type="button"
+                  aria-pressed={on}
+                  onClick={() => onSelectValue(value)}
+                  className="rounded-full border px-3 py-1.5 text-xs transition-colors"
+                  style={{
+                    borderColor: on ? "#2d6a4f" : "#e5e7eb",
+                    background: on ? "#f0f7f2" : "white",
+                    color: on ? "#1a4028" : "#374151",
+                    fontWeight: on ? 600 : 400,
+                  }}
+                >
+                  {value} <span style={{ color: "#9ca3af" }}>{count}</span>
+                </button>
+              );
+            })}
+          </div>
+        )}
       </div>
     </section>
   );

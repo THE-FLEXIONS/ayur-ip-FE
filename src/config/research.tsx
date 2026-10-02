@@ -5,10 +5,14 @@ import type { ChipOption } from "../components/ui/SelectChip";
 export type ResearchMode = "deep" | "quick";
 export type Jurisdiction = "IN" | "EU" | "US" | "GLOBAL";
 
+/** Home-page tools; sent with a question so the AI can focus its answer. Matches the backend. */
+export type ResearchTool = "formulation" | "ip-guidance" | "abs" | "resources" | "international" | "collaborate";
+
 export type AskRequest = {
   question: string;
   mode: ResearchMode;
   jurisdiction: Jurisdiction;
+  tool?: ResearchTool | null;
 };
 
 export const MODE_OPTIONS: ChipOption<ResearchMode>[] = [

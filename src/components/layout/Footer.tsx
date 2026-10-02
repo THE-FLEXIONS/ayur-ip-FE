@@ -1,253 +1,190 @@
-import BrandMark from "../ui/BrandMark";
-import { IconArrowRight, IconChat, IconLeaf, IconMail, IconPhone, IconPrivacy, IconQuestionCircle } from "../icons";
+import type { MouseEvent, ReactNode } from "react";
+import { IconChat, IconMail, IconPhone, IconPrivacy, IconQuestionCircle } from "../icons";
+import NewsletterForm from "./NewsletterForm";
+import FooterBotanicals from "./footer/FooterBotanicals";
+import { InstagramGlyph, LeafFanMark, LinkedInGlyph, SproutIcon, XGlyph, YouTubeGlyph } from "./footer/FooterIcons";
+import FooterPartners from "./footer/FooterPartners";
+import { ABOUT_LINKS, PRODUCT_LINKS, RESOURCE_LINKS, SOCIAL_LINKS, SUPPORT_PHONE, type FooterLink } from "./footer/links";
 
 // ─── Footer ────────────────────────────────────────────────────────────────
+// Site footer: brand column, four link columns, the "Stay Updated" card and
+// the government / partner strip. Link data lives in ./footer/links.ts.
 
-export default function Footer() {
-  const product = ["Features", "Use Cases", "How it Works", "Pricing", "FAQs"];
-  const resources = [
-    "Knowledge Base",
-    "Ayurveda References",
-    "Guidelines & Policies",
-    "Research Papers",
-    "Case Studies",
-    "Blogs & Updates",
-    "API (Coming Soon)",
-  ];
-  const about = ["Our Mission", "Our Team", "Partners", "Media & News", "Careers", "Contact Us"];
-  const govLinks = ["india.gov.in", "ayush.gov.in", "ipindia.gov.in", "mygov.in"];
+type FooterProps = {
+  /** Opens an app page; without it, page links fall back to plain anchors. */
+  onNavigate?: (page: string) => void;
+};
 
+const LINK_CLASS =
+  "rounded-sm text-[16px] leading-5 text-[#45555e] transition-colors hover:text-[#1d6a3f] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1d6a3f]";
+
+function FooterNavLink({ link, onNavigate }: { link: FooterLink; onNavigate?: (page: string) => void }) {
+  if (link.comingSoon) {
+    return (
+      <span className="text-[16px] leading-5 text-[#45555e]/75" aria-disabled="true">
+        {link.label} <span className="text-[#45555e]/75">(Coming Soon)</span>
+      </span>
+    );
+  }
+  const { page } = link;
+  const handleClick =
+    page && onNavigate
+      ? (e: MouseEvent<HTMLAnchorElement>) => {
+          e.preventDefault();
+          onNavigate(page);
+        }
+      : undefined;
   return (
-    <footer style={{ background: "#f8faf7" }}>
-      {/* Main footer */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-12 sm:pt-16 pb-10">
-        <div className="grid grid-cols-2 gap-8 sm:grid-cols-3 lg:grid-cols-5 mb-12">
+    <a href={link.href ?? "#"} onClick={handleClick} className={LINK_CLASS}>
+      {link.label}
+    </a>
+  );
+}
+
+function LinkColumn({ title, links, onNavigate }: { title: string; links: FooterLink[]; onNavigate?: (page: string) => void }) {
+  return (
+    <nav aria-label={title}>
+      <h2 className="font-editorial text-[20px] font-bold leading-6 text-[#133d24]">{title}</h2>
+      <ul className="mt-5 space-y-3 leading-5 lg:mt-[22px]">
+        {links.map((link) => (
+          <li key={link.label}>
+            <FooterNavLink link={link} onNavigate={onNavigate} />
+          </li>
+        ))}
+      </ul>
+    </nav>
+  );
+}
+
+function SupportRow({ icon, href, children }: { icon: ReactNode; href: string; children: ReactNode }) {
+  return (
+    <li>
+      <a href={href} className={`group flex items-start gap-[18px] ${LINK_CLASS}`}>
+        <span className="-mt-0.5 flex size-[26px] shrink-0 items-center justify-center [&>svg]:size-[26px]">{icon}</span>
+        <span className="flex flex-col">{children}</span>
+      </a>
+    </li>
+  );
+}
+
+const SOCIALS = [
+  { label: "Ayur IP on X", href: SOCIAL_LINKS.x, icon: <XGlyph className="size-[19px]" /> },
+  { label: "Ayur IP on LinkedIn", href: SOCIAL_LINKS.linkedin, icon: <LinkedInGlyph className="size-[19px]" /> },
+  { label: "Ayur IP on YouTube", href: SOCIAL_LINKS.youtube, icon: <YouTubeGlyph className="size-[22px]" /> },
+  { label: "Ayur IP on Instagram", href: SOCIAL_LINKS.instagram, icon: <InstagramGlyph className="size-[19px]" /> },
+];
+
+export default function Footer({ onNavigate }: FooterProps) {
+  return (
+    <footer className="relative overflow-hidden bg-[#f3f6f1] font-sans">
+      <FooterBotanicals />
+
+      <div className="relative mx-auto max-w-[1440px] px-5 sm:px-8 lg:px-[70px]">
+        <div className="grid grid-cols-2 gap-x-6 gap-y-10 pt-14 sm:grid-cols-4 lg:grid-cols-[401fr_170fr_222fr_193fr_341fr] lg:gap-x-0 lg:gap-y-0 lg:pt-20">
           {/* Brand */}
-          <div className="col-span-2 sm:col-span-3 lg:col-span-1">
-            <div className="flex items-center gap-2 mb-4">
-              <BrandMark />
-              <div>
-                <div className="text-lg font-black" style={{ color: "#0d2717", fontWeight: 800 }}>IP-SAKTI</div>
-                <div className="text-xs" style={{ color: "#40916c" }}>Fast & Secure Ai for Ayurveda</div>
-              </div>
-            </div>
-            <p
-              className="text-base italic mb-3"
-              style={{ fontFamily: "'Dancing Script', cursive", color: "#0d2717", fontSize: 16 }}
+          <div className="col-span-2 sm:col-span-4 lg:col-span-1 lg:row-span-2 lg:pr-10">
+            <a
+              href="#top"
+              onClick={(e) => {
+                if (!onNavigate) return;
+                e.preventDefault();
+                onNavigate("Home");
+              }}
+              className="inline-flex items-center gap-[18px] rounded-md focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#1d6a3f]"
             >
-              Preserving Traditional Wisdom.<br />Powering a Healthier Tomorrow.
+              <LeafFanMark className="h-[54px] w-[61px] shrink-0 lg:h-[60px] lg:w-[68px]" />
+              <span className="flex flex-col">
+                <span className="text-[30px] font-bold leading-none tracking-[-0.01em] text-[#1c4a2c] lg:text-[34px]">IP-SAKTI</span>
+                <span className="mt-1.5 text-[17px] leading-none text-[#4b5b63] lg:text-[19px]">AI for Ayurveda IP</span>
+              </span>
+            </a>
+
+            <p className="mt-6 font-editorial text-[20px] italic leading-[29px] text-[#2d3d35] lg:text-[22px]">
+              Preserving Traditional Wisdom.
+              <br />
+              Powering a Healthier Tomorrow.
             </p>
-            <div className="h-0.5 w-8 rounded-full mb-4" style={{ background: "#2d6a4f" }} />
-            <p className="text-sm leading-relaxed mb-6" style={{ color: "#6b7280" }}>
-              An AI-powered platform to discover, protect and advance Ayurveda knowledge through trusted insights, patent guidance and research support.
+            <span aria-hidden="true" className="mt-5 block h-[2px] w-12 bg-[#1f4f30]" />
+
+            <p className="mt-[22px] max-w-[345px] text-[16px] leading-[24.5px] text-[#4a5960]">
+              An AI-powered platform to discover, protect and advance Ayurveda knowledge through trusted insights, patent guidance and
+              research support.
             </p>
-            {/* Social */}
-            <div className="flex gap-3 mb-6">
-              {["X", "in", "▶", "◻"].map((icon, i) => (
-                <button
-                  key={i}
-                  className="w-10 h-10 rounded-full border flex items-center justify-center text-sm font-bold transition-colors hover:bg-gray-100"
-                  style={{ borderColor: "#d1d5db", color: "#374151" }}
-                >
-                  {icon}
-                </button>
+
+            <ul aria-label="Follow Ayur IP" className="mt-7 flex gap-4">
+              {SOCIALS.map((social) => (
+                <li key={social.label}>
+                  <a
+                    href={social.href}
+                    aria-label={social.label}
+                    className="flex size-12 items-center justify-center rounded-full bg-[#e6ede4] text-[#142a1c] transition-[background-color,color,transform] duration-200 hover:-translate-y-0.5 hover:bg-[#d8e5d4] hover:text-[#1d6a3f] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1d6a3f] motion-reduce:hover:translate-y-0"
+                  >
+                    {social.icon}
+                  </a>
+                </li>
               ))}
-            </div>
-            <p
-              className="text-sm italic"
-              style={{ fontFamily: "'Dancing Script', cursive", color: "#6b7280" }}
-            >
+            </ul>
+
+            <span aria-hidden="true" className="mt-7 block h-px w-11 bg-[#b9c6bc]" />
+            <p className="mt-[22px] font-editorial text-[18px] italic leading-6 text-[#2d3d35] lg:text-[19px]">
               Ancient Knowledge. Brighter Tomorrows.
             </p>
           </div>
 
-          {/* Product */}
-          <div>
-            <h4 className="text-base font-bold mb-5" style={{ color: "#0d2717" }}>Product</h4>
-            <ul className="space-y-3">
-              {product.map((l) => (
-                <li key={l}>
-                  <a href="#" className="text-sm transition-colors hover:text-green-700" style={{ color: "#6b7280" }}>
-                    {l}
-                  </a>
-                </li>
-              ))}
+          <LinkColumn title="Product" links={PRODUCT_LINKS} onNavigate={onNavigate} />
+          <LinkColumn title="Resources" links={RESOURCE_LINKS} onNavigate={onNavigate} />
+          <LinkColumn title="About" links={ABOUT_LINKS} onNavigate={onNavigate} />
+
+          {/* Help & Support — the sidebar's "Help & Support" item scrolls here. */}
+          <div className="col-span-2 sm:col-span-1">
+            <h2 id="help-support" tabIndex={-1} className="scroll-mt-6 font-editorial text-[20px] font-bold leading-6 text-[#133d24] outline-none">
+              Help &amp; Support
+            </h2>
+            <ul className="mt-5 space-y-4 text-[#1a4028] lg:mt-[24px]">
+              <SupportRow href="#" icon={<IconQuestionCircle />}>
+                <span className="text-[#2a3a40]">Help Center</span>
+              </SupportRow>
+              <SupportRow href="#" icon={<IconMail />}>
+                <span className="text-[#2a3a40]">Raise a Query</span>
+              </SupportRow>
+              <SupportRow href={`tel:${SUPPORT_PHONE.tel}`} icon={<IconPhone />}>
+                <span className="whitespace-nowrap text-[#14211b]">{SUPPORT_PHONE.display}</span>
+                <span className="mt-1.5 text-[13px] leading-4 text-[#55656c]">(Toll Free, Mon–Fri 9AM–6PM)</span>
+              </SupportRow>
+              <SupportRow href="#" icon={<IconChat />}>
+                <span className="text-[#2a3a40]">Live Support</span>
+              </SupportRow>
             </ul>
           </div>
 
-          {/* Resources */}
-          <div>
-            <h4 className="text-base font-bold mb-5" style={{ color: "#0d2717" }}>Resources</h4>
-            <ul className="space-y-3">
-              {resources.map((l) => (
-                <li key={l}>
-                  <a href="#" className="text-sm transition-colors hover:text-green-700" style={{ color: "#6b7280" }}>
-                    {l}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* About */}
-          <div>
-            <h4 className="text-base font-bold mb-5" style={{ color: "#0d2717" }}>About</h4>
-            <ul className="space-y-3">
-              {about.map((l) => (
-                <li key={l}>
-                  <a href="#" className="text-sm transition-colors hover:text-green-700" style={{ color: "#6b7280" }}>
-                    {l}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Help & Support */}
-          <div>
-            <h4 id="help-support" tabIndex={-1} className="text-base font-bold mb-5 scroll-mt-6 outline-none" style={{ color: "#0d2717" }}>Help & Support</h4>
-            <ul className="space-y-4">
-              {[
-                { icon: <IconQuestionCircle />, label: "Help Center" },
-                { icon: <IconMail />, label: "Raise a Query" },
-                {
-                  icon: <IconPhone />,
-                  label: "1800-11-AYUSH",
-                  sub: "(Toll Free, Mon–Fri 9AM–6PM)",
-                },
-                { icon: <IconChat />, label: "Live Support" },
-              ].map(({ icon, label, sub }) => (
-                <li key={label} className="flex items-start gap-3">
-                  <div className="mt-0.5 flex-shrink-0" style={{ color: "#1a4028" }}>{icon}</div>
-                  <div>
-                    <p className="text-sm font-medium" style={{ color: "#0d2717" }}>{label}</p>
-                    {sub && <p className="text-xs" style={{ color: "#9ca3af" }}>{sub}</p>}
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-
-        {/* Newsletter */}
-        <div
-          className="rounded-2xl p-5 sm:p-8 flex flex-col items-stretch gap-6 lg:flex-row lg:items-center lg:justify-between lg:gap-8 mb-10"
-          style={{ background: "#e8f5e9", border: "1px solid #c3e6cc" }}
-        >
-          <div className="flex items-center gap-4">
-            <div
-              className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0"
-              style={{ background: "#d8f3dc" }}
-            >
-              <IconLeaf />
+          {/* Stay updated */}
+          <section
+            aria-labelledby="footer-newsletter"
+            className="col-span-2 flex flex-col gap-6 rounded-[22px] bg-[#e9efe6] p-6 sm:col-span-4 sm:p-8 lg:col-span-4 lg:col-start-2 lg:mt-[38px] lg:flex-row lg:items-center lg:gap-10 lg:self-start lg:py-[26px] lg:pl-[30px] lg:pr-[30px]"
+          >
+            <div className="flex items-start gap-5 lg:flex-1 lg:gap-[34px]">
+              <SproutIcon className="mt-1 size-10 shrink-0 lg:size-11" />
+              <div>
+                <h2 id="footer-newsletter" className="font-editorial text-[22px] font-bold leading-7 text-[#133d24]">
+                  Stay Updated
+                </h2>
+                <p className="mt-2 max-w-[290px] text-[16px] leading-6 text-[#3c4a50]">
+                  Get the latest updates on Ayurveda IP, policy changes and new features.
+                </p>
+              </div>
             </div>
-            <div>
-              <h4 className="text-lg font-bold mb-1" style={{ color: "#0d2717" }}>Stay Updated</h4>
-              <p className="text-sm" style={{ color: "#4b5563" }}>
-                Get the latest updates on Ayurveda IP, policy changes and new features.
+            <div className="w-full lg:w-[437px] lg:shrink-0">
+              <NewsletterForm source="footer" />
+              <p className="mt-3 flex items-center gap-2.5 pl-1 text-[13px] text-[#4a5960] [&>svg]:size-[19px] [&>svg]:shrink-0">
+                <IconPrivacy />
+                We respect your privacy. No spam, ever.
               </p>
             </div>
-          </div>
-          <div className="flex flex-col items-start gap-2 lg:items-end lg:min-w-80">
-            <div className="flex w-full flex-col gap-2 sm:flex-row">
-              <input
-                placeholder="Enter your email address"
-                className="min-w-0 flex-1 px-4 py-3 rounded-xl border text-sm outline-none"
-                style={{ borderColor: "#d1d5db", background: "white" }}
-              />
-              <button
-                className="flex items-center justify-center gap-2 px-5 py-3 rounded-xl text-sm font-semibold text-white"
-                style={{ background: "#0d2717" }}
-              >
-                Subscribe <IconArrowRight size={16} />
-              </button>
-            </div>
-            <div className="flex items-center gap-1.5">
-              <IconPrivacy />
-              <p className="text-xs" style={{ color: "#6b7280" }}>We respect your privacy. No spam, ever.</p>
-            </div>
-          </div>
+          </section>
         </div>
-      </div>
 
-      {/* Bottom bar */}
-      <div className="border-t border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6">
-          <div className="grid grid-cols-1 gap-8 md:grid-cols-3 items-center">
-            {/* Ministry of AYUSH */}
-            <div>
-              <p className="text-xs mb-3" style={{ color: "#9ca3af" }}>An Initiative Under</p>
-              <div className="flex items-center gap-3">
-                <div
-                  className="w-12 h-12 rounded-full flex items-center justify-center"
-                  style={{ background: "#f0f0e0" }}
-                >
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                    <circle cx="12" cy="6" r="3" stroke="#b8860b" strokeWidth="1.2" fill="#c8a020" fillOpacity="0.3" />
-                    <path d="M5 20c0-4 3-7 7-7s7 3 7 7" stroke="#b8860b" strokeWidth="1.2" fill="none" />
-                    <path d="M12 3l2 8H6l2-8" stroke="#b8860b" strokeWidth="0.8" fill="none" />
-                  </svg>
-                </div>
-                <div>
-                  <p className="text-sm font-semibold" style={{ color: "#0d2717" }}>Ministry of AYUSH</p>
-                  <p className="text-xs" style={{ color: "#9ca3af" }}>Government of India</p>
-                  <p className="text-xs italic" style={{ color: "#9ca3af" }}>सत्यमेव जयते</p>
-                </div>
-              </div>
-            </div>
-
-            {/* Collaboration logos */}
-            <div>
-              <p className="text-xs mb-3" style={{ color: "#9ca3af" }}>In Collaboration With</p>
-              <div className="flex flex-wrap items-center gap-3 lg:gap-4">
-                <div
-                  className="px-3 py-2 rounded-lg flex flex-col items-center"
-                  style={{ background: "#1a3473" }}
-                >
-                  <span className="text-white text-xs font-bold">IP</span>
-                  <span className="text-white text-xs" style={{ fontSize: 8 }}>INDIA</span>
-                </div>
-                <div
-                  className="px-3 py-2 rounded-lg"
-                  style={{ background: "#1a6fb5" }}
-                >
-                  <span className="text-white text-xs font-bold">Digital India</span>
-                </div>
-                <div
-                  className="px-3 py-2 rounded-lg"
-                  style={{ background: "#e8790e" }}
-                >
-                  <span className="text-white text-xs font-bold">myGov</span>
-                </div>
-                <div
-                  className="px-3 py-2 rounded-lg"
-                  style={{ background: "#0057a8" }}
-                >
-                  <span className="text-white text-xs font-bold">G20</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Govt portals */}
-            <div>
-              <p className="text-xs mb-3" style={{ color: "#9ca3af" }}>Follow Government Portals</p>
-              <div className="grid grid-cols-2 gap-1">
-                {govLinks.map((l) => (
-                  <a
-                    key={l}
-                    href="#"
-                    className="text-xs flex items-center gap-1 hover:underline"
-                    style={{ color: "#1a4028" }}
-                  >
-                    {l}
-                    <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
-                      <path d="M2 8L8 2M4 2h4v4" stroke="#1a4028" strokeWidth="1.2" strokeLinecap="round" />
-                    </svg>
-                  </a>
-                ))}
-              </div>
-            </div>
-          </div>
+        <div className="mt-12 border-t border-[#cfd8cf] lg:-ml-[30px] lg:mt-9 lg:pl-[30px]">
+          <FooterPartners />
         </div>
       </div>
     </footer>
