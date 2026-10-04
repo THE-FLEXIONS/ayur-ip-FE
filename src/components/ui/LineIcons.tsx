@@ -161,18 +161,6 @@ export function MenuIcon(props: IconProps) {
   );
 }
 
-/** Solid house used for the active "Home" item. */
-export function HomeFilledIcon({ size = 24, ...rest }: IconProps) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 24 24" aria-hidden="true" focusable="false" {...rest}>
-      <path
-        fill="currentColor"
-        d="M11.3 2.6a1.1 1.1 0 0 1 1.4 0l8.4 7.1c.8.7.3 2-.7 2H19v7.6c0 .9-.7 1.7-1.6 1.7h-3.2v-5.3c0-.6-.5-1.1-1.1-1.1h-2.2c-.6 0-1.1.5-1.1 1.1V21H6.6c-.9 0-1.6-.8-1.6-1.7v-7.6H3.6c-1 0-1.5-1.3-.7-2l8.4-7.1Z"
-      />
-    </svg>
-  );
-}
-
 /** Speech bubble with a check — "New Query". */
 export function ChatQueryIcon(props: IconProps) {
   return (
@@ -183,59 +171,10 @@ export function ChatQueryIcon(props: IconProps) {
   );
 }
 
-export function FlaskIcon(props: IconProps) {
-  return (
-    <Icon {...props}>
-      <path d="M9 3h6M10 3v5.6L4.6 18.3A1.8 1.8 0 0 0 6.2 21h11.6a1.8 1.8 0 0 0 1.6-2.7L14 8.6V3" />
-      <path d="M7.2 14h9.6" />
-      <circle cx="10.5" cy="17" r="0.6" fill="currentColor" />
-      <circle cx="13.8" cy="16.2" r="0.5" fill="currentColor" />
-    </Icon>
-  );
-}
-
 export function BookmarkIcon({ filled = false, ...props }: IconProps & { filled?: boolean }) {
   return (
     <Icon {...props}>
       <path d="M6.5 3.5h11a1 1 0 0 1 1 1V21l-6.5-4.6L5.5 21V4.5a1 1 0 0 1 1-1Z" fill={filled ? "currentColor" : "none"} />
-    </Icon>
-  );
-}
-
-export function ClockIcon(props: IconProps) {
-  return (
-    <Icon {...props}>
-      <circle cx="12" cy="12" r="9" />
-      <path d="M12 7v5.2l3.4 2.3" />
-    </Icon>
-  );
-}
-
-/** 文 / A translation glyph — "Language". */
-export function TranslateIcon(props: IconProps) {
-  return (
-    <Icon {...props}>
-      <path d="M3 5.5h9M7.5 3.5v2M10 5.5c-.6 3.6-3 6.6-6.5 8.2M5.6 8.6c1 2 2.6 3.6 4.6 4.6" />
-      <path d="m12 21 4.5-10 4.5 10M13.6 17.5h5.8" />
-    </Icon>
-  );
-}
-
-export function GearIcon(props: IconProps) {
-  return (
-    <Icon {...props}>
-      <path d="M10.3 3.2a1 1 0 0 1 1-.7h1.4a1 1 0 0 1 1 .7l.4 1.7c.6.2 1.1.5 1.6.9l1.7-.5a1 1 0 0 1 1.1.4l.7 1.2a1 1 0 0 1-.1 1.2l-1.2 1.3a6.6 6.6 0 0 1 0 1.8l1.2 1.3a1 1 0 0 1 .1 1.2l-.7 1.2a1 1 0 0 1-1.1.4l-1.7-.5c-.5.4-1 .7-1.6.9l-.4 1.7a1 1 0 0 1-1 .7h-1.4a1 1 0 0 1-1-.7l-.4-1.7c-.6-.2-1.1-.5-1.6-.9l-1.7.5a1 1 0 0 1-1.1-.4l-.7-1.2a1 1 0 0 1 .1-1.2l1.2-1.3a6.6 6.6 0 0 1 0-1.8L4.5 8.1a1 1 0 0 1-.1-1.2l.7-1.2a1 1 0 0 1 1.1-.4l1.7.5c.5-.4 1-.7 1.6-.9l.4-1.7Z" />
-      <circle cx="12" cy="12" r="3" />
-    </Icon>
-  );
-}
-
-export function HelpCircleIcon(props: IconProps) {
-  return (
-    <Icon {...props}>
-      <circle cx="12" cy="12" r="9" />
-      <path d="M9.6 9.3a2.5 2.5 0 0 1 4.8 1c0 1.7-2.4 2.2-2.4 3.7" />
-      <circle cx="12" cy="17.2" r="0.7" fill="currentColor" stroke="none" />
     </Icon>
   );
 }

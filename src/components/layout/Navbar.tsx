@@ -1,6 +1,6 @@
 import { useState, type FormEvent } from "react";
 import { initials, useAuth } from "../../hooks/useAuth";
-import BrandMark from "../ui/BrandMark";
+import BrandLogo from "../ui/BrandLogo";
 import { IconSearch } from "../icons";
 import { MenuIcon } from "../ui/LineIcons";
 
@@ -53,7 +53,7 @@ export default function Navbar({
 
         {/* Logo */}
         <div className="flex items-center gap-2.5 mr-4">
-          <BrandMark />
+          <BrandLogo size={40} className="h-10 w-auto" />
           <div>
             <div className="text-lg font-800 leading-none" style={{ color: "#0d2717", fontWeight: 800 }}>
               Ayur IP

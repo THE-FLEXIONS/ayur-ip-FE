@@ -1,5 +1,6 @@
 import { LEFT_PANEL_IMG } from "./shared/assets";
-import { IconBrainSm, IconLeafSm, IconShieldSm, LeafLogo } from "./shared/icons";
+import BrandLogo from "../../components/ui/BrandLogo";
+import { IconBrainSm, IconLeafSm, IconShieldSm } from "./shared/icons";
 
 // Left half of the auth card: brand, headline, value props over the landscape photo.
 export default function LoginShowcase({ onBack }: { onBack: () => void }) {
@@ -44,7 +45,7 @@ export default function LoginShowcase({ onBack }: { onBack: () => void }) {
             onClick={onBack}
             className="flex items-center gap-2.5 hover:opacity-80 transition-opacity"
           >
-            <LeafLogo />
+            <BrandLogo size={40} className="h-10 w-auto" />
             <div className="text-left">
               <div
                 className="text-base leading-none"

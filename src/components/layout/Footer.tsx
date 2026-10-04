@@ -2,7 +2,8 @@ import type { MouseEvent, ReactNode } from "react";
 import { IconChat, IconMail, IconPhone, IconPrivacy, IconQuestionCircle } from "../icons";
 import NewsletterForm from "./NewsletterForm";
 import FooterBotanicals from "./footer/FooterBotanicals";
-import { InstagramGlyph, LeafFanMark, LinkedInGlyph, SproutIcon, XGlyph, YouTubeGlyph } from "./footer/FooterIcons";
+import BrandLogo from "../ui/BrandLogo";
+import { InstagramGlyph, LinkedInGlyph, SproutIcon, XGlyph, YouTubeGlyph } from "./footer/FooterIcons";
 import FooterPartners from "./footer/FooterPartners";
 import { ABOUT_LINKS, PRODUCT_LINKS, RESOURCE_LINKS, SOCIAL_LINKS, SUPPORT_PHONE, type FooterLink } from "./footer/links";
 
@@ -92,7 +93,7 @@ export default function Footer({ onNavigate }: FooterProps) {
               }}
               className="inline-flex items-center gap-[18px] rounded-md focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#1d6a3f]"
             >
-              <LeafFanMark className="h-[54px] w-[61px] shrink-0 lg:h-[60px] lg:w-[68px]" />
+              <BrandLogo size={66} className="h-[58px] w-auto lg:h-[66px]" />
               <span className="flex flex-col">
                 <span className="text-[30px] font-bold leading-none tracking-[-0.01em] text-[#1c4a2c] lg:text-[34px]">IP-SAKTI</span>
                 <span className="mt-1.5 text-[17px] leading-none text-[#4b5b63] lg:text-[19px]">AI for Ayurveda IP</span>

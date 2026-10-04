@@ -1,4 +1,5 @@
 import { Fragment, type ReactNode } from "react";
+import { findAsset } from "../../../lib/assets";
 import { GOV_PORTALS } from "./links";
 
 // ─── Footer partners ────────────────────────────────────────────────────────
@@ -9,15 +10,8 @@ import { GOV_PORTALS } from "./links";
 // automatically: emblem, ip-india, digital-india, mygov, g20.
 // Until then each slot shows a typeset stand-in of the same size.
 
-const LOGO_FILES = import.meta.glob<string>("../../../assets/partners/*.{svg,png,webp}", {
-  eager: true,
-  query: "?url",
-  import: "default",
-});
-
 function logoUrl(name: string): string | undefined {
-  const key = Object.keys(LOGO_FILES).find((path) => path.split("/").pop()?.replace(/\.\w+$/, "") === name);
-  return key ? LOGO_FILES[key] : undefined;
+  return findAsset("partners", name);
 }
 
 type Partner = { id: string; name: string; className: string; fallback: ReactNode };

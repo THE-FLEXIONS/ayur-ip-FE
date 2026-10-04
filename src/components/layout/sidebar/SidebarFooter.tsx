@@ -5,7 +5,7 @@ import { APP_VERSION } from "../../../config/app";
 export default function SidebarFooter() {
   const id = useId();
   return (
-    <div className="pointer-events-none relative z-20 -mt-[108px] h-[204px] shrink-0 sm:-mt-[112px] sm:h-[212px]">
+    <div className="pointer-events-none relative z-20 -mt-[92px] h-[170px] shrink-0">
       <svg
         viewBox="0 0 400 224"
         preserveAspectRatio="none"
@@ -43,12 +43,12 @@ export default function SidebarFooter() {
         <path d="M0 128c30-8 64-10 100-2 38 8 70 12 110 4 44-9 82-14 120-6 26 5 50 10 70 16V224H0Z" fill={`url(#${id}-front)`} />
       </svg>
 
-      <p className="absolute inset-x-0 bottom-10 px-6 text-center font-editorial text-[21px] leading-[1.28] text-[#e2c56c] sm:bottom-11 sm:text-[23px]">
+      <p className="absolute inset-x-0 bottom-8 px-5 text-center font-editorial text-[17.5px] leading-[1.28] text-[#e2c56c]">
         India&rsquo;s heritage.
         <br />
         A healthier tomorrow.
       </p>
-      <p className="absolute bottom-3 right-5 text-[12px] tracking-wide text-white/70">v{APP_VERSION}</p>
+      <p className="absolute bottom-2.5 right-4 text-[11px] tracking-wide text-white/70">v{APP_VERSION}</p>
     </div>
   );
 }

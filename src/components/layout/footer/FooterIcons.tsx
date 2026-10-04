@@ -1,27 +1,5 @@
 // ─── Footer-only marks ──────────────────────────────────────────────────────
-// The three-leaf brand mark, the newsletter sprout and the social glyphs.
-
-/** Three-leaf fan used beside the IP-SAKTI wordmark. */
-export function LeafFanMark({ className = "" }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 68 60" fill="none" aria-hidden="true" className={className}>
-      <defs>
-        <linearGradient id="footer-leaf-a" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stopColor="#58a34a" />
-          <stop offset="1" stopColor="#1f5f2c" />
-        </linearGradient>
-        <linearGradient id="footer-leaf-b" x1="1" y1="0" x2="0" y2="1">
-          <stop offset="0" stopColor="#6db352" />
-          <stop offset="1" stopColor="#24692f" />
-        </linearGradient>
-      </defs>
-      <path d="M31 58 C14 54 3 41 1 22 C17 26 29 38 31 58Z" fill="url(#footer-leaf-a)" />
-      <path d="M37 58 C54 54 65 41 67 22 C51 26 39 38 37 58Z" fill="url(#footer-leaf-b)" />
-      <path d="M34 58 C22 46 21 22 34 2 C47 22 46 46 34 58Z" fill="#2f7a37" />
-      <path d="M34 56 V12 M31 56 C24 46 15 35 6 28 M37 56 C44 46 53 35 62 28" stroke="#e8f3e3" strokeOpacity="0.7" strokeWidth="1.1" strokeLinecap="round" />
-    </svg>
-  );
-}
+// The newsletter sprout and the social glyphs.
 
 /** Single leaf on a curved stem, for the "Stay Updated" card. */
 export function SproutIcon({ className = "" }: { className?: string }) {

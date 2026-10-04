@@ -5,7 +5,7 @@ export function SidebarLeafOutlines() {
   return (
     <svg
       viewBox="0 0 80 300"
-      className="pointer-events-none absolute right-0 top-[42%] z-0 h-auto w-[13%] min-w-[44px] max-w-[64px]"
+      className="pointer-events-none absolute right-0 top-[42%] z-0 h-auto w-[10%] min-w-[30px] max-w-[40px]"
       aria-hidden="true"
       focusable="false"
     >
@@ -26,7 +26,7 @@ export function SidebarFloweringBranch() {
   return (
     <LeafBranch
       flowers
-      className="pointer-events-none absolute bottom-[58px] right-[-30px] z-30 w-[112px] rotate-[6deg] drop-shadow-[0_6px_12px_rgba(10,40,20,0.25)] sm:w-[124px]"
+      className="pointer-events-none absolute bottom-[48px] right-[-26px] z-30 w-[92px] rotate-[6deg] drop-shadow-[0_6px_12px_rgba(10,40,20,0.25)]"
     />
   );
 }

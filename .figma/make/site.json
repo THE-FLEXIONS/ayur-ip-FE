@@ -6,5 +6,8 @@
   "accessibility": {
     "addBypassLinks": false,
     "ignoreReducedMotion": false
+  },
+  "icons": {
+    "icon": "https://res.cloudinary.com/cyymn1yh/image/upload/e_make_transparent:12/e_trim/c_pad,w_64,h_64,b_transparent/f_png/ayurip-logo"
   }
 }

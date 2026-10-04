@@ -14,12 +14,18 @@ export default function SidebarNavItem({ icon: Icon, label, active = false, trai
     <button
       type="button"
       aria-current={active ? "page" : undefined}
-      className={`group flex h-12 w-full items-center gap-[22px] rounded-[14px] px-4 text-left text-[16.5px] leading-none tracking-[-0.005em] text-[#16302b] transition-colors duration-200 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ayur-green sm:text-[17px] [@media(max-height:860px)]:h-11 [@media(min-height:900px)]:h-[52px] ${
-        active ? "bg-[#dce8d8]" : "hover:bg-[#ebf0e5]"
+      className={`group flex h-11 w-full items-center gap-3.5 rounded-[12px] px-3.5 text-left text-[15px] leading-none tracking-[-0.005em] text-[#16302b] transition-[background-color,color] duration-200 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ayur-green [@media(max-height:760px)]:h-10 ${
+        active ? "bg-[#dce8d8] font-medium" : "hover:bg-[#ebf0e5]"
       } ${className}`}
       {...rest}
     >
-      <Icon size={26} strokeWidth={1.6} className="shrink-0 text-[#1a4a2f]" />
+      <Icon
+        size={20}
+        strokeWidth={active ? 2 : 1.75}
+        className={`shrink-0 transition-[color,transform] duration-200 group-hover:scale-110 motion-reduce:group-hover:scale-100 ${
+          active ? "text-[#155231]" : "text-[#3d5547] group-hover:text-[#1a4a2f]"
+        }`}
+      />
       <span className="min-w-0 flex-1 truncate py-1">{label}</span>
       {trailing}
     </button>

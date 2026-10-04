@@ -1,4 +1,5 @@
-import { useCallback, useEffect, useState, type ReactNode } from "react";
+import { useCallback, useEffect, useState, type CSSProperties, type ReactNode } from "react";
+import BottomNav, { BOTTOM_NAV_HEIGHT, type BottomNavKey } from "./components/layout/BottomNav";
 import Navbar from "./components/layout/Navbar";
 import { Sidebar, type SidebarKey } from "./components/layout/sidebar";
 import type { AskRequest, ResearchTool } from "./config/research";
@@ -13,6 +14,7 @@ import {
   HistoryPage,
   HomePage,
   LoginPage,
+  ResourcesPage,
   SavedPage,
   SettingsPage,
   UseCasesPage,
@@ -30,11 +32,11 @@ const TOOL_ITEMS: Partial<Record<SidebarKey, string>> = {
   formulation: "Formulation Classifier",
   "ip-guidance": "IP Guidance",
   abs: "ABS Compliance",
-  resources: "Databases & Resources",
 };
 
 /** Sidebar items that are their own page. */
 const PAGE_ITEMS: Partial<Record<SidebarKey, string>> = {
+  resources: "Resources",
   saved: "Saved",
   history: "History",
   settings: "Settings",
@@ -46,6 +48,8 @@ let intentCounter = 0;
 
 export default function App() {
   const [page, setPage] = useState("Home");
+  // Where the Resources back button returns to.
+  const [previousPage, setPreviousPage] = useState("Home");
   const [homeKey, setHomeKey] = useState<SidebarKey>("home");
   const [homeIntent, setHomeIntent] = useState<HomeIntent | null>(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -76,12 +80,13 @@ export default function App() {
     (next: string) => {
       if (next === "Login" && signedIn) next = "Home";
       if (next !== "Login") setLoginNotice(null);
+      if (next !== page) setPreviousPage(page);
       setPage(next);
       setHomeKey("home");
       setHomeIntent(null);
       window.scrollTo({ top: 0 });
     },
-    [signedIn],
+    [signedIn, page],
   );
 
   function goHome(key: SidebarKey, intent: HomeIntent | null) {
@@ -106,6 +111,14 @@ export default function App() {
     } else if (key === "new-query") goHome(key, { id: ++intentCounter, kind: "focus" });
     else if (key === "help") goHome(key, { id: ++intentCounter, kind: "scroll", targetId: "help-support" });
     else goHome("home", null);
+  }
+
+  function handleBottomNav(key: BottomNavKey) {
+    if (key === "home") navigate("Home");
+    else if (key === "search") navigate("Herbal Library");
+    else if (key === "ask") goHome("new-query", { id: ++intentCounter, kind: "focus" });
+    else if (key === "resources") navigate("Resources");
+    else navigate("Settings");
   }
 
   function askAgain(entry: HistoryEntry) {
@@ -156,6 +169,19 @@ export default function App() {
     );
   }
 
+  const bottomNavKey: BottomNavKey | null =
+    page === "Home"
+      ? homeKey === "new-query"
+        ? "ask"
+        : "home"
+      : page === "Herbal Library"
+        ? "search"
+        : page === "Resources"
+          ? "resources"
+          : page === "Settings" || page === "History" || page === "Saved"
+            ? "profile"
+            : null;
+
   let content: ReactNode;
   if (page === "Home") {
     content = (
@@ -183,6 +209,14 @@ export default function App() {
     );
   } else if (page === "Saved") {
     content = <SavedPage workspace={workspace} onNavigate={navigate} onOpenMenu={openSidebar} onAskAgain={askAgain} />;
+  } else if (page === "Resources") {
+    content = (
+      <ResourcesPage
+        onNavigate={navigate}
+        onOpenMenu={openSidebar}
+        onBack={() => navigate(previousPage === "Resources" ? "Home" : previousPage)}
+      />
+    );
   } else if (page === "Settings") {
     content = <SettingsPage workspace={workspace} onNavigate={navigate} onOpenMenu={openSidebar} />;
   } else {
@@ -208,7 +242,14 @@ export default function App() {
   return (
     <>
       {/* The page is inert while the sidebar is open, so focus and clicks stay in the menu. */}
-      <div inert={sidebarOpen}>{content}</div>
+      <div
+        inert={sidebarOpen}
+        className="pb-[calc(var(--bottom-nav-h)+env(safe-area-inset-bottom))] lg:pb-0"
+        style={{ "--bottom-nav-h": `${BOTTOM_NAV_HEIGHT}px` } as CSSProperties}
+      >
+        {content}
+        <BottomNav active={bottomNavKey} onSelect={handleBottomNav} />
+      </div>
       <Sidebar
         open={sidebarOpen}
         onClose={closeSidebar}

@@ -17,7 +17,7 @@ This is the canonical project structure. Start with task-relevant files below. O
 - `src/App.tsx` - Primary application component; switches between pages
 - `src/pages/` - One file per page that composes its sections (`pages/auth/LoginPage.tsx` for login)
 - `src/sections/<page>/` - One file per page section, plus `shared/` (icons, image URLs, helpers) and an `index.ts` barrel; see `src/sections/README.md`
-- `src/components/` - Pieces shared across pages: `layout/` (AppHeader, Navbar, Footer, `sidebar/`), `ui/` (LineIcons, Botanicals, SelectChip, BrandMark), `icons.tsx`
+- `src/components/` - Pieces shared across pages: `layout/` (AppHeader, Navbar, Footer, `sidebar/`), `ui/` (LineIcons, Botanicals, SelectChip, BrandLogo), `icons.tsx`
 - `src/config/` - App version (read from package.json), answer languages, research options
 - `src/lib/api/` - Backend client: `client.ts` (base URL from `VITE_API_URL`, token, `ApiError`), one file per area (`auth`, `ai` streaming, `workspace`, `library`, `forms`) and shared `types.ts`
 - `src/hooks/useAuth.tsx` - Sign-in state (`AuthProvider` wraps the app in `main.tsx`)

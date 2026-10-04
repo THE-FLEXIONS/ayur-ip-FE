@@ -1,6 +1,6 @@
 import { useEffect, useId, useRef, useState } from "react";
 import { initials, useAuth } from "../../hooks/useAuth";
-import { AyurLeafMark } from "../ui/Botanicals";
+import BrandLogo from "../ui/BrandLogo";
 import { BellIcon, MenuIcon } from "../ui/LineIcons";
 
 export const NAV_LINKS = ["Home", "Features", "Use Cases", "Herbal Library", "About"] as const;
@@ -68,7 +68,7 @@ export default function AppHeader({ onNavigate, onOpenMenu, activePage = "Home" 
         className="flex items-center gap-2.5 rounded-lg focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ayur-green sm:gap-3"
         aria-label="AyurIP home"
       >
-        <AyurLeafMark className="size-10 shrink-0 min-[400px]:size-11 sm:size-14 lg:size-16" />
+        <BrandLogo size={64} className="h-10 w-auto min-[400px]:h-11 sm:h-14 lg:h-16" />
         <span className="flex flex-col">
           <span className="font-editorial text-[24px] font-semibold min-[400px]:text-[26px] leading-none tracking-[-0.01em] text-ayur-ink sm:text-[32px] lg:text-[36px]">
             AyurIP

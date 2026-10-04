@@ -26,7 +26,7 @@ Inside each folder:
 Related folders:
 
 - `src/pages/`: one file per page that only puts its sections in order (`pages/auth/` for login).
-- `src/components/`: pieces shared across pages: `layout/` (AppHeader, Navbar, Footer, WorkspaceShell, `sidebar/`), `ui/` (LineIcons, Botanicals, SelectChip, BrandMark), `icons.tsx`.
+- `src/components/`: pieces shared across pages: `layout/` (AppHeader, Navbar, Footer, WorkspaceShell, `sidebar/`), `ui/` (LineIcons, Botanicals, SelectChip, BrandLogo), `icons.tsx`.
 - `src/config/`: app version and languages (`app.ts`), research modes and jurisdictions (`research.tsx`).
 - `src/hooks/useWorkspace.ts`: question history, saved questions and preferences (stored in localStorage).
 

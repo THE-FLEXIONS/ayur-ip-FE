@@ -1,38 +1,5 @@
 import { useId } from "react";
 
-/** AyurIP two-leaf brand mark. */
-const LEAF_MARK_TONES = {
-  // on light backgrounds
-  default: { rear: ["#1c5e34", "#4d9a55"], front: ["#4f9a4f", "#b3dc86"] },
-  // on the dark green sidebar header
-  light: { rear: ["#3d9447", "#8fd06a"], front: ["#6cbf57", "#c6ea96"] },
-};
-
-export function AyurLeafMark({ className, tone = "default" }: { className?: string; tone?: keyof typeof LEAF_MARK_TONES }) {
-  const id = useId();
-  const { rear, front } = LEAF_MARK_TONES[tone];
-  return (
-    <svg viewBox="0 0 64 64" className={className} aria-hidden="true" focusable="false">
-      <defs>
-        <linearGradient id={`${id}-a`} x1="0" y1="1" x2="1" y2="0">
-          <stop offset="0" stopColor={rear[0]} />
-          <stop offset="1" stopColor={rear[1]} />
-        </linearGradient>
-        <linearGradient id={`${id}-b`} x1="0" y1="1" x2="1" y2="0">
-          <stop offset="0" stopColor={front[0]} />
-          <stop offset="1" stopColor={front[1]} />
-        </linearGradient>
-      </defs>
-      {/* large rear leaf */}
-      <path d="M14 54C12 32 26 12 60 4c2 28-14 46-46 50Z" fill={`url(#${id}-a)`} />
-      <path d="M16 52C27 37 40 22 56 8" stroke="#dcefd6" strokeWidth="1.6" fill="none" strokeLinecap="round" opacity="0.85" />
-      {/* small front leaf */}
-      <path d="M3 62c-4-19 8-35 33-38 1 21-12 36-33 38Z" fill={`url(#${id}-b)`} />
-      <path d="M4 61c7-10 15-19 28-32" stroke="#eef8e8" strokeWidth="1.3" fill="none" strokeLinecap="round" opacity="0.9" />
-    </svg>
-  );
-}
-
 const LEAF = "M0 0C10-11 33-12 48 0 33 12 10 11 0 0Z";
 
 type Leaf = { x: number; y: number; r: number; s: number; tone?: 0 | 1 };

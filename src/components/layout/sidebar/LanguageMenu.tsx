@@ -1,6 +1,7 @@
 import { useId, useState, type KeyboardEvent } from "react";
 import { LANGUAGES, type LanguageCode } from "../../../config/app";
-import { CheckIcon, ChevronRightIcon, TranslateIcon } from "../../ui/LineIcons";
+import { CheckIcon, ChevronRightIcon } from "../../ui/LineIcons";
+import { LanguageNavIcon } from "../../ui/NavIcons";
 import SidebarNavItem from "./SidebarNavItem";
 
 type LanguageMenuProps = {
@@ -27,7 +28,7 @@ export default function LanguageMenu({ value, onChange }: LanguageMenuProps) {
   return (
     <div>
       <SidebarNavItem
-        icon={TranslateIcon}
+        icon={LanguageNavIcon}
         label="Language"
         aria-expanded={open}
         aria-controls={panelId}
@@ -36,7 +37,7 @@ export default function LanguageMenu({ value, onChange }: LanguageMenuProps) {
           <span className="flex items-center gap-2">
             <span className="sr-only">, current: {current.label}</span>
             <ChevronRightIcon
-              size={20}
+              size={18}
               strokeWidth={1.8}
               className={`shrink-0 text-[#1a3a33] transition-transform duration-200 ${open ? "rotate-90" : ""}`}
             />
@@ -45,7 +46,7 @@ export default function LanguageMenu({ value, onChange }: LanguageMenuProps) {
       />
 
       {open && (
-        <div id={panelId} role="radiogroup" aria-label="Answer language" className="animate-rise pb-1 pl-[62px] pr-3 [animation-duration:200ms]">
+        <div id={panelId} role="radiogroup" aria-label="Answer language" className="animate-rise pb-1 pl-[46px] pr-2 [animation-duration:200ms]">
           {LANGUAGES.map((lang) => {
             const checked = lang.code === value;
             return (
@@ -59,7 +60,7 @@ export default function LanguageMenu({ value, onChange }: LanguageMenuProps) {
                 tabIndex={checked ? 0 : -1}
                 onClick={() => onChange(lang.code)}
                 onKeyDown={(e) => onRadioKeyDown(e, lang.code)}
-                className="flex h-10 w-full items-center gap-3 rounded-xl px-3 text-left text-[15px] text-[#16302b] transition-colors hover:bg-[#ebf0e5] focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ayur-green disabled:cursor-not-allowed disabled:text-[#8a918a] disabled:hover:bg-transparent"
+                className="flex h-9 w-full items-center gap-3 rounded-[10px] px-3 text-left text-[14px] text-[#16302b] transition-colors hover:bg-[#ebf0e5] focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ayur-green disabled:cursor-not-allowed disabled:text-[#8a918a] disabled:hover:bg-transparent"
               >
                 <span lang={lang.code}>{lang.native}</span>
                 {lang.native !== lang.label && <span className="text-[13px] text-ayur-muted">{lang.label}</span>}

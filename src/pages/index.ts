@@ -3,6 +3,7 @@ export { default as FeaturesPage } from "./FeaturesPage";
 export { default as HerbalLibraryPage } from "./HerbalLibraryPage";
 export { default as HomePage } from "./HomePage";
 export { default as UseCasesPage } from "./UseCasesPage";
+export { default as ResourcesPage } from "./ResourcesPage";
 export { default as LoginPage } from "./auth/LoginPage";
 export { default as HistoryPage } from "./HistoryPage";
 export { default as SavedPage } from "./SavedPage";
