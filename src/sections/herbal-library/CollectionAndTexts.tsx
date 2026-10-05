@@ -64,27 +64,27 @@ export default function CollectionAndTexts({
 
   return (
     <section style={{ background: "#fff", paddingTop: 8, paddingBottom: 32 }}>
-      <div className="max-w-7xl mx-auto px-8">
-        <div className="grid grid-cols-2 gap-5">
+      <div className="max-w-7xl mx-auto px-4 sm:px-8">
+        <div className="grid gap-4 sm:gap-5 lg:grid-cols-2">
 
           {/* ── Featured Collection ── */}
-          <div style={{ borderRadius: 20, border: "1px solid #eef0ee", background: "#fafafa", padding: 24 }}>
-            <div className="flex items-start justify-between mb-1">
+          <div className="p-4 sm:p-6" style={{ borderRadius: 20, border: "1px solid #eef0ee", background: "#fafafa" }}>
+            <div className="flex flex-wrap items-start justify-between gap-x-4 gap-y-1 mb-1">
               <p className="font-bold" style={{ fontSize: 16, color: "#0d2717" }}>Featured Collection</p>
-              <button type="button" onClick={onViewAllCollections} className="flex items-center gap-1 font-semibold" style={{ fontSize: 12, color: "#0d2717" }}>
+              <button type="button" onClick={onViewAllCollections} className="flex items-center gap-1 whitespace-nowrap font-semibold" style={{ fontSize: 12, color: "#0d2717" }}>
                 View all collections <Arr size={11}/>
               </button>
             </div>
             <p className="mb-6" style={{ fontSize: 12, color: "#9ca3af" }}>Curated knowledge for your wellness journey.</p>
 
-            <div className="grid grid-cols-3 gap-4">
+            <div className="grid grid-cols-3 gap-2 sm:gap-4">
               {collections.map(({ label, area, count, icon }) => (
                 <button
                   key={label}
                   type="button"
                   onClick={() => onOpenCollection(area)}
-                  className="flex flex-col items-center gap-3 transition-all hover:shadow-md"
-                  style={{ background: "white", borderRadius: 16, border: "1px solid #eef0ee", padding: "20px 12px" }}
+                  className="flex flex-col items-center gap-3 px-2 py-4 transition-all hover:shadow-md sm:px-3 sm:py-5"
+                  style={{ background: "white", borderRadius: 16, border: "1px solid #eef0ee" }}
                 >
                   <div
                     className="flex items-center justify-center rounded-full"
@@ -102,23 +102,23 @@ export default function CollectionAndTexts({
           </div>
 
           {/* ── Classical Texts ── */}
-          <div style={{ borderRadius: 20, border: "1px solid #eef0ee", background: "#fafafa", padding: 24 }}>
-            <div className="flex items-start justify-between mb-1">
+          <div className="p-4 sm:p-6" style={{ borderRadius: 20, border: "1px solid #eef0ee", background: "#fafafa" }}>
+            <div className="flex flex-wrap items-start justify-between gap-x-4 gap-y-1 mb-1">
               <p className="font-bold" style={{ fontSize: 16, color: "#0d2717" }}>Explore by Classical Texts</p>
-              <button type="button" onClick={onViewAllTexts} className="flex items-center gap-1 font-semibold" style={{ fontSize: 12, color: "#0d2717" }}>
+              <button type="button" onClick={onViewAllTexts} className="flex items-center gap-1 whitespace-nowrap font-semibold" style={{ fontSize: 12, color: "#0d2717" }}>
                 View all texts <Arr size={11}/>
               </button>
             </div>
             <p className="mb-6" style={{ fontSize: 12, color: "#9ca3af" }}>Dive into timeless Ayurvedic wisdom.</p>
 
-            <div className="grid grid-cols-3 gap-4">
+            <div className="grid grid-cols-3 gap-2 sm:gap-4">
               {books.map(({ slug, title, desc, bg, spine }) => (
                 <button
                   key={title}
                   type="button"
                   onClick={() => onOpenText(slug)}
-                  className="flex flex-col items-start transition-all hover:shadow-md"
-                  style={{ background: "white", borderRadius: 14, border: "1px solid #eef0ee", padding: 12 }}
+                  className="flex min-w-0 flex-col items-start p-2 transition-all hover:shadow-md sm:p-3"
+                  style={{ background: "white", borderRadius: 14, border: "1px solid #eef0ee" }}
                 >
                   {/* Book cover */}
                   <div

@@ -16,34 +16,34 @@ export default function UseCasesHero() {
 
   return (
     <section
-      className="pt-16 relative overflow-hidden"
+      className="relative overflow-hidden pt-8 sm:pt-10"
       style={{ background: "linear-gradient(135deg, #f7f6ef 0%, #ffffff 55%, #f0f7f2 100%)" }}
     >
-      <div className="max-w-7xl mx-auto px-6 pt-14 pb-4">
-        <div className="grid grid-cols-2 gap-10 items-start">
+      <div className="mx-auto max-w-7xl px-4 pb-4 pt-6 sm:px-6 sm:pt-8 lg:px-8 lg:pt-10">
+        <div className="grid grid-cols-1 items-start gap-8 lg:grid-cols-2 lg:gap-10">
           {/* Left */}
           <div>
-            <p className="text-xs font-semibold tracking-[0.25em] mb-6" style={{ color: "#2d6a4f" }}>
+            <p className="mb-4 text-xs font-semibold tracking-[0.25em] sm:mb-6" style={{ color: "#2d6a4f" }}>
               USE CASES
             </p>
-            <h1 className="text-6xl font-black leading-[1.05] mb-6" style={{ color: "#0d2717", fontWeight: 900 }}>
+            <h1 className="mb-4 text-3xl font-black leading-[1.05] sm:mb-6 sm:text-5xl lg:text-6xl" style={{ color: "#0d2717", fontWeight: 900 }}>
               Different Needs.<br />
               A <span style={{ color: "#2d6a4f" }}>Healthier</span> Tomorrow.
             </h1>
-            <p className="text-lg leading-relaxed mb-9 max-w-md" style={{ color: "#4b5563" }}>
+            <p className="mb-6 max-w-md text-base leading-relaxed sm:mb-9 sm:text-lg" style={{ color: "#4b5563" }}>
               From individual wellness to global research, Ayur-Ip empowers diverse users to discover, protect and apply the wisdom of Ayurveda — in the real world.
             </p>
 
             {/* Buttons */}
-            <div className="flex items-center gap-4 mb-12">
+            <div className="mb-8 flex flex-wrap items-center gap-3 sm:mb-12 sm:gap-4">
               <button
-                className="flex items-center gap-2 px-7 py-3.5 rounded-full text-sm font-semibold text-white transition-opacity hover:opacity-90"
+                className="flex items-center gap-2 rounded-full px-5 py-3.5 text-sm font-semibold text-white transition-opacity hover:opacity-90 sm:px-7"
                 style={{ background: "#1a4028" }}
               >
                 Explore Use Cases <ArrowRight color="white" size={15} />
               </button>
               <button
-                className="flex items-center gap-3 pl-2 pr-6 py-2 rounded-full text-sm font-semibold border transition-colors hover:bg-gray-50"
+                className="flex items-center gap-2 rounded-full border py-2 pl-2 pr-4 text-sm font-semibold transition-colors hover:bg-gray-50 sm:gap-3 sm:pr-6"
                 style={{ borderColor: "#d1d5db", color: "#0d2717" }}
               >
                 <span className="w-9 h-9 rounded-full flex items-center justify-center" style={{ border: "1.5px solid #0d2717" }}>
@@ -56,14 +56,14 @@ export default function UseCasesHero() {
             </div>
 
             {/* Mini stats */}
-            <div className="flex items-center gap-10">
+            <div className="flex flex-wrap items-center gap-x-5 gap-y-4 sm:gap-x-8 lg:gap-10">
               {[
                 { icon: <IconLeafSm color="#2d6a4f" />, val: "6+", label: "User Groups" },
                 { icon: <IconBookSm color="#2d6a4f" />, val: "Real", label: "Applications" },
                 { icon: <IconBank color="#2d6a4f" />, val: "Greater", label: "Impact" },
               ].map(({ icon, val, label }, i) => (
-                <div key={i} className="flex items-center gap-3">
-                  <span className="w-11 h-11 rounded-full flex items-center justify-center" style={{ background: "#e8f2ea" }}>
+                <div key={i} className="flex items-center gap-2 sm:gap-3">
+                  <span className="flex size-9 items-center justify-center rounded-full sm:size-11" style={{ background: "#e8f2ea" }}>
                     {icon}
                   </span>
                   <div>
@@ -75,9 +75,9 @@ export default function UseCasesHero() {
             </div>
 
             {/* Quote */}
-            <div className="mt-12 flex items-end gap-4">
+            <div className="mt-8 flex items-end gap-4 sm:mt-12">
               <p
-                className="text-2xl leading-tight"
+                className="text-xl leading-tight sm:text-2xl"
                 style={{ fontFamily: "'Dancing Script', cursive", color: "#2d6a4f" }}
               >
                 "Ancient Knowledge.<br />Modern Relevance.<br />Real People."
@@ -87,9 +87,9 @@ export default function UseCasesHero() {
           </div>
 
           {/* Right: image collage + timeline */}
-          <div className="relative" style={{ minHeight: 620 }}>
+          <div className="relative mx-auto mt-2 h-[440px] w-full max-w-[460px] sm:h-[560px] lg:mt-0 lg:min-h-[620px] lg:max-w-none">
             {/* Script top-right */}
-            <div className="absolute top-0 right-0 text-right z-20">
+            <div className="absolute right-0 top-0 z-20 text-right">
               <p
                 className="text-2xl leading-snug"
                 style={{ fontFamily: "'Dancing Script', cursive", color: "#2d6a4f" }}
@@ -100,16 +100,15 @@ export default function UseCasesHero() {
             </div>
 
             {/* Image collage */}
-            <div className="absolute left-0 top-20 flex gap-3" style={{ width: 400 }}>
+            <div className="absolute left-1/2 top-16 flex w-full -translate-x-1/2 gap-2 sm:top-20 sm:gap-3 lg:left-0 lg:w-[400px] lg:translate-x-0">
               {/* Arched image 1 */}
-              <div className="relative">
+              <div className="relative h-[280px] w-[48%] sm:h-[350px] lg:h-[400px]">
                 <div
-                  className="overflow-hidden shadow-lg"
-                  style={{ width: 185, height: 400, borderRadius: "92px 92px 12px 12px" }}
+                  className="h-full w-full overflow-hidden rounded-t-[80px] rounded-b-xl shadow-lg sm:rounded-t-[92px]"
                 >
                   <img src={WOMAN_NATURE} alt="Woman in nature" className="w-full h-full object-cover" />
                   <div className="absolute inset-0" style={{ background: "linear-gradient(180deg,rgba(0,0,0,0) 40%,rgba(0,0,0,0.35))" }} />
-                  <p className="absolute left-4 top-32 text-white italic text-lg leading-tight" style={{ fontFamily: "'Dancing Script', cursive" }}>
+                  <p className="absolute left-4 top-14 sm:top-32 text-white italic text-lg leading-tight" style={{ fontFamily: "'Dancing Script', cursive" }}>
                     For a<br />healthier<br />you
                   </p>
                   <p className="absolute left-4 bottom-6 text-white italic text-lg leading-tight" style={{ fontFamily: "'Dancing Script', cursive" }}>
@@ -118,8 +117,7 @@ export default function UseCasesHero() {
                 </div>
                 {/* Overlapping researcher image */}
                 <div
-                  className="absolute overflow-hidden shadow-lg"
-                  style={{ left: 95, top: 150, width: 175, height: 250, borderRadius: "88px 88px 12px 12px", border: "3px solid #fff" }}
+                  className="absolute left-[52%] top-[38%] h-[58%] w-[94%] overflow-hidden rounded-t-[70px] rounded-b-xl border-[3px] border-white shadow-lg sm:rounded-t-[88px]"
                 >
                   <img src={RESEARCHER_PLANT} alt="Researcher with plant" className="w-full h-full object-cover" />
                 </div>
@@ -127,12 +125,11 @@ export default function UseCasesHero() {
 
               {/* Arched image 2 (books) */}
               <div
-                className="relative overflow-hidden shadow-lg mt-24"
-                style={{ width: 190, height: 340, borderRadius: "12px 12px 12px 12px", alignSelf: "flex-start" }}
+                className="relative mt-16 h-[250px] w-[46%] max-w-[190px] shrink-0 self-start overflow-hidden rounded-xl shadow-lg sm:mt-24 sm:h-[300px] lg:h-[340px]"
               >
                 <img src={OLD_BOOKS} alt="Ancient books and herbs" className="w-full h-full object-cover" />
                 <div className="absolute inset-0" style={{ background: "linear-gradient(180deg,rgba(0,0,0,0) 45%,rgba(0,0,0,0.4))" }} />
-                <p className="absolute left-3 top-24 text-white italic text-base leading-tight" style={{ fontFamily: "'Dancing Script', cursive" }}>
+                <p className="absolute left-3 top-12 sm:top-24 text-white italic text-base leading-tight" style={{ fontFamily: "'Dancing Script', cursive" }}>
                   For<br />preserving<br />traditions
                 </p>
                 <p className="absolute left-3 bottom-5 text-white italic text-base leading-tight" style={{ fontFamily: "'Dancing Script', cursive" }}>
@@ -142,12 +139,12 @@ export default function UseCasesHero() {
             </div>
 
             {/* "Rooted in tradition" caption */}
-            <p className="absolute left-0 bottom-2 text-xs font-semibold tracking-[0.2em] leading-6" style={{ color: "#6b7280" }}>
+            <p className="absolute bottom-2 left-0 hidden text-xs font-semibold leading-6 tracking-[0.2em] text-[#6b7280] lg:block">
               ROOTED IN<br />TRADITION.<br />BUILT FOR<br />WHAT'S NEXT.
             </p>
 
             {/* Timeline */}
-            <div className="absolute right-0 top-24" style={{ width: 210, height: 620 }}>
+            <div className="absolute right-0 top-24 hidden h-[620px] w-[210px] xl:block">
               {timeline.map((t, i) => (
                 <div key={t.title} className="absolute flex items-center gap-2" style={{ top: t.top, right: 0 }}>
                   <ChipDot color={t.color} />

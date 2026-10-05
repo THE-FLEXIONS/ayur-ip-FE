@@ -20,8 +20,8 @@ export default function LibraryResults({ summary, status, error, items, total, h
 
   return (
     <section id="library-results" aria-label="Search results" aria-busy={status === "loading"} style={{ background: "#fff", paddingTop: 24, paddingBottom: 16 }}>
-      <div className="max-w-7xl mx-auto px-8">
-        <div className="flex items-center justify-between gap-4 mb-5 pb-4 border-b" style={{ borderColor: "#f0f0f0" }}>
+      <div className="max-w-7xl mx-auto px-4 sm:px-8">
+        <div className="flex flex-wrap items-center justify-between gap-4 mb-5 pb-4 border-b" style={{ borderColor: "#f0f0f0" }}>
           <div>
             <h2 className="font-bold" style={{ fontSize: 20, color: "#0d2717" }}>
               {loadingFirstPage ? "Searching…" : `${total} ${total === 1 ? "result" : "results"}`}
@@ -45,7 +45,7 @@ export default function LibraryResults({ summary, status, error, items, total, h
         )}
 
         {loadingFirstPage ? (
-          <div className="grid grid-cols-2 gap-4 md:grid-cols-4 lg:grid-cols-5">
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 md:grid-cols-4 lg:grid-cols-5">
             {Array.from({ length: 5 }, (_, i) => (
               <div key={i} className="h-[300px] animate-pulse rounded-2xl" style={{ background: "#f6faf7" }} />
             ))}
@@ -55,7 +55,7 @@ export default function LibraryResults({ summary, status, error, items, total, h
             Nothing matched. Try another name (English, Latin, Sanskrit or Hindi), or suggest it below.
           </p>
         ) : (
-          <div className="grid grid-cols-2 gap-4 md:grid-cols-4 lg:grid-cols-5">
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 md:grid-cols-4 lg:grid-cols-5">
             {items.map((item) => (
               <ItemCard key={item.id} item={item} onOpen={onOpen} />
             ))}

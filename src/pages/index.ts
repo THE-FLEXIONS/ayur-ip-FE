@@ -8,3 +8,7 @@ export { default as LoginPage } from "./auth/LoginPage";
 export { default as HistoryPage } from "./HistoryPage";
 export { default as SavedPage } from "./SavedPage";
 export { default as SettingsPage } from "./SettingsPage";
+export { default as FormulationClassifierPage } from "./FormulationClassifierPage";
+export { default as IpGuidancePage } from "./IpGuidancePage";
+export { default as AbsCompliancePage } from "./AbsCompliancePage";
+export { default as HelpPage } from "./HelpPage";

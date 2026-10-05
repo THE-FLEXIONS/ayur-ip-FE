@@ -6,22 +6,21 @@ import { ArrowRight, IconLock } from "./shared/icons";
 export default function SecurityBanner() {
   return (
     <section className="py-6" style={{ background: "#f8faf7" }}>
-      <div className="max-w-7xl mx-auto px-6">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div
-          className="relative rounded-3xl overflow-hidden grid grid-cols-2 items-center"
-          style={{ minHeight: 280 }}
+          className="relative rounded-3xl overflow-hidden grid items-stretch md:grid-cols-2 md:min-h-[280px]"
         >
           {/* Left */}
           <div
-            className="relative z-10 p-12"
+            className="relative z-10 order-2 p-6 sm:p-10 md:order-none lg:p-12"
             style={{ background: "#f0f7f2" }}
           >
             <p className="text-xs font-semibold tracking-widest mb-4" style={{ color: "#2d6a4f" }}>
               BUILT ON TRUST
             </p>
-            <div className="flex items-start gap-4 mb-4">
+            <div className="flex items-center gap-3 mb-4 sm:items-start sm:gap-4">
               <IconLock />
-              <h3 className="text-3xl font-black" style={{ color: "#0d2717", fontWeight: 900 }}>
+              <h3 className="text-2xl sm:text-3xl font-black" style={{ color: "#0d2717", fontWeight: 900 }}>
                 Your Knowledge.<br />Secure.
               </h3>
             </div>
@@ -29,7 +28,7 @@ export default function SecurityBanner() {
               We ensure the authenticity, privacy and responsible use of traditional knowledge with robust security and ethical standards.
             </p>
             <button
-              className="flex items-center gap-2 px-6 py-3 rounded-full text-sm font-semibold border transition-colors hover:bg-white"
+              className="inline-flex items-center gap-2 px-5 py-3 rounded-full sm:px-6 text-sm font-semibold border transition-colors hover:bg-white"
               style={{ borderColor: "#0d2717", color: "#0d2717" }}
             >
               Learn About Our Security <ArrowRight size={14} />
@@ -37,16 +36,15 @@ export default function SecurityBanner() {
           </div>
 
           {/* Right: image */}
-          <div className="relative h-full" style={{ minHeight: 280 }}>
+          <div className="relative h-56 sm:h-64 md:h-full md:min-h-[280px]">
             <img
               src={LOCK_IMG}
               alt="Security padlock"
-              className="w-full h-full object-cover"
-              style={{ minHeight: 280 }}
+              className="absolute inset-0 w-full h-full object-cover"
             />
             <div className="absolute inset-0" style={{ background: "rgba(13,39,23,0.35)" }} />
             {/* Script overlay */}
-            <div className="absolute top-8 right-8 text-right">
+            <div className="absolute top-6 right-6 text-right sm:top-8 sm:right-8">
               <p
                 style={{ fontFamily: "'Dancing Script', cursive", color: "white", fontSize: 22 }}
                 className="leading-snug drop-shadow"

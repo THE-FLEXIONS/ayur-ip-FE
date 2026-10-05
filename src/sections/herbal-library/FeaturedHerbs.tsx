@@ -37,20 +37,20 @@ export default function FeaturedHerbs({ items, onOpen, onViewAll }: FeaturedHerb
 
   return (
     <section style={{ background: "#fff", paddingTop: 32, paddingBottom: 32 }}>
-      <div className="max-w-7xl mx-auto px-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-8">
         {/* Header */}
-        <div className="flex items-start justify-between mb-5">
+        <div className="flex flex-wrap items-start justify-between gap-x-4 gap-y-2 mb-5">
           <div>
             <h2 className="font-bold mb-1" style={{ fontSize: 20, color: "#0d2717" }}>Featured Herbs</h2>
             <p style={{ fontSize: 13, color: "#9ca3af" }}>Explore some of the most researched and widely used medicinal plants in Ayurveda.</p>
           </div>
-          <button type="button" onClick={onViewAll} className="flex items-center gap-1.5 font-semibold mt-0.5" style={{ fontSize: 13, color: "#0d2717" }}>
+          <button type="button" onClick={onViewAll} className="flex items-center gap-1.5 whitespace-nowrap font-semibold mt-0.5" style={{ fontSize: 13, color: "#0d2717" }}>
             View all herbs <Arr size={13}/>
           </button>
         </div>
 
         {/* Cards */}
-        <div className="grid grid-cols-5 gap-4">
+        <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-5 max-lg:[&>*:nth-child(n+5)]:hidden">
           {herbs.map((herb) => (
             <ItemCard key={herb.slug} item={herb} onOpen={onOpen} />
           ))}

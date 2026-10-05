@@ -5,7 +5,7 @@ import { APP_VERSION } from "../../../config/app";
 export default function SidebarFooter() {
   const id = useId();
   return (
-    <div className="pointer-events-none relative z-20 -mt-[92px] h-[170px] shrink-0">
+    <div className="pointer-events-none relative z-20 -mt-[92px] h-[170px] shrink-0 [@media(max-height:700px)]:hidden">
       <svg
         viewBox="0 0 400 224"
         preserveAspectRatio="none"

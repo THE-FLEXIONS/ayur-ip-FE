@@ -56,15 +56,15 @@ export default function KnowledgeInAction() {
   ];
 
   return (
-    <section className="py-20 relative overflow-hidden" style={{ background: "linear-gradient(180deg, #f4f8f2 0%, #eef4ec 100%)" }}>
-      <div className="max-w-[1400px] mx-auto px-8">
+    <section className="py-14 sm:py-20 relative overflow-hidden" style={{ background: "linear-gradient(180deg, #f4f8f2 0%, #eef4ec 100%)" }}>
+      <div className="max-w-[1400px] mx-auto px-4 sm:px-8">
         {/* Header */}
-        <div className="flex items-start justify-between mb-12">
+        <div className="flex items-start justify-between gap-8 mb-8 sm:mb-12">
           <div className="max-w-lg">
             <p className="text-xs font-semibold tracking-[0.25em] mb-4" style={{ color: "#2d6a4f" }}>
               REAL STORIES, REAL IMPACT
             </p>
-            <h2 className="text-5xl font-black mb-4" style={{ color: "#0d2717", fontWeight: 900 }}>
+            <h2 className="text-[34px] sm:text-5xl font-black mb-4" style={{ color: "#0d2717", fontWeight: 900 }}>
               Knowledge <span style={{ color: "#2d6a4f" }}>in Action</span>
             </h2>
             <p className="text-base leading-relaxed" style={{ color: "#4b5563" }}>
@@ -72,7 +72,7 @@ export default function KnowledgeInAction() {
             </p>
           </div>
 
-          <div className="flex items-center gap-8">
+          <div className="hidden shrink-0 items-center gap-8 md:flex">
             <div className="pl-8 border-l" style={{ borderColor: "#c3d4c6" }}>
               <p className="text-xl leading-snug" style={{ fontFamily: "'Dancing Script', cursive", color: "#2d6a4f" }}>
                 Different people.<br />A healthier tomorrow.
@@ -91,7 +91,7 @@ export default function KnowledgeInAction() {
         </div>
 
         {/* Cards */}
-        <div className="grid grid-cols-4 gap-6">
+        <div className="grid gap-5 sm:grid-cols-2 sm:gap-6 xl:grid-cols-4">
           {stories.map((s) => (
             <div key={s.tag} className="bg-white rounded-3xl p-4 shadow-sm flex flex-col">
               {/* Image */}

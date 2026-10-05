@@ -18,14 +18,14 @@ export default function JoinCTA() {
 
   return (
     <section className="overflow-hidden" style={{ background: "#f5f8f4" }}>
-      <div className="grid grid-cols-2">
+      <div className="grid lg:grid-cols-2">
         {/* Left: dark image with overlay text */}
-        <div className="relative" style={{ minHeight: 420 }}>
+        <div className="relative min-h-[380px] lg:min-h-[420px]">
           <img src={PLANT_IMG} alt="Hands planting seedling" className="w-full h-full object-cover absolute inset-0" />
           <div className="absolute inset-0" style={{ background: "rgba(13,39,23,0.52)" }} />
-          <div className="relative z-10 p-12 flex flex-col justify-end h-full">
+          <div className="relative z-10 p-6 sm:p-10 lg:p-12 flex flex-col justify-end h-full min-h-[inherit]">
             <p className="text-xs font-bold tracking-widest mb-4 text-white opacity-80">BE A PART OF OUR STORY</p>
-            <h2 className="text-4xl font-black text-white leading-tight mb-5" style={{ fontWeight: 900 }}>
+            <h2 className="text-3xl sm:text-4xl font-black text-white leading-tight mb-5" style={{ fontWeight: 900 }}>
               Let's Create a<br />Healthier Tomorrow
             </h2>
             <p className="text-sm leading-relaxed mb-8 text-white opacity-80 max-w-sm">
@@ -41,13 +41,12 @@ export default function JoinCTA() {
         </div>
 
         {/* Right: stats grid */}
-        <div className="p-12 flex flex-col justify-between" style={{ background: "#f0f7f0" }}>
-          <div className="grid grid-cols-2 gap-6">
+        <div className="p-6 sm:p-10 lg:p-12 flex flex-col justify-between" style={{ background: "#f0f7f0" }}>
+          <div className="grid gap-6 sm:grid-cols-2">
             {stats.map(({ icon, value, label, sub }, i) => (
               <div
                 key={value + i}
-                className="flex flex-col gap-3 pb-6"
-                style={{ borderBottom: i < 2 ? "1px solid #c3e6cc" : "none" }}
+                className="flex flex-col gap-3 pb-6 border-b border-[#c3e6cc] last:border-b-0 sm:[&:nth-child(n+3)]:border-b-0"
               >
                 <div className="flex items-center gap-3">
                   <div className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0" style={{ background: "#d8f3dc" }}>

@@ -56,14 +56,14 @@ export default function OurJourney() {
   ];
 
   return (
-    <section className="py-20" style={{ background: "#f5f8f4" }}>
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="grid grid-cols-2 gap-16 items-start">
+    <section className="py-14 sm:py-20" style={{ background: "#f5f8f4" }}>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+        <div className="grid gap-10 items-start lg:grid-cols-2 lg:gap-16">
           {/* Left */}
           <div>
             <p className="text-xs font-bold tracking-widest mb-3" style={{ color: "#2d6a4f" }}>OUR JOURNEY</p>
-            <h2 className="text-5xl font-black mb-5 leading-tight" style={{ color: "#0d2717", fontWeight: 900 }}>
-              From Ancient Roots<br />to a <span style={{ color: "#1a4d2e" }}>Brighter Future</span>
+            <h2 className="text-[34px] sm:text-5xl font-black mb-5 leading-tight" style={{ color: "#0d2717", fontWeight: 900 }}>
+              From Ancient Roots<br className="hidden sm:block" /> to a <span style={{ color: "#1a4d2e" }}>Brighter Future</span>
             </h2>
             <p className="text-base leading-relaxed mb-8 max-w-md" style={{ color: "#4b5563" }}>
               A journey driven by the belief that India's traditional knowledge can solve modern challenges — when preserved, connected and made accessible to all.
@@ -86,7 +86,7 @@ export default function OurJourney() {
           {/* Right: Timeline */}
           <div>
             {/* Quote top right */}
-            <div className="text-right mb-6">
+            <div className="hidden text-right mb-6 sm:block">
               <p
                 className="text-base leading-snug"
                 style={{ fontFamily: "'Dancing Script', cursive", color: "#1a4d2e", fontSize: 18 }}
@@ -100,7 +100,7 @@ export default function OurJourney() {
             <div className="relative">
               {/* SVG wavy line */}
               <svg
-                className="absolute top-8 left-0 right-0 w-full"
+                className="absolute top-8 left-0 right-0 hidden w-full sm:block"
                 height="60"
                 viewBox="0 0 560 60"
                 fill="none"
@@ -120,7 +120,7 @@ export default function OurJourney() {
               </svg>
 
               {/* Milestone columns */}
-              <div className="grid grid-cols-4 gap-3 pt-20">
+              <div className="grid grid-cols-2 gap-x-3 gap-y-8 sm:grid-cols-4 sm:gap-3 sm:pt-20">
                 {milestones.map(({ year, icon, title, desc }) => (
                   <div key={year} className="flex flex-col items-center text-center gap-2">
                     <div

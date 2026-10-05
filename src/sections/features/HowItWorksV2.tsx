@@ -30,19 +30,19 @@ export default function HowItWorksV2() {
   ];
 
   return (
-    <section className="py-20" style={{ background: "#f8faf7" }}>
-      <div className="max-w-7xl mx-auto px-6">
+    <section className="py-14 sm:py-20" style={{ background: "#f8faf7" }}>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
         {/* Header */}
-        <div className="flex items-start justify-between mb-14">
+        <div className="flex flex-col gap-4 mb-10 sm:mb-14 md:flex-row md:items-start md:justify-between">
           <div>
             <p className="text-xs font-semibold tracking-widest mb-4" style={{ color: "#2d6a4f" }}>
               HOW IT WORKS
             </p>
-            <h2 className="text-5xl font-black leading-tight" style={{ color: "#0d2717", fontWeight: 900 }}>
+            <h2 className="text-[34px] sm:text-5xl font-black leading-tight" style={{ color: "#0d2717", fontWeight: 900 }}>
               Simple Steps.<br />Big Impact.
             </h2>
           </div>
-          <div className="max-w-xs pt-8 text-right">
+          <div className="max-w-xs md:pt-8 md:text-right">
             <p className="text-sm leading-relaxed" style={{ color: "#6b7280" }}>
               Get from curiosity to credible knowledge in just a few steps.
             </p>
@@ -50,14 +50,14 @@ export default function HowItWorksV2() {
         </div>
 
         {/* Steps */}
-        <div className="flex items-start gap-2">
+        <div className="grid gap-8 sm:grid-cols-2 lg:flex lg:items-start lg:gap-2">
           {steps.map(({ icon, num, title, desc }, i) => (
             <div key={num} className="flex items-start flex-1 gap-2">
               <div className="flex flex-col flex-1">
                 <div className="flex items-center gap-2 mb-4">
                   {icon}
                   {i < steps.length - 1 && (
-                    <div className="flex-1 flex items-center gap-1">
+                    <div className="hidden lg:flex flex-1 items-center gap-1">
                       <div className="flex-1 border-t border-dashed" style={{ borderColor: "#b7e4c7" }} />
                       <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
                         <path d="M3 6h6M7 3l3 3-3 3" stroke="#9ca3af" strokeWidth="1.3" strokeLinecap="round" />
@@ -67,7 +67,7 @@ export default function HowItWorksV2() {
                 </div>
                 <p className="text-xs font-semibold mb-1" style={{ color: "#9ca3af" }}>{num}</p>
                 <h4 className="text-base font-bold mb-2" style={{ color: "#0d2717" }}>{title}</h4>
-                <p className="text-sm leading-relaxed pr-4" style={{ color: "#6b7280" }}>{desc}</p>
+                <p className="text-sm leading-relaxed lg:pr-4" style={{ color: "#6b7280" }}>{desc}</p>
               </div>
             </div>
           ))}

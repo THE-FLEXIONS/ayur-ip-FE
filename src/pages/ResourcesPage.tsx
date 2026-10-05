@@ -37,7 +37,7 @@ export default function ResourcesPage({ onNavigate, onOpenMenu, onBack }: Resour
 
   return (
     <div className="min-h-screen overflow-x-clip bg-[#fafaf8] font-sans text-[#132033]">
-      <div className="mx-auto hidden max-w-[1240px] px-10 lg:block">
+      <div className="mx-auto max-w-[1240px] px-4 sm:px-6 lg:px-10">
         <AppHeader onNavigate={onNavigate} onOpenMenu={onOpenMenu} activePage="Resources" />
       </div>
 

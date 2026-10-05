@@ -26,12 +26,12 @@ export default function OurPurpose() {
   ];
 
   return (
-    <section className="relative py-20 overflow-hidden" style={{ background: "#ffffff" }}>
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="grid grid-cols-12 gap-8">
+    <section className="relative py-14 sm:py-20 overflow-hidden" style={{ background: "#ffffff" }}>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+        <div className="grid gap-8 lg:grid-cols-12">
           {/* Left forest image with quote */}
-          <div className="col-span-4 relative">
-            <div className="rounded-3xl overflow-hidden" style={{ height: 420 }}>
+          <div className="relative lg:col-span-4 lg:self-start">
+            <div className="h-64 rounded-3xl overflow-hidden sm:h-80 lg:h-[420px]">
               <img src={FOREST_IMG} alt="Misty forest" className="w-full h-full object-cover" />
               <div className="absolute inset-0 rounded-3xl" style={{ background: "rgba(13,39,23,0.48)" }} />
             </div>
@@ -48,12 +48,12 @@ export default function OurPurpose() {
           </div>
 
           {/* Right: heading + cards */}
-          <div className="col-span-8">
+          <div className="lg:col-span-8">
             {/* Top: heading + botanical illustration */}
-            <div className="flex items-start justify-between mb-8">
+            <div className="flex items-start justify-between gap-6 mb-8">
               <div>
                 <p className="text-xs font-bold tracking-widest mb-3" style={{ color: "#2d6a4f" }}>OUR PURPOSE</p>
-                <h2 className="text-4xl font-black mb-4 leading-tight" style={{ color: "#0d2717", fontWeight: 900 }}>
+                <h2 className="text-3xl sm:text-4xl font-black mb-4 leading-tight" style={{ color: "#0d2717", fontWeight: 900 }}>
                   Guided by a Bigger Vision
                 </h2>
                 <p className="text-base leading-relaxed max-w-lg" style={{ color: "#4b5563" }}>
@@ -61,7 +61,7 @@ export default function OurPurpose() {
                 </p>
               </div>
               {/* Botanical circle decoration */}
-              <div className="flex-shrink-0">
+              <div className="hidden flex-shrink-0 sm:block">
                 <div
                   className="w-28 h-28 rounded-full flex flex-col items-center justify-center border-2"
                   style={{ background: "#f0f7f0", borderColor: "#c3e6cc" }}
@@ -79,7 +79,7 @@ export default function OurPurpose() {
             </div>
 
             {/* Three cards */}
-            <div className="grid grid-cols-3 gap-4">
+            <div className="grid gap-4 sm:grid-cols-3">
               {cards.map(({ icon, iconBg, title, desc }) => (
                 <div
                   key={title}

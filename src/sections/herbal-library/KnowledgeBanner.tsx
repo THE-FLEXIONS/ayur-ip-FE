@@ -23,7 +23,7 @@ export default function KnowledgeBanner() {
 
   return (
     <section style={{ paddingTop: 0, paddingBottom: 32, background: "#fff" }}>
-      <div className="max-w-7xl mx-auto px-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-8">
         <div className="relative rounded-3xl overflow-hidden" style={{ minHeight: 300 }}>
           {/* BG image */}
           <img
@@ -36,10 +36,10 @@ export default function KnowledgeBanner() {
           <div className="absolute inset-0" style={{ background: "rgba(10,28,18,0.62)" }} />
 
           {/* Content */}
-          <div className="relative z-10 grid grid-cols-2 items-center" style={{ minHeight: 300 }}>
+          <div className="relative z-10 grid items-center lg:grid-cols-2 lg:min-h-[300px]">
             {/* Left */}
-            <div style={{ padding: "48px 48px 48px 52px" }}>
-              <h3 className="font-black text-white leading-tight mb-3" style={{ fontSize: 38, fontWeight: 900 }}>
+            <div className="p-6 sm:p-10 lg:py-12 lg:pr-12 lg:pl-[52px]">
+              <h3 className="font-black text-white leading-tight mb-3 text-[28px] sm:text-[34px] lg:text-[38px]" style={{ fontWeight: 900 }}>
                 Knowledge from<br />
                 <span style={{ color: "#74c99a" }}>Root to Research</span>
               </h3>
@@ -47,9 +47,9 @@ export default function KnowledgeBanner() {
                 Bridging ancient wisdom with modern science.
               </p>
               {/* Stats 2×2 */}
-              <div className="grid grid-cols-2 gap-x-10 gap-y-5">
+              <div className="grid grid-cols-2 gap-x-4 gap-y-5 sm:gap-x-10">
                 {stats.map(({ val, label, icon }) => (
-                  <div key={val} className="flex items-center gap-3">
+                  <div key={val} className="flex min-w-0 items-center gap-2.5 sm:gap-3">
                     <div
                       className="rounded-lg flex items-center justify-center flex-shrink-0"
                       style={{ width: 36, height: 36, background: "rgba(255,255,255,0.1)" }}
@@ -66,7 +66,7 @@ export default function KnowledgeBanner() {
             </div>
 
             {/* Right: script quote */}
-            <div className="flex items-center justify-end pr-14">
+            <div className="hidden items-center justify-end pr-14 lg:flex">
               <div className="text-right">
                 <p
                   style={{ fontFamily: "'Dancing Script',cursive", color: "white", fontSize: 26, lineHeight: 1.35 }}

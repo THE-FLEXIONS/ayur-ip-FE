@@ -13,27 +13,27 @@ export default function ExplorePanel() {
   ];
 
   return (
-    <div className="mt-14 -mx-2 bg-white rounded-t-[40px] shadow-[0_-8px_40px_rgba(0,0,0,0.06)] px-10 pt-12 pb-14 relative z-10">
-      <div className="flex items-start justify-between mb-8">
+    <div className="mt-10 -mx-2 bg-white rounded-t-[28px] shadow-[0_-8px_40px_rgba(0,0,0,0.06)] px-5 pt-8 pb-10 relative z-10 sm:mt-14 sm:rounded-t-[40px] sm:px-10 sm:pt-12 sm:pb-14">
+      <div className="flex flex-wrap items-start justify-between gap-x-6 gap-y-3 mb-6 sm:mb-8">
         <div>
-          <h2 className="text-4xl font-black mb-2" style={{ color: "#0d2717", fontWeight: 900 }}>
+          <h2 className="text-3xl sm:text-4xl font-black mb-2" style={{ color: "#0d2717", fontWeight: 900 }}>
             Explore Use Cases
           </h2>
           <p className="text-base" style={{ color: "#6b7280" }}>
             Discover how Ayur-Ip creates value for different users and communities.
           </p>
         </div>
-        <button className="flex items-center gap-2 text-sm font-semibold" style={{ color: "#2d6a4f" }}>
+        <button className="flex items-center gap-2 whitespace-nowrap text-sm font-semibold" style={{ color: "#2d6a4f" }}>
           View all use cases <ArrowRight size={15} />
         </button>
       </div>
 
-      <div className="grid grid-cols-6 gap-4">
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-6">
         {cats.map(({ icon, bg, title, desc }) => (
           <div
             key={title}
-            className="rounded-2xl border p-5 flex flex-col transition-shadow hover:shadow-md cursor-pointer"
-            style={{ borderColor: "#eceef0", background: "#fcfdfc", minHeight: 190 }}
+            className="rounded-2xl border p-4 flex flex-col transition-shadow hover:shadow-md cursor-pointer sm:p-5 sm:min-h-[190px]"
+            style={{ borderColor: "#eceef0", background: "#fcfdfc" }}
           >
             <div className="w-11 h-11 rounded-full flex items-center justify-center mb-4" style={{ background: bg }}>
               {icon}

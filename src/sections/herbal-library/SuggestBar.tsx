@@ -4,17 +4,16 @@ import { Arr } from "./shared/icons";
 export default function SuggestBar({ onSuggest }: { onSuggest: () => void }) {
   return (
     <section style={{ background: "#fff", paddingBottom: 56 }}>
-      <div className="max-w-7xl mx-auto px-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-8">
         <div
-          className="flex items-center justify-between"
+          className="flex flex-col items-start gap-4 p-5 sm:flex-row sm:items-center sm:justify-between sm:px-7"
           style={{
             background: "#f6faf7",
             border: "1px solid #e0ede4",
             borderRadius: 18,
-            padding: "20px 28px",
           }}
         >
-          <div className="flex items-center gap-5">
+          <div className="flex items-start gap-4 sm:items-center sm:gap-5">
             {/* Icon */}
             <div
               className="flex items-center justify-center rounded-xl flex-shrink-0"
@@ -36,7 +35,7 @@ export default function SuggestBar({ onSuggest }: { onSuggest: () => void }) {
           <button
             type="button"
             onClick={onSuggest}
-            className="flex items-center gap-2 rounded-full font-semibold text-white flex-shrink-0 ml-10 hover:opacity-90 transition-opacity"
+            className="flex items-center gap-2 rounded-full font-semibold text-white flex-shrink-0 sm:ml-10 hover:opacity-90 transition-opacity"
             style={{ background: "#0d2717", fontSize: 13, padding: "12px 22px" }}
           >
             Suggest a Resource <Arr size={13} color="white"/>

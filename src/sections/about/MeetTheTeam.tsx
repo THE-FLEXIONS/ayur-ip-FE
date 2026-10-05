@@ -26,16 +26,16 @@ export default function MeetTheTeam() {
   ];
 
   return (
-    <section className="py-20" style={{ background: "#ffffff" }}>
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="grid grid-cols-12 gap-8 items-start">
+    <section className="py-14 sm:py-20" style={{ background: "#ffffff" }}>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+        <div className="grid gap-6 items-start sm:grid-cols-2 lg:grid-cols-12 lg:gap-8">
           {/* Left */}
-          <div className="col-span-3">
+          <div className="sm:col-span-2 lg:col-span-3">
             <p className="text-xs font-bold tracking-widest mb-3 flex items-center gap-2" style={{ color: "#2d6a4f" }}>
               MEET THE TEAM
               <span style={{ color: "#1a4d2e", fontSize: 16 }}>✦</span>
             </p>
-            <h2 className="text-4xl font-black mb-5 leading-tight" style={{ color: "#0d2717", fontWeight: 900 }}>
+            <h2 className="text-3xl sm:text-4xl font-black mb-5 leading-tight" style={{ color: "#0d2717", fontWeight: 900 }}>
               People Behind<br /><span style={{ color: "#1a4d2e" }}>Ayur-Ip</span>
             </h2>
             <p className="text-sm leading-relaxed mb-8" style={{ color: "#4b5563" }}>
@@ -60,11 +60,11 @@ export default function MeetTheTeam() {
           {team.map(({ img, name, role, bio }) => (
             <div
               key={name}
-              className="col-span-3 rounded-2xl border overflow-hidden"
+              className="rounded-2xl border overflow-hidden lg:col-span-3"
               style={{ borderColor: "#e5e7eb" }}
             >
               {/* Photo */}
-              <div className="overflow-hidden" style={{ height: 200 }}>
+              <div className="h-60 overflow-hidden sm:h-[200px]">
                 <img src={img} alt={name} className="w-full h-full object-cover object-top" />
               </div>
               {/* Card body */}
@@ -83,8 +83,8 @@ export default function MeetTheTeam() {
 
           {/* "And many more" card */}
           <div
-            className="col-span-3 rounded-2xl border flex flex-col items-center justify-center text-center p-6 gap-3 cursor-pointer hover:shadow-md transition-shadow"
-            style={{ borderColor: "#e5e7eb", minHeight: 320 }}
+            className="rounded-2xl border flex flex-col items-center justify-center text-center p-6 gap-3 cursor-pointer hover:shadow-md transition-shadow min-h-[140px] sm:min-h-[320px] lg:col-span-3"
+            style={{ borderColor: "#e5e7eb" }}
           >
             <p className="text-sm font-semibold" style={{ color: "#0d2717" }}>And many more amazing contributors</p>
             <div
@@ -97,7 +97,7 @@ export default function MeetTheTeam() {
         </div>
 
         {/* Script quote + leaf right */}
-        <div className="flex items-center justify-end mt-6 gap-4">
+        <div className="hidden items-center justify-end mt-6 gap-4 sm:flex">
           <div className="text-right">
             <p
               className="text-lg leading-snug"

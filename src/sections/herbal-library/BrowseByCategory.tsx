@@ -56,9 +56,9 @@ export default function BrowseByCategory({ active, onSelectTab, facets, selected
 
   return (
     <section style={{ background: "#fff", paddingTop: 40, paddingBottom: 16 }}>
-      <div className="max-w-7xl mx-auto px-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-8">
         {/* Header */}
-        <div className="flex items-start justify-between mb-6">
+        <div className="flex flex-wrap items-start justify-between gap-x-4 gap-y-2 mb-5 sm:mb-6">
           <div>
             <h2 className="font-bold mb-1" style={{ fontSize: 20, color: "#0d2717" }}>Browse by Category</h2>
             <p style={{ fontSize: 13, color: "#9ca3af" }}>Find knowledge by what interests you.</p>
@@ -66,7 +66,7 @@ export default function BrowseByCategory({ active, onSelectTab, facets, selected
           <button
             type="button"
             onClick={() => onSelectTab("Therapeutic Areas")}
-            className="flex items-center gap-1.5 font-semibold mt-0.5"
+            className="flex items-center gap-1.5 whitespace-nowrap font-semibold mt-0.5"
             style={{ fontSize: 13, color: "#0d2717" }}
           >
             View all categories <Arr size={13}/>
@@ -74,7 +74,7 @@ export default function BrowseByCategory({ active, onSelectTab, facets, selected
         </div>
 
         {/* Tab row */}
-        <div className="flex items-start gap-1">
+        <div className="-mx-4 flex items-start gap-1 overflow-x-auto px-4 pb-1 [scrollbar-width:none] sm:mx-0 sm:px-0 [&::-webkit-scrollbar]:hidden">
           {cats.map(({ label, icon }) => {
             const on = label === active;
             return (
@@ -83,14 +83,14 @@ export default function BrowseByCategory({ active, onSelectTab, facets, selected
                 type="button"
                 aria-pressed={on}
                 onClick={() => onSelectTab(label)}
-                className="flex flex-col items-center gap-2 transition-all"
+                className="flex shrink-0 flex-col items-center gap-2 whitespace-nowrap transition-all"
                 style={{
-                  padding: "14px 20px",
+                  padding: "12px 16px",
                   borderRadius: 16,
                   background: on ? "#f0f7f2" : "transparent",
                   border: on ? "1.5px solid #c3e6cc" : "1.5px solid transparent",
                   color: on ? "#1a4028" : "#6b7280",
-                  minWidth: 90,
+                  minWidth: 84,
                   cursor: "pointer",
                 }}
               >

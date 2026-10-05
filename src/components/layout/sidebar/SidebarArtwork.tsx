@@ -26,7 +26,7 @@ export function SidebarFloweringBranch() {
   return (
     <LeafBranch
       flowers
-      className="pointer-events-none absolute bottom-[48px] right-[-26px] z-30 w-[92px] rotate-[6deg] drop-shadow-[0_6px_12px_rgba(10,40,20,0.25)]"
+      className="pointer-events-none absolute bottom-[48px] right-[-26px] z-30 w-[92px] rotate-[6deg] [@media(max-height:700px)]:hidden drop-shadow-[0_6px_12px_rgba(10,40,20,0.25)]"
     />
   );
 }

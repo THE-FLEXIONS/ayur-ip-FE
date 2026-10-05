@@ -75,15 +75,15 @@ export default function CoreFeatures() {
   ];
 
   return (
-    <section className="py-20" style={{ background: "#ffffff" }}>
-      <div className="max-w-7xl mx-auto px-6">
+    <section className="py-14 sm:py-20" style={{ background: "#ffffff" }}>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
         {/* Header */}
-        <div className="grid grid-cols-2 gap-12 items-start mb-14">
+        <div className="grid gap-8 items-start mb-10 sm:mb-14 lg:grid-cols-2 lg:gap-12">
           <div>
             <p className="text-xs font-semibold tracking-widest mb-4" style={{ color: "#2d6a4f" }}>
               OUR CORE FEATURES
             </p>
-            <h2 className="text-5xl font-black mb-5 leading-tight" style={{ color: "#0d2717", fontWeight: 900 }}>
+            <h2 className="text-[34px] sm:text-5xl font-black mb-5 leading-tight" style={{ color: "#0d2717", fontWeight: 900 }}>
               Everything You Need,<br />In One Place
             </h2>
             <p className="text-base leading-relaxed max-w-md" style={{ color: "#4b5563" }}>
@@ -91,7 +91,7 @@ export default function CoreFeatures() {
             </p>
           </div>
           <div className="flex flex-col justify-between">
-            <div className="flex items-start gap-3 pl-8 border-l-2" style={{ borderColor: "#d1d5db" }}>
+            <div className="flex items-start gap-3 pl-5 sm:pl-8 border-l-2" style={{ borderColor: "#d1d5db" }}>
               <p
                 className="text-xl italic leading-snug"
                 style={{ fontFamily: "'Dancing Script', cursive", color: "#374151", fontSize: 22 }}
@@ -100,7 +100,7 @@ export default function CoreFeatures() {
               </p>
             </div>
             {/* Decorative leaf */}
-            <div className="flex justify-end mt-4">
+            <div className="hidden lg:flex justify-end mt-4">
               <svg width="100" height="130" viewBox="0 0 100 130" fill="none" opacity="0.18">
                 <path d="M50 130 C50 60 10 30 15 5 C30 40 70 55 65 105" stroke="#2d6a4f" strokeWidth="2.5" fill="#2d6a4f" fillOpacity="0.4" />
                 <path d="M50 130 C50 90 80 70 75 40" stroke="#2d6a4f" strokeWidth="2" fill="none" />
@@ -110,12 +110,12 @@ export default function CoreFeatures() {
         </div>
 
         {/* 3×2 grid of feature cards */}
-        <div className="grid grid-cols-3 gap-5">
+        <div className="grid gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3">
           {cards.map(({ icon, title, desc, cardBg, img, imgAlt, imgLabel, iconLarge }) => (
             <div
               key={title}
-              className="rounded-3xl p-7 flex flex-col justify-between overflow-hidden relative"
-              style={{ background: cardBg, minHeight: 280 }}
+              className="rounded-3xl p-6 sm:p-7 flex flex-col justify-between overflow-hidden relative sm:min-h-[280px]"
+              style={{ background: cardBg }}
             >
               <div>
                 {icon}

@@ -41,7 +41,7 @@ export default function ResourceTabs({ active, onChange, panelId }: ResourceTabs
             aria-controls={panelId}
             tabIndex={selected ? 0 : -1}
             onClick={() => onChange(category.id)}
-            className={`h-10 min-w-0 whitespace-nowrap rounded-[13px] border px-2 text-[15px] transition-[background-color,border-color,color,transform] duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ayur-green active:scale-[0.98] min-[400px]:text-[15.5px] sm:h-11 sm:px-5 ${
+            className={`h-10 min-w-0 truncate whitespace-nowrap rounded-[13px] border px-1.5 text-[14px] min-[380px]:px-2 min-[380px]:text-[15px] transition-[background-color,border-color,color,transform] duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ayur-green active:scale-[0.98] min-[400px]:text-[15.5px] sm:h-11 sm:px-5 ${
               selected
                 ? "border-[#1d6a3f] bg-[#1d6a3f] font-medium text-white shadow-[0_6px_14px_-10px_rgba(21,82,49,0.8)]"
                 : "border-[#dde2dd] bg-white font-normal text-[#1d5bb8] hover:border-[#c6d3e6] hover:bg-[#f6f9fd]"

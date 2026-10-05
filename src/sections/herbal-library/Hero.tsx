@@ -9,6 +9,25 @@ type HeroProps = {
   onSearch: (query: string) => void;
 };
 
+const STATS = [
+  {
+    val: "1,200+", label: "Medicinal Plants",
+    icon: <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 13C2 6 6 1 13 3C8 6 6 10 7 14" stroke="#2d6a4f" strokeWidth="1.4" fill="none"/><path d="M2 13C2 10 6 7 9 7" stroke="#2d6a4f" strokeWidth="1.4" strokeLinecap="round" fill="none"/></svg>
+  },
+  {
+    val: "300+", label: "Formulations",
+    icon: <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="4" y="3" width="6" height="2.5" rx="1.25" stroke="#2d6a4f" strokeWidth="1.2" fill="none"/><path d="M4 5.5L3 13h8L10 5.5" stroke="#2d6a4f" strokeWidth="1.2" strokeLinecap="round" fill="none"/></svg>
+  },
+  {
+    val: "Verified Sources", label: "Classical & Modern",
+    icon: <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1L2 3.5v5C2 12 4.8 14.8 8 16c3.2-1.2 6-4 6-7.5v-5L8 1z" stroke="#2d6a4f" strokeWidth="1.2" fill="none"/><path d="M5.5 8l2 2L11 6" stroke="#2d6a4f" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+  },
+  {
+    val: "Curated by Experts", label: "For Reliable Insights",
+    icon: <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="5" r="2.5" stroke="#2d6a4f" strokeWidth="1.2" fill="none"/><path d="M3 14c0-2.8 2.2-5 5-5s5 2.2 5 5" stroke="#2d6a4f" strokeWidth="1.2" strokeLinecap="round" fill="none"/></svg>
+  },
+];
+
 // ─── SECTION 1 · Hero ─────────────────────────────────────────────────────────
 export default function Hero({ query, onQueryChange, onSearch }: HeroProps) {
   const chips = ["Ashwagandha","Turmeric","Tulsi","Immunity","Diabetes","Skin health"];
@@ -19,13 +38,12 @@ export default function Hero({ query, onQueryChange, onSearch }: HeroProps) {
   }
 
   return (
-    <section className="relative pt-16 overflow-hidden" style={{ background: "#fff" }}>
-      <div className="flex" style={{ minHeight: 400 }}>
+    <section className="relative pt-4 overflow-hidden sm:pt-6 lg:pt-16" style={{ background: "#fff" }}>
+      <div className="flex flex-col lg:flex-row lg:min-h-[400px]">
 
         {/* ── Left content panel ── */}
         <div
-          className="flex flex-col justify-center px-16 py-12 relative z-10"
-          style={{ width: "52%", background: "linear-gradient(to right, #fff 85%, rgba(255,255,255,0) 100%)" }}
+          className="order-2 flex w-full flex-col justify-center px-4 pt-7 pb-8 relative z-10 sm:px-8 lg:order-none lg:w-[52%] lg:px-16 lg:py-12 lg:bg-[linear-gradient(to_right,#fff_85%,rgba(255,255,255,0)_100%)]"
         >
           {/* Label */}
           <p className="text-xs font-semibold tracking-[0.2em] mb-5" style={{ color: "#2d6a4f" }}>
@@ -33,7 +51,7 @@ export default function Hero({ query, onQueryChange, onSearch }: HeroProps) {
           </p>
 
           {/* Headline */}
-          <h1 className="font-black leading-[1.08] mb-4" style={{ fontSize: 52, color: "#0d2717", fontWeight: 900 }}>
+          <h1 className="font-black leading-[1.08] mb-4 text-[36px] sm:text-[44px] lg:text-[52px]" style={{ color: "#0d2717", fontWeight: 900 }}>
             Explore India's<br />
             <span style={{ color: "#2d6a4f" }}>Living Heritage</span>
           </h1>
@@ -51,7 +69,7 @@ export default function Hero({ query, onQueryChange, onSearch }: HeroProps) {
             style={{
               background: "white",
               border: "1.5px solid #e5e7eb",
-              padding: "14px 16px",
+              padding: "10px 10px 10px 16px",
               boxShadow: "0 2px 16px rgba(0,0,0,0.07)",
               maxWidth: 500,
             }}
@@ -66,8 +84,8 @@ export default function Hero({ query, onQueryChange, onSearch }: HeroProps) {
               value={query}
               onChange={(e) => onQueryChange(e.target.value)}
               aria-label="Search the Herbal Library"
-              className="flex-1 text-sm outline-none bg-transparent"
-              placeholder="Search herbs, formulations, conditions, or keywords..."
+              className="flex-1 min-w-0 text-sm outline-none bg-transparent"
+              placeholder="Search herbs, formulations, conditions..."
               style={{ color: "#374151" }}
             />
 
@@ -84,7 +102,7 @@ export default function Hero({ query, onQueryChange, onSearch }: HeroProps) {
 
           {/* Popular searches */}
           <div className="flex items-center flex-wrap gap-2">
-            <span className="text-xs font-medium" style={{ color: "#9ca3af" }}>Popular searches:</span>
+            <span className="w-full text-xs font-medium sm:w-auto" style={{ color: "#9ca3af" }}>Popular searches:</span>
             {chips.map(c => (
               <button
                 key={c}
@@ -100,16 +118,29 @@ export default function Hero({ query, onQueryChange, onSearch }: HeroProps) {
               </button>
             ))}
           </div>
+
+          {/* Stats: a compact grid on phones; wider screens show the card on the image */}
+          <ul className="mt-6 grid grid-cols-2 gap-2 sm:hidden">
+            {STATS.map(({ val, label, icon }) => (
+              <li key={val} className="flex items-center gap-2.5 rounded-xl p-2.5" style={{ background: "#f6faf7" }}>
+                <span className="flex size-[30px] flex-shrink-0 items-center justify-center rounded-lg bg-white">{icon}</span>
+                <span className="min-w-0">
+                  <span className="block font-bold leading-tight" style={{ fontSize: 13, color: "#0d2717" }}>{val}</span>
+                  <span className="block leading-tight" style={{ fontSize: 10.5, color: "#6b7280" }}>{label}</span>
+                </span>
+              </li>
+            ))}
+          </ul>
         </div>
 
         {/* ── Right: full-bleed background image ── */}
-        <div className="absolute inset-y-0 right-0 z-0" style={{ left: "44%" }}>
+        <div className="relative mx-4 h-56 overflow-hidden rounded-2xl sm:mx-8 sm:h-80 lg:absolute lg:top-16 lg:bottom-0 lg:right-0 lg:left-[44%] lg:mx-0 lg:h-auto lg:rounded-none z-0">
           <img src={IMG_HERO_BG} alt="Ayurvedic herbs" className="w-full h-full object-cover" />
           {/* subtle left fade so it blends */}
-          <div className="absolute inset-0" style={{ background: "linear-gradient(to right, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0) 25%)" }} />
+          <div className="absolute inset-0 hidden lg:block" style={{ background: "linear-gradient(to right, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0) 25%)" }} />
 
           {/* Script overlay */}
-          <div className="absolute" style={{ top: "28%", left: "18%" }}>
+          <div className="absolute bottom-5 left-5 lg:bottom-auto lg:top-[28%] lg:left-[18%]">
             <p
               style={{ fontFamily: "'Dancing Script',cursive", color: "#fff", fontSize: 24, textShadow: "0 1px 8px rgba(0,0,0,0.55)", lineHeight: 1.3 }}
             >
@@ -120,27 +151,10 @@ export default function Hero({ query, onQueryChange, onSearch }: HeroProps) {
 
           {/* Floating stats card */}
           <div
-            className="absolute bg-white rounded-2xl shadow-2xl"
-            style={{ top: 24, right: 24, minWidth: 200, padding: "16px 18px" }}
+            className="absolute top-4 right-4 hidden bg-white rounded-2xl shadow-2xl sm:block lg:top-6 lg:right-6"
+            style={{ minWidth: 200, padding: "16px 18px" }}
           >
-            {[
-              {
-                val: "1,200+", label: "Medicinal Plants",
-                icon: <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 13C2 6 6 1 13 3C8 6 6 10 7 14" stroke="#2d6a4f" strokeWidth="1.4" fill="none"/><path d="M2 13C2 10 6 7 9 7" stroke="#2d6a4f" strokeWidth="1.4" strokeLinecap="round" fill="none"/></svg>
-              },
-              {
-                val: "300+", label: "Formulations",
-                icon: <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="4" y="3" width="6" height="2.5" rx="1.25" stroke="#2d6a4f" strokeWidth="1.2" fill="none"/><path d="M4 5.5L3 13h8L10 5.5" stroke="#2d6a4f" strokeWidth="1.2" strokeLinecap="round" fill="none"/></svg>
-              },
-              {
-                val: "Verified Sources", label: "Classical & Modern",
-                icon: <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1L2 3.5v5C2 12 4.8 14.8 8 16c3.2-1.2 6-4 6-7.5v-5L8 1z" stroke="#2d6a4f" strokeWidth="1.2" fill="none"/><path d="M5.5 8l2 2L11 6" stroke="#2d6a4f" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
-              },
-              {
-                val: "Curated by Experts", label: "For Reliable Insights",
-                icon: <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="5" r="2.5" stroke="#2d6a4f" strokeWidth="1.2" fill="none"/><path d="M3 14c0-2.8 2.2-5 5-5s5 2.2 5 5" stroke="#2d6a4f" strokeWidth="1.2" strokeLinecap="round" fill="none"/></svg>
-              },
-            ].map(({ val, label, icon }, i) => (
+            {STATS.map(({ val, label, icon }, i) => (
               <div
                 key={val}
                 className="flex items-center gap-3"

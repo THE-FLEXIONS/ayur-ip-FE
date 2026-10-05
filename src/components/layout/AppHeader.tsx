@@ -2,6 +2,7 @@ import { useEffect, useId, useRef, useState } from "react";
 import { initials, useAuth } from "../../hooks/useAuth";
 import BrandLogo from "../ui/BrandLogo";
 import { BellIcon, MenuIcon } from "../ui/LineIcons";
+import { useSidebarDocked } from "./sidebar/SidebarDock";
 
 export const NAV_LINKS = ["Home", "Features", "Use Cases", "Herbal Library", "About"] as const;
 
@@ -22,6 +23,8 @@ export default function AppHeader({ onNavigate, onOpenMenu, activePage = "Home" 
   const menuId = useId();
   const auth = useAuth();
   const user = auth.user;
+  // The docked sidebar already shows the menu and the logo.
+  const docked = useSidebarDocked();
 
   useEffect(() => {
     if (!menuOpen) return;
@@ -48,40 +51,44 @@ export default function AppHeader({ onNavigate, onOpenMenu, activePage = "Home" 
   }
 
   return (
-    <header className="relative z-20 flex items-center gap-2 pt-4 sm:gap-4 sm:pt-6 lg:pt-8">
-      <button
-        type="button"
-        onClick={onOpenMenu}
-        aria-label="Open menu"
-        aria-haspopup="dialog"
-        className="-ml-2 flex size-11 shrink-0 items-center justify-center rounded-full text-ayur-ink transition-colors hover:bg-white/70 focus-visible:outline-2 focus-visible:outline-ayur-green sm:-ml-1"
-      >
-        <MenuIcon size={26} strokeWidth={1.7} />
-      </button>
+    <header className="glass-topbar sticky top-2 z-30 flex items-center gap-1.5 rounded-[22px] px-1.5 py-1.5 sm:gap-3 sm:px-3 sm:py-2">
+      {!docked && (
+        <button
+          type="button"
+          onClick={onOpenMenu}
+          aria-label="Open menu"
+          aria-haspopup="dialog"
+          className="flex size-10 shrink-0 items-center justify-center rounded-full text-ayur-ink transition-colors hover:bg-white/70 focus-visible:outline-2 focus-visible:outline-ayur-green sm:size-11"
+        >
+          <MenuIcon size={26} strokeWidth={1.7} />
+        </button>
+      )}
 
-      <a
-        href="#top"
-        onClick={(e) => {
-          e.preventDefault();
-          go("Home");
-        }}
-        className="flex items-center gap-2.5 rounded-lg focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ayur-green sm:gap-3"
-        aria-label="AyurIP home"
-      >
-        <BrandLogo size={64} className="h-10 w-auto min-[400px]:h-11 sm:h-14 lg:h-16" />
-        <span className="flex flex-col">
-          <span className="font-editorial text-[24px] font-semibold min-[400px]:text-[26px] leading-none tracking-[-0.01em] text-ayur-ink sm:text-[32px] lg:text-[36px]">
-            AyurIP
+      {!docked && (
+        <a
+          href="#top"
+          onClick={(e) => {
+            e.preventDefault();
+            go("Home");
+          }}
+          className="flex min-w-0 items-center gap-1.5 rounded-lg focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ayur-green min-[400px]:gap-2 sm:gap-3"
+          aria-label="AyurIP home"
+        >
+          <BrandLogo size={56} className="h-9 w-auto min-[400px]:h-10 sm:h-12 lg:h-14" />
+          <span className="flex min-w-0 flex-col">
+            <span className="font-editorial text-[20px] font-semibold leading-none tracking-[-0.01em] text-ayur-ink min-[400px]:text-[22px] sm:text-[30px] lg:text-[32px]">
+              AyurIP
+            </span>
+            <span className="mt-1 hidden text-[10.5px] leading-[1.25] text-[#3c4640] min-[400px]:block sm:text-[12px] lg:text-[12.5px]">
+              Tradition Protected
+              <br />
+              Innovation Empowered
+            </span>
           </span>
-          <span className="mt-1 text-[10.5px] leading-[1.25] text-[#3c4640] sm:text-[12.5px] lg:text-[13.5px]">
-            Tradition Protected
-            <br />
-            Innovation Empowered
-          </span>
-        </span>
-      </a>
+        </a>
+      )}
 
-      <nav aria-label="Primary" className="ml-auto hidden lg:block">
+      <nav aria-label="Primary" className={`hidden lg:block ${docked ? "pl-2" : "ml-auto"}`}>
         <ul className="flex items-center gap-1 xl:gap-2">
           {NAV_LINKS.map((link) => (
             <li key={link}>
@@ -100,12 +107,12 @@ export default function AppHeader({ onNavigate, onOpenMenu, activePage = "Home" 
         </ul>
       </nav>
 
-      <div className="ml-auto flex items-center gap-3 sm:gap-5 lg:ml-4">
+      <div className={`ml-auto flex shrink-0 items-center gap-1 min-[400px]:gap-2 sm:gap-3 ${docked ? "" : "lg:ml-4"}`}>
         <button
           type="button"
           onClick={() => setHasUnread(false)}
           aria-label={hasUnread ? "Notifications, 1 unread" : "Notifications"}
-          className="relative flex size-11 items-center justify-center rounded-full text-ayur-ink transition-colors hover:bg-white/70 focus-visible:outline-2 focus-visible:outline-ayur-green"
+          className="relative hidden size-10 items-center justify-center rounded-full text-ayur-ink transition-colors hover:bg-white/70 focus-visible:outline-2 focus-visible:outline-ayur-green sm:flex sm:size-11"
         >
           <BellIcon size={28} strokeWidth={1.6} />
           {hasUnread && (
@@ -122,7 +129,7 @@ export default function AppHeader({ onNavigate, onOpenMenu, activePage = "Home" 
             aria-controls={menuId}
             aria-label={user ? `Account menu for ${user.firstName}` : "Account and navigation menu"}
             onClick={() => setMenuOpen((o) => !o)}
-            className="flex size-12 items-center justify-center rounded-full bg-ayur-green-deep text-[20px] font-medium text-white shadow-[0_6px_16px_-8px_rgba(21,82,49,0.8)] transition-transform hover:scale-[1.03] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ayur-green sm:size-14 sm:text-[22px] lg:size-[60px]"
+            className="flex size-10 items-center justify-center rounded-full bg-ayur-green-deep text-[16px] font-medium text-white shadow-[0_6px_16px_-8px_rgba(21,82,49,0.8)] transition-transform hover:scale-[1.03] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ayur-green sm:size-12 sm:text-[20px] lg:size-14"
           >
             {user ? initials(user) : "U"}
           </button>

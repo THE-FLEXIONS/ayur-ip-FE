@@ -4,7 +4,7 @@ import { AboutHero, ImpactSection, JoinCTA, MeetTheTeam, OurJourney, OurPurpose,
 
 export default function AboutPage() {
   return (
-    <div className="pt-16" style={{ fontFamily: "Inter, sans-serif" }}>
+    <div style={{ fontFamily: "Inter, sans-serif" }}>
       <AboutHero />
       <WhatDrivesUs />
       <ImpactSection />

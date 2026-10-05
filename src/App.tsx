@@ -1,18 +1,23 @@
 import { useCallback, useEffect, useState, type CSSProperties, type ReactNode } from "react";
 import BottomNav, { BOTTOM_NAV_HEIGHT, type BottomNavKey } from "./components/layout/BottomNav";
 import Navbar from "./components/layout/Navbar";
-import { Sidebar, type SidebarKey } from "./components/layout/sidebar";
+import { DOCKED_SIDEBAR_WIDTH, Sidebar, SidebarDockContext, type SidebarKey } from "./components/layout/sidebar";
 import type { AskRequest, ResearchTool } from "./config/research";
 import { useAsk } from "./hooks/useAsk";
 import { useAuth } from "./hooks/useAuth";
+import { useMediaQuery } from "./hooks/useMediaQuery";
 import { useWorkspace, type HistoryEntry } from "./hooks/useWorkspace";
 import { warmUpServer } from "./lib/api";
 import {
   AboutPage,
+  AbsCompliancePage,
   FeaturesPage,
+  FormulationClassifierPage,
+  HelpPage,
   HerbalLibraryPage,
   HistoryPage,
   HomePage,
+  IpGuidancePage,
   LoginPage,
   ResourcesPage,
   SavedPage,
@@ -20,27 +25,26 @@ import {
   UseCasesPage,
 } from "./pages";
 import type { HomeIntent } from "./pages/HomePage";
-import { FEATURES } from "./sections/home";
 
 // ─── App ───────────────────────────────────────────────────────────────────
 // Page switching, the app-wide sidebar, and the glue between sign-in, the
 // user's workspace and the streamed AI answer. Page layouts live in src/pages,
 // their sections in src/sections.
 
-/** Sidebar items that open a home-page tool, keyed to the matching feature card. */
-const TOOL_ITEMS: Partial<Record<SidebarKey, string>> = {
+/** Sidebar items that are their own page. */
+const PAGE_ITEMS: Partial<Record<SidebarKey, string>> = {
   formulation: "Formulation Classifier",
   "ip-guidance": "IP Guidance",
   abs: "ABS Compliance",
-};
-
-/** Sidebar items that are their own page. */
-const PAGE_ITEMS: Partial<Record<SidebarKey, string>> = {
   resources: "Resources",
   saved: "Saved",
   history: "History",
   settings: "Settings",
+  help: "Help & Support",
 };
+
+/** App pages, where the sidebar is docked on desktop. Marketing pages keep the drawer. */
+const APP_PAGES = new Set(Object.values(PAGE_ITEMS));
 
 const ASK_SIGN_IN_NOTICE = "Sign in to ask your question. Evaluators can use the demo account below.";
 
@@ -62,8 +66,16 @@ export default function App() {
   const workspace = useWorkspace();
   const answer = useAsk(workspace.upsertEntry);
 
+  const desktop = useMediaQuery("(min-width: 1024px)");
+  const docked = desktop && APP_PAGES.has(page);
+
   const openSidebar = useCallback(() => setSidebarOpen(true), []);
   const closeSidebar = useCallback(() => setSidebarOpen(false), []);
+
+  // A drawer left open on a small screen closes once the sidebar docks.
+  useEffect(() => {
+    if (docked) setSidebarOpen(false);
+  }, [docked]);
 
   // Render's free plan sleeps; start waking the backend while the visitor reads the page.
   useEffect(() => warmUpServer(), []);
@@ -78,6 +90,14 @@ export default function App() {
   // Plain page navigation (header links, buttons inside pages).
   const navigate = useCallback(
     (next: string) => {
+      // "New Query" is the home page's ask box, not a page of its own.
+      if (next === "New Query") {
+        if (page !== "Home") window.scrollTo({ top: 0 });
+        setPage("Home");
+        setHomeKey("new-query");
+        setHomeIntent({ id: ++intentCounter, kind: "focus" });
+        return;
+      }
       if (next === "Login" && signedIn) next = "Home";
       if (next !== "Login") setLoginNotice(null);
       if (next !== page) setPreviousPage(page);
@@ -103,13 +123,8 @@ export default function App() {
   function handleSidebarSelect(key: SidebarKey) {
     setSidebarOpen(false);
     const pageName = PAGE_ITEMS[key];
-    const toolTitle = TOOL_ITEMS[key];
     if (pageName) navigate(pageName);
-    else if (toolTitle) {
-      const feature = FEATURES.find((f) => f.title === toolTitle);
-      prefill(key, feature?.prompt ?? "", feature?.tool ?? null);
-    } else if (key === "new-query") goHome(key, { id: ++intentCounter, kind: "focus" });
-    else if (key === "help") goHome(key, { id: ++intentCounter, kind: "scroll", targetId: "help-support" });
+    else if (key === "new-query") goHome(key, { id: ++intentCounter, kind: "focus" });
     else goHome("home", null);
   }
 
@@ -119,6 +134,11 @@ export default function App() {
     else if (key === "ask") goHome("new-query", { id: ++intentCounter, kind: "focus" });
     else if (key === "resources") navigate("Resources");
     else navigate("Settings");
+  }
+
+  /** Tool pages hand a prepared question to the AI on the home page. */
+  function askAI(question: string, tool: ResearchTool) {
+    prefill("new-query", question, tool);
   }
 
   function askAgain(entry: HistoryEntry) {
@@ -219,6 +239,14 @@ export default function App() {
     );
   } else if (page === "Settings") {
     content = <SettingsPage workspace={workspace} onNavigate={navigate} onOpenMenu={openSidebar} />;
+  } else if (page === "Formulation Classifier") {
+    content = <FormulationClassifierPage onNavigate={navigate} onOpenMenu={openSidebar} onAskAI={askAI} />;
+  } else if (page === "IP Guidance") {
+    content = <IpGuidancePage onNavigate={navigate} onOpenMenu={openSidebar} onAskAI={askAI} />;
+  } else if (page === "ABS Compliance") {
+    content = <AbsCompliancePage onNavigate={navigate} onOpenMenu={openSidebar} onAskAI={askAI} />;
+  } else if (page === "Help & Support") {
+    content = <HelpPage onNavigate={navigate} onOpenMenu={openSidebar} />;
   } else {
     content = (
       <div className="min-h-screen" style={{ fontFamily: "Inter, sans-serif" }}>
@@ -239,13 +267,17 @@ export default function App() {
       </div>
     );
   }
+  const counts = signedIn
+    ? { saved: workspace.history.filter((e) => e.saved).length, history: workspace.history.length }
+    : undefined;
+
   return (
-    <>
-      {/* The page is inert while the sidebar is open, so focus and clicks stay in the menu. */}
+    <SidebarDockContext.Provider value={docked}>
+      {/* The page is inert while the drawer is open, so focus and clicks stay in the menu. */}
       <div
-        inert={sidebarOpen}
+        inert={sidebarOpen && !docked}
         className="pb-[calc(var(--bottom-nav-h)+env(safe-area-inset-bottom))] lg:pb-0"
-        style={{ "--bottom-nav-h": `${BOTTOM_NAV_HEIGHT}px` } as CSSProperties}
+        style={{ "--bottom-nav-h": `${BOTTOM_NAV_HEIGHT}px`, paddingLeft: docked ? DOCKED_SIDEBAR_WIDTH : undefined } as CSSProperties}
       >
         {content}
         <BottomNav active={bottomNavKey} onSelect={handleBottomNav} />
@@ -257,7 +289,9 @@ export default function App() {
         onSelect={handleSidebarSelect}
         language={workspace.preferences.language}
         onLanguageChange={(language) => workspace.updatePreferences({ language })}
+        docked={docked}
+        counts={counts}
       />
-    </>
+    </SidebarDockContext.Provider>
   );
 }

@@ -35,13 +35,13 @@ export default function WhatDrivesUs() {
   ];
 
   return (
-    <section className="py-20" style={{ background: "#ffffff" }}>
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="grid grid-cols-2 gap-16 items-start">
+    <section className="py-14 sm:py-20" style={{ background: "#ffffff" }}>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+        <div className="grid gap-10 items-start lg:grid-cols-2 lg:gap-16">
           {/* Left */}
           <div>
             <p className="text-xs font-bold tracking-widest mb-3" style={{ color: "#2d6a4f" }}>WHAT DRIVES US</p>
-            <h2 className="text-5xl font-black mb-5 leading-tight" style={{ color: "#0d2717", fontWeight: 900 }}>
+            <h2 className="text-[34px] sm:text-5xl font-black mb-5 leading-tight" style={{ color: "#0d2717", fontWeight: 900 }}>
               More Than a <span style={{ color: "#1a4d2e" }}>Platform</span>
             </h2>
             <p className="text-base leading-relaxed max-w-lg" style={{ color: "#4b5563" }}>
@@ -50,11 +50,11 @@ export default function WhatDrivesUs() {
           </div>
 
           {/* Right: 4 value cards */}
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-2 gap-3 sm:gap-4">
             {values.map(({ bg, iconBg, icon, title, desc }) => (
               <div
                 key={title}
-                className="rounded-2xl p-6 flex flex-col items-center text-center gap-3"
+                className="rounded-2xl p-4 sm:p-6 flex flex-col items-center text-center gap-3"
                 style={{ background: bg }}
               >
                 <div className="w-14 h-14 rounded-full flex items-center justify-center" style={{ background: iconBg }}>

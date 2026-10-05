@@ -16,6 +16,14 @@ import {
 } from "../sections/home";
 
 /** Something the sidebar asks the home page to do once it is shown. `id` makes repeats distinct. */
+/** Feature cards that open a guided tool page; the rest prefill the ask box. */
+const TOOL_PAGES: Partial<Record<ResearchTool, string>> = {
+  formulation: "Formulation Classifier",
+  "ip-guidance": "IP Guidance",
+  abs: "ABS Compliance",
+  resources: "Resources",
+};
+
 export type HomeIntent = { id: number } & (
   | { kind: "focus" }
   | { kind: "prefill"; text: string; tool?: ResearchTool | null }
@@ -110,7 +118,7 @@ export default function HomePage({
 
           <div className="mt-6 sm:mt-10 lg:mt-12">
             <h2 className="sr-only">Tools</h2>
-            <FeatureGrid onSelect={(f) => focusInput(f.prompt, f.tool)} />
+            <FeatureGrid onSelect={(f) => (TOOL_PAGES[f.tool] ? onNavigate(TOOL_PAGES[f.tool]!) : focusInput(f.prompt, f.tool))} />
           </div>
 
           <div className="mt-6 sm:mt-8 lg:mt-10">

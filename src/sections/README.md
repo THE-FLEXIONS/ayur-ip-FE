@@ -13,7 +13,13 @@ sections/
   auth/            LoginShowcase (left panel), SignUpForm (right panel)
   workspace/       QuestionList (History and Saved pages)
   settings/        ResearchDefaults, LanguagePreference, HistoryControls
+  formulation/     FormulationForm, IngredientPicker, ClassificationResult (Formulation Classifier)
+  ip-guidance/     IpQuestions, IpResults, IpRouteCard, PatentTimeline (IP Guidance)
+  abs/             AbsQuestions, AbsResultPanel (ABS Compliance)
+  help/            QuickGuides, FaqSearch, ContactForm, ServiceStatus, OfficialChannels (Help & Support)
 ```
+
+The three guided tools keep their rules in `src/config/` (`formulation.ts`, `ipGuidance.ts`, `abs.ts`), separate from the UI, so the legal logic can be reviewed and updated on its own. Shared tool UI (question cards, verdicts, the copy / download / ask-AI bar) lives in `src/components/ui/ToolKit.tsx`.
 
 Inside each folder:
 

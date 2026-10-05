@@ -10,10 +10,10 @@ export default function CTASection() {
   ];
 
   return (
-    <section className="py-6 pb-16" style={{ background: "#f8faf7" }}>
-      <div className="max-w-7xl mx-auto px-6">
+    <section className="py-6 pb-12 sm:pb-16" style={{ background: "#f8faf7" }}>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div
-          className="relative rounded-3xl overflow-hidden p-12"
+          className="relative rounded-3xl overflow-hidden p-6 sm:p-10 lg:p-12"
           style={{ background: "#0d2717", minHeight: 240 }}
         >
           {/* Decorative leaf */}
@@ -23,19 +23,19 @@ export default function CTASection() {
             </svg>
           </div>
 
-          <div className="relative z-10 grid grid-cols-2 gap-10 items-center">
+          <div className="relative z-10 grid gap-8 items-center lg:grid-cols-2 lg:gap-10">
             {/* Left */}
             <div>
               <p className="text-xs font-semibold tracking-widest mb-3" style={{ color: "#74c99a" }}>
                 READY TO EXPLORE?
               </p>
-              <h3 className="text-4xl font-black text-white mb-4" style={{ fontWeight: 900 }}>
+              <h3 className="text-3xl sm:text-4xl font-black text-white mb-4" style={{ fontWeight: 900 }}>
                 Be a Part of the Movement
               </h3>
               <p className="text-sm leading-relaxed mb-8" style={{ color: "#a7f3d0" }}>
                 Join thousands of learners, practitioners, researchers and changemakers in preserving India's Ayurvedic heritage.
               </p>
-              <div className="flex items-center gap-4">
+              <div className="flex flex-wrap items-center gap-4">
                 <button
                   className="flex items-center gap-2 px-6 py-3 rounded-full text-sm font-semibold text-white border border-white hover:bg-white hover:text-green-900 transition-colors"
                 >
@@ -51,9 +51,9 @@ export default function CTASection() {
             </div>
 
             {/* Right */}
-            <div className="flex flex-col items-end gap-6">
+            <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between lg:flex-col lg:items-end">
               {/* Pillar icons */}
-              <div className="flex items-start gap-8">
+              <div className="grid grid-cols-3 gap-4 sm:flex sm:items-start sm:gap-8">
                 {pillars.map(({ icon, label }) => (
                   <div key={label} className="flex flex-col items-center gap-2">
                     {icon}
@@ -69,7 +69,7 @@ export default function CTASection() {
               {/* Script */}
               <p
                 style={{ fontFamily: "'Dancing Script', cursive", color: "#a7f3d0", fontSize: 22 }}
-                className="text-right leading-snug"
+                className="leading-snug sm:text-right"
               >
                 Small Steps.<br />Big Change.
               </p>

@@ -4,7 +4,8 @@ import { CloseIcon } from "../../ui/LineIcons";
 
 type SidebarHeaderProps = {
   titleId: string;
-  onClose: () => void;
+  /** Omitted when the sidebar is docked and can't be closed. */
+  onClose?: () => void;
   closeRef?: Ref<HTMLButtonElement>;
 };
 
@@ -26,15 +27,17 @@ export default function SidebarHeader({ titleId, onClose, closeRef }: SidebarHea
           Innovation Empowered
         </p>
       </div>
-      <button
-        ref={closeRef}
-        type="button"
-        onClick={onClose}
-        aria-label="Close menu"
-        className="-mr-1.5 ml-auto flex size-10 shrink-0 self-start items-center justify-center rounded-full text-white/95 transition-[background-color,transform] duration-200 hover:bg-white/10 group active:scale-95 focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-white"
-      >
-        <CloseIcon size={22} strokeWidth={1.7} className="transition-transform duration-300 group-hover:rotate-90" />
-      </button>
+      {onClose && (
+        <button
+          ref={closeRef}
+          type="button"
+          onClick={onClose}
+          aria-label="Close menu"
+          className="-mr-1.5 ml-auto flex size-10 shrink-0 self-start items-center justify-center rounded-full text-white/95 transition-[background-color,transform] duration-200 hover:bg-white/10 group active:scale-95 focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-white"
+        >
+          <CloseIcon size={22} strokeWidth={1.7} className="transition-transform duration-300 group-hover:rotate-90" />
+        </button>
+      )}
     </div>
   );
 }
